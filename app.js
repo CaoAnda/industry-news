@@ -15,12 +15,14 @@ const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name] 
 document.querySelectorAll('[data-icon]').forEach(el => el.innerHTML = icon(el.dataset.icon));
 const data = window.FEED_DATA;
 const issues=window.FEED_ISSUES;
+const issueKey=i=>i.id||i.date;
+const issueLabel=id=>{const i=issues.find(x=>issueKey(x)===id);return i?(i.label||i.date):id};
 const key = 'industry-fieldnotes-v1';
 let persisted = {};
 try { persisted = JSON.parse(localStorage.getItem(key) || '{}'); } catch {}
 const validIds = new Set(data.map(p => p.id));
 const restore = value => new Set(Array.isArray(value) ? value.filter(id => validIds.has(id)) : []);
-const state = {view:'feed',filter:'all',topic:'',sort:'curated',query:'',saved:restore(persisted.saved),read:restore(persisted.read),expanded:new Set(),comments:new Set(),issue:'all'};
+const state = {view:'feed',filter:'all',topic:'',sort:'curated',query:'',saved:restore(persisted.saved),read:restore(persisted.read),expanded:new Set(),comments:new Set(),issue:issueKey(issues[0])};
 const feed = document.querySelector('#feed');
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let toastTimer;
@@ -50,11 +52,16 @@ function render(){
  let visible=data.filter(p=>(state.view!=='saved'||state.saved.has(p.id))&&(state.view!=='read'||state.read.has(p.id))&&(state.filter==='all'||state.filter===p.channel)&&(state.issue==='all'||p.issueDate===state.issue)&&(!state.topic||state.topic===p.topic));
  if(state.query.trim()){const query=state.query.trim().toLocaleLowerCase();visible=visible.filter(p=>[p.title,p.source,p.summary,p.body,p.analysis,...p.tags,...(p.comments||[]).map(c=>c.text+' '+c.author+' '+c.why)].join(' ').toLocaleLowerCase().includes(query))}
  if(state.sort==='latest')visible.sort((a,b)=>b.date.localeCompare(a.date));
- feed.innerHTML=visible.length?visible.map((p,i)=>(state.sort==='curated'&&state.issue==='all'&&(i===0||visible[i-1].issueDate!==p.issueDate)?`<div class="date-divider"><span>${esc(p.issueDate)}${p.issueDate===issues[0].date?' · 最新一期':' · 往期'}</span></div>`:'')+postHTML(p)).join(''):`<div class="empty">${icon(state.view==='saved'?'bookmark':'inbox')}<h2>${state.view==='saved'&&!state.saved.size?'把想细看的，留在这里。':state.view==='read'&&!state.read.size?'还没有标记为已读的内容。':'暂时没有匹配的内容。'}</h2><p>${state.view==='saved'&&!state.saved.size?'点击卡片上的「稍后读」，下次打开还能找到。':state.view==='read'&&!state.read.size?'读完后点一下「标为已读」，就会出现在这里。':'试试其他关键词，或者清除筛选。'}</p><button data-reset>回到全部内容 →</button></div>`;
+ feed.innerHTML=visible.length?visible.map((p,i)=>(state.sort==='curated'&&state.issue==='all'&&(i===0||visible[i-1].issueDate!==p.issueDate)?`<div class="date-divider"><span>${esc(issueLabel(p.issueDate))}${p.issueDate===issueKey(issues[0])?' · 最新一期':' · 往期'}</span></div>`:'')+postHTML(p)).join(''):`<div class="empty">${icon(state.view==='saved'?'bookmark':'inbox')}<h2>${state.view==='saved'&&!state.saved.size?'把想细看的，留在这里。':state.view==='read'&&!state.read.size?'还没有标记为已读的内容。':'暂时没有匹配的内容。'}</h2><p>${state.view==='saved'&&!state.saved.size?'点击卡片上的「稍后读」，下次打开还能找到。':state.view==='read'&&!state.read.size?'读完后点一下「标为已读」，就会出现在这里。':'试试其他关键词，或者清除筛选。'}</p><button data-reset>回到全部内容 →</button></div>`;
  feed.querySelectorAll('.post-media img').forEach(img=>img.addEventListener('error',()=>{const button=img.closest('button');button.disabled=true;button.classList.add('image-failed');button.innerHTML='<span>图片暂时无法显示，请从图源查看</span>'}));
  document.querySelector('.result-count').textContent=`${visible.length} 条内容`;
  document.querySelector('#view-title').innerHTML=state.view==='feed'?'今天，业界在发生什么<span>？</span>':state.view==='saved'?'留给下一次，慢慢读<span>。</span>':'读过的，也值得回看<span>。</span>';
  document.querySelector('.editor-note').hidden=state.view!=='feed';
+ const current=issues.find(i=>issueKey(i)===state.issue)||issues[0];
+ document.querySelector('.editor-note h2').textContent=current.title;
+ document.querySelector('.editor-note p').textContent=current.intro;
+ document.querySelector('.edition').textContent='VOL. '+String(current.edition).padStart(3,'0');
+ document.querySelector('.note-meta').innerHTML=`<span>${esc(current.label||current.date)}</span><span>本期 ${current.count} 条精选 · 每天更新</span>`;
  document.querySelectorAll('[data-view]').forEach(el=>{el.classList.toggle('active',el.dataset.view===state.view);if(el.dataset.view===state.view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current')});
  document.querySelectorAll('[data-filter]').forEach(el=>{el.classList.toggle('active',el.dataset.filter===state.filter);el.setAttribute('aria-pressed',el.dataset.filter===state.filter)});
  document.querySelectorAll('[data-sort]').forEach(el=>{el.classList.toggle('active',el.dataset.sort===state.sort);el.setAttribute('aria-pressed',el.dataset.sort===state.sort)});
@@ -69,7 +76,7 @@ function reset(){state.view='feed';state.filter='all';state.topic='';state.query
 document.addEventListener('click',event=>{
  const el=event.target.closest('button');if(!el)return;
  if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
- else if(el.dataset.view){state.view=el.dataset.view;state.filter='all';state.topic='';state.query='';document.querySelector('#search').value='';render();window.scrollTo({top:0});}
+ else if(el.dataset.view){state.view=el.dataset.view;state.issue=state.view==='feed'?issueKey(issues[0]):'all';document.querySelector('#issue-select').value=state.issue;state.filter='all';state.topic='';state.query='';document.querySelector('#search').value='';render();window.scrollTo({top:0});}
  else if(el.dataset.filter){state.filter=el.dataset.filter;render();}
  else if(el.dataset.sort){state.sort=el.dataset.sort;render();}
  else if(el.dataset.topic){state.topic=el.dataset.topic;state.view='feed';state.filter='all';render();document.querySelector('.controls').scrollIntoView({block:'start'});}
@@ -100,10 +107,11 @@ document.querySelector('.issue-stats b').textContent=data.length;
 document.querySelector('.count').textContent=data.length;
 document.querySelector('#image-count').textContent=data.reduce((n,p)=>n+(p.images||[]).length,0);
 document.querySelector('#updated-label').textContent='更新于 '+window.FEED_META.updatedAt.slice(5,16).replace('T',' ')+'（北京）';
-document.querySelector('#issue-select').innerHTML='<option value="all">全部日期</option>'+issues.map(i=>`<option value="${esc(i.date)}">${esc(i.date)} · ${i.count} 条</option>`).join('');
+document.querySelector('#issue-select').innerHTML='<option value="all">全部期数</option>'+issues.map(i=>`<option value="${esc(issueKey(i))}">${esc(i.label||i.date)} · ${i.count} 条</option>`).join('');
+document.querySelector('#issue-select').value=state.issue;
 document.querySelector('#issue-select').onchange=e=>{state.issue=e.target.value;render()};
-document.querySelector('#coverage-copy').innerHTML=issues.map(i=>`<h3>${esc(i.date)}</h3><p>${esc(i.coverage)}</p>`).join('');
-document.querySelector('#trends').innerHTML=data.filter(p=>p.issueDate===latest.date&&((p.comments||[]).length||(p.images||[]).some(x=>x.credit==='Google'))).slice(0,3).map((p,i)=>`<button class="trend" data-jump="${esc(p.id)}"><em>0${i+1}</em><div>${esc(p.title)}<small>${esc(p.source)}${p.comments.length?' · 有评论补充':' · 有原文配图'}</small></div></button>`).join('');
+document.querySelector('#coverage-copy').innerHTML=issues.map(i=>`<h3>${esc(i.label||i.date)}</h3><p>${esc(i.coverage)}</p>`).join('');
+document.querySelector('#trends').innerHTML=data.filter(p=>p.issueDate===issueKey(latest)&&((p.comments||[]).length||(p.images||[]).length)).slice(0,3).map((p,i)=>`<button class="trend" data-jump="${esc(p.id)}"><em>0${i+1}</em><div>${esc(p.title)}<small>${esc(p.source)}${p.comments.length?' · 有评论补充':' · 有原文配图'}</small></div></button>`).join('');
 const imageDialog=document.querySelector('#image-dialog');
 document.querySelector('.image-close').onclick=()=>imageDialog.close();
 imageDialog.addEventListener('click',e=>{if(e.target===imageDialog)imageDialog.close()});

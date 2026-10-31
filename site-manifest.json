@@ -2,6 +2,8 @@
   "files": [
     ".nojekyll",
     "app.js",
+    "assets/2026-10-31/manus-team.webp",
+    "assets/2026-10-31/meta-workflow.jpg",
     "assets/2026-10-31/mistral-large4.webp",
     "assets/2026-10-31/suncatcher.webp",
     "data.js",
@@ -12,10 +14,12 @@
   ],
   "sha256": {
     ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "app.js": "3b24783e0cd60b58600858183306fe924166de42cdcd9c14b8b88b6760aa1837",
+    "app.js": "26a1ac6ce59af897445c1215805d2b39e5ecca3caffc81bc114e56884db1615b",
+    "assets/2026-10-31/manus-team.webp": "555809c7e478f1452de193557b3e53d840e1dba6804d42452b258d0fa94ba160",
+    "assets/2026-10-31/meta-workflow.jpg": "de4f9d4ae08215e5761424b43e239b659c006d2b164815e7dbf2c3e6e6d1ee70",
     "assets/2026-10-31/mistral-large4.webp": "fac142c7191f872c9a3b92f04ca11bb081c283861bd6ccbb22ac3ae27a6bd56f",
     "assets/2026-10-31/suncatcher.webp": "b622d117475647548527440683b8a9fe895006452c9846cec5279568df57631a",
-    "data.js": "077e2dd53aea5fae6ad3d69ac9664375713633f9bcc9407a8ea3bb0692b118ff",
+    "data.js": "428a31e77f4bdc193f80a1c13d3a586781f3a2fbe3ad8da42ecbd1888ec4f6d4",
     "icon.svg": "985cc8c70634ffee1cf8de29d7dd7ee176fa0716af6ee7994d9f8e69a77dfdcf",
     "index.html": "f2a815daa114f6d85ca7a6e0cd83fae5a1b157815e89bbe61ba4ac74489d67f0",
     "manifest.webmanifest": "aca72b60ed7a877c8c15a015957d5ac4f0083e48cc0056911d429b04e4919109",
