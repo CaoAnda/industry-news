@@ -23,3 +23,13 @@
  dialog{padding:26px 22px;max-height:85dvh;overflow:auto}dialog p{font-size:15px}.image-close{min-width:44px;min-height:44px}#image-dialog{padding-top:50px}
 }
 @media(max-width:360px){.post-actions{gap:10px}.post-actions button{font-size:11px}#updated-label{flex-basis:100%;text-align:right}.feed-header h1{font-size:20px}}
+
+/* Complete stories, optional detail, and lightweight provenance. */
+.post-story p{font-size:15px;line-height:1.9;color:#545f4d;margin:12px 0}.post-story p:last-child{margin-bottom:0}
+.story-more{display:flex;gap:8px;align-items:center;text-align:left;color:#667b59;font-size:13px;line-height:1.6;padding:12px 0;min-height:44px;margin-top:7px}.story-more svg{flex-shrink:0;width:16px;height:16px}.story-more:hover{color:var(--accent)}
+.detail{margin-top:0;padding-top:0}.detail>p{margin:12px 0;line-height:1.9;color:#545f4d}
+.story-sources{display:flex;gap:8px 20px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:#6f7b63}.story-sources a{padding:7px 0;overflow-wrap:anywhere;line-height:1.7}.story-sources a:hover{color:var(--accent)}.story-sources small{font-size:10px;color:#919a88;margin-left:4px}
+.post-actions{border-top:1px solid var(--line);padding-top:7px;margin-top:7px}.post-actions .save{margin-left:auto}
+@media(max-width:740px){.post-story p{font-size:16px;line-height:1.85;margin:13px 0}.story-more{font-size:14px}.story-sources{font-size:12px;gap:4px 16px}.story-sources a{min-height:36px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}.story-sources small{font-size:11px;margin-left:0}.detail>p{font-size:16px}.comment-teaser{color:#606e54}}
+
+.story-topic{font:inherit;color:#849078;padding:7px 0;min-height:36px;text-align:left}.story-topic:hover{color:var(--accent)}
