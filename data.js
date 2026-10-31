@@ -36,6 +36,15 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "",
     "detailLabel": "他们后来怎样分工",
+    "highlights": {
+      "summary": [
+        "200 多个事项等着人作决定",
+        "一个产品改动值不值得做，仍由人拍板"
+      ],
+      "body": [
+        "共享讨论背景，减少交接时重新解释的工作"
+      ]
+    },
     "issueDate": "2026-10-31-reselected"
   },
   {
@@ -66,6 +75,15 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "",
     "detailLabel": "判分流程怎样改",
+    "highlights": {
+      "summary": [
+        "让测试通过了，却没有真正修复问题",
+        "把生成代码和最终评分放进不同环境"
+      ],
+      "body": [
+        "而不是直接记作模型失败"
+      ]
+    },
     "issueDate": "2026-10-31-reselected"
   },
   {
@@ -107,7 +125,10 @@ window.FEED_DATA = [
         "linkLabel": "查看这条回复",
         "evidence": "个人经验",
         "mode": "摘编",
-        "context": "回应独立工作目录的建议。"
+        "context": "回应独立工作目录的建议。",
+        "highlights": [
+          "差点把另一个尚未检查的改动一起上线"
+        ]
       },
       {
         "author": "_gvieira",
@@ -118,11 +139,23 @@ window.FEED_DATA = [
         "linkLabel": "查看这条回复",
         "evidence": "个人经验",
         "mode": "摘编",
-        "context": "回应“先描述目标，少规定实现”的建议。"
+        "context": "回应“先描述目标，少规定实现”的建议。",
+        "highlights": [
+          "自己确定实现的大体结构"
+        ]
       }
     ],
     "commentStatus": "摘编自 X 原帖回复。",
     "detailLabel": "需求和排错时，他怎么做",
+    "highlights": {
+      "summary": [
+        "把线上 Bug 和用户反馈变成测试案例",
+        "各用独立目录，合并后再统一验证"
+      ],
+      "body": [
+        "增加日志看真实运行情况"
+      ]
+    },
     "issueDate": "2026-10-31-reselected"
   },
   {
@@ -163,6 +196,15 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "",
     "detailLabel": "新的分工和流程图",
+    "highlights": {
+      "summary": [
+        "把一个系统的字段命名规则用到另一个系统",
+        "每个只加载自己的领域资料"
+      ],
+      "body": [
+        "不同工作流可以复用同一批 Agent"
+      ]
+    },
     "issueDate": "2026-10-31-reselected"
   },
   {
@@ -193,6 +235,15 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "",
     "detailLabel": "首期做了什么，推迟了什么",
+    "highlights": {
+      "summary": [
+        "先做分类、收集证据",
+        "发布阻塞时间下降了 20%"
+      ],
+      "body": [
+        "自动生成修复 PR 留到后续"
+      ]
+    },
     "issueDate": "2026-10-31-reselected"
   },
   {
@@ -223,6 +274,15 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "",
     "detailLabel": "还有哪些上下文能力",
+    "highlights": {
+      "summary": [
+        "把反复被接受的代码审查意见整理成后续指导",
+        "需要主动启用"
+      ],
+      "body": [
+        "跨仓库搜索"
+      ]
+    },
     "issueDate": "2026-10-31-reselected"
   },
   {
@@ -253,6 +313,13 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "本条未采集评论",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "低、中、高三档推理模式",
+        "输出 token 减少 30%"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-31"
   },
   {
@@ -283,6 +350,12 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "本条未采集评论",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "2026 年起在 Seed 从事基础模型研究"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-31"
   },
   {
@@ -317,6 +390,13 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "本条未采集评论",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "复用已有对话缓存",
+        "额外推理计算开销低于 2%"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-31"
   },
   {
@@ -348,6 +428,13 @@ window.FEED_DATA = [
     "commentStatus": "摘编自原帖评论区。",
     "collectionNote": "读取到 12 条评论及回复，选取 1 条作者补充；链接进入原帖，未获取评论直达链接。",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "偏好训练后性能下降的原因和改进办法",
+        "在实习项目里怎么用"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-31"
   },
   {
@@ -378,6 +465,13 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "本条未采集评论",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "已在轨运行 Gemma 4",
+        "热应力和辐射环境下的可靠性"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-31"
   },
   {
@@ -409,6 +503,13 @@ window.FEED_DATA = [
     "commentStatus": "摘编自原帖评论区。",
     "collectionNote": "读取帖子及 4 条评论/回复，选取 1 条有数据依据的补充；工具未返回评论直达链接。",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "显卡每秒产出更多，但单个使用者拿到回答的速度变慢",
+        "总吞吐只从约 110 增到 111 token/秒"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-31"
   },
   {
@@ -444,6 +545,14 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "首期未采集评论",
     "detailLabel": "四阶段训练怎样衔接",
+    "highlights": {
+      "summary": [
+        "把这些专长整合进同一个学生模型"
+      ],
+      "body": [
+        "让学生自己生成回答或行动轨迹，再接受教师指导"
+      ]
+    },
     "issueDate": "2026-10-29"
   },
   {
@@ -479,6 +588,13 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "首期未采集评论",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "在自己的环境里评测模型",
+        "即使执行环境出故障，任务进度仍可以保留下来"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-29"
   },
   {
@@ -510,6 +626,12 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "首期未采集评论",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "先向部分安全防御人员开放"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-29"
   },
   {
@@ -541,6 +663,13 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "首期未采集评论",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "同时生成环境音和交互对话",
+        "面向可信测试者提供研究预览"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-29"
   },
   {
@@ -572,6 +701,12 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "首期未采集评论",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "能操作、能获得反馈的任务环境"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-29"
   },
   {
@@ -603,6 +738,13 @@ window.FEED_DATA = [
     "comments": [],
     "commentStatus": "首期未采集评论",
     "detailLabel": "",
+    "highlights": {
+      "summary": [
+        "模型接入与调度平台研发",
+        "个人招聘转发"
+      ],
+      "body": []
+    },
     "issueDate": "2026-10-29"
   }
 ];
@@ -637,7 +779,7 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-10-31T15:19:15+08:00",
+  "updatedAt": "2026-10-31T15:41:40+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
   "latestDate": "2026-10-31",
   "latestId": "2026-10-31-reselected"

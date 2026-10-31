@@ -28,7 +28,14 @@ const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&
 let toastTimer;
 function toast(message){const el=document.querySelector('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200)}
 function saveState(){try{localStorage.setItem(key,JSON.stringify({saved:[...state.saved],read:[...state.read]}))}catch{toast('浏览器未允许保存，记录仅在本次打开时有效')}}
-function paragraphs(text){return String(text||'').split(/\n\s*\n/).filter(Boolean).map(t=>`<p>${esc(t)}</p>`).join('')}
+function emphasize(text,phrases=[]){
+ const value=String(text||'');
+ const spans=phrases.map(phrase=>({phrase,start:value.indexOf(phrase)})).filter(x=>x.start>=0&&x.phrase.length).sort((a,b)=>a.start-b.start);
+ let cursor=0,result='';
+ for(const {phrase,start} of spans){if(start<cursor)continue;result+=esc(value.slice(cursor,start))+`<strong class="key-point">${esc(phrase)}</strong>`;cursor=start+phrase.length;}
+ return result+esc(value.slice(cursor));
+}
+function paragraphs(text,phrases=[]){return String(text||'').split(/\n\s*\n/).filter(Boolean).map(t=>`<p>${emphasize(t,phrases)}</p>`).join('')}
 function mediaHTML(p,placement='inline'){
  const pictures=(p.images||[]).map((pic,index)=>({pic,index})).filter(({pic})=>(pic.placement||'inline')===placement);
  return pictures.length?`<div class="post-media">${pictures.map(({pic,index})=>`<figure><button class="image-button" data-picture="${esc(p.id)}" data-index="${index}" aria-label="查看大图：${esc(pic.alt)}"><img src="${esc(pic.src)}" alt="${esc(pic.alt)}" loading="lazy" decoding="async"><span class="zoom-hint">查看大图 ↗</span></button><figcaption>${esc(pic.caption)} <a href="${esc(pic.sourceUrl)}" target="_blank" rel="noopener noreferrer">图源：${esc(pic.credit)} ↗</a></figcaption></figure>`).join('')}</div>`:'';
@@ -36,16 +43,16 @@ function mediaHTML(p,placement='inline'){
 function commentsHTML(p){
  if(!(p.comments||[]).length)return '';
  const open=state.comments.has(p.id);
- return `<section class="comments-section"><button class="comments-toggle" data-action="comments" data-id="${esc(p.id)}" aria-expanded="${open}" aria-controls="comments-${esc(p.id)}"><span>评论里的补充 <b>${p.comments.length}</b></span><span>${open?'收起 ↑':'展开 ↓'}</span></button><div class="comment-teaser" ${open?'hidden':''}>${esc(p.comments[0].text)}</div><div id="comments-${esc(p.id)}" ${open?'':'hidden'}>${p.comments.map(c=>`<div class="comment"><div class="comment-author">${esc(c.author)} <span>${esc(c.mode)}</span></div><small>${esc(c.date)} · ${esc(c.context)}</small><p>${esc(c.text)}</p><div class="comment-foot"><a href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">${esc(c.linkLabel||'查看评论来源')} ↗</a></div></div>`).join('')}</div></section>`;
+ return `<section class="comments-section"><button class="comments-toggle" data-action="comments" data-id="${esc(p.id)}" aria-expanded="${open}" aria-controls="comments-${esc(p.id)}"><span>评论里的补充 <b>${p.comments.length}</b></span><span>${open?'收起 ↑':'展开 ↓'}</span></button><div class="comment-teaser" ${open?'hidden':''}>${emphasize(p.comments[0].text,p.comments[0].highlights)}</div><div id="comments-${esc(p.id)}" ${open?'':'hidden'}>${p.comments.map(c=>`<div class="comment"><div class="comment-author">${esc(c.author)} <span>${esc(c.mode)}</span></div><small>${esc(c.date)} · ${esc(c.context)}</small><p>${emphasize(c.text,c.highlights)}</p><div class="comment-foot"><a href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">${esc(c.linkLabel||'查看评论来源')} ↗</a></div></div>`).join('')}</div></section>`;
 }
 function postHTML(p){
  const open=state.expanded.has(p.id),saved=state.saved.has(p.id),read=state.read.has(p.id);
  const hasDetails=Boolean(p.body||(p.images||[]).some(pic=>pic.placement==='details'));
  return `<article class="post" id="post-${p.id}" aria-labelledby="title-${p.id}">
   <div class="post-head"><div class="avatar ${p.avatarClass}" aria-hidden="true">${esc(p.avatar)}</div><div><div class="source-name">${esc(p.source)}${read?'<span class="read-indicator">已读</span>':''}</div><div class="source-meta">${esc(p.time)} · ${esc(p.topic)}</div></div><span class="evidence"><i class="dot ${p.kind}"></i>${esc(p.evidence)}</span></div>
-  <h2 id="title-${p.id}">${esc(p.title)}</h2><div class="post-story">${paragraphs(p.summary)}</div>
+  <h2 id="title-${p.id}">${esc(p.title)}</h2><div class="post-story">${paragraphs(p.summary,p.highlights?.summary)}</div>
   ${mediaHTML(p)}
-  ${hasDetails?`<button class="story-more" data-action="expand" data-id="${p.id}" aria-expanded="${open}" aria-controls="detail-${p.id}">${icon(open?'up':'down')}<span>${open?'收起':esc(p.detailLabel||'更多细节')}</span></button><div class="detail" id="detail-${p.id}" ${open?'':'hidden'}>${paragraphs(p.body)}${mediaHTML(p,'details')}</div>`:''}
+  ${hasDetails?`<button class="story-more" data-action="expand" data-id="${p.id}" aria-expanded="${open}" aria-controls="detail-${p.id}">${icon(open?'up':'down')}<span>${open?'收起':esc(p.detailLabel||'更多细节')}</span></button><div class="detail" id="detail-${p.id}" ${open?'':'hidden'}>${paragraphs(p.body,p.highlights?.body)}${mediaHTML(p,'details')}</div>`:''}
   ${commentsHTML(p)}
   <div class="story-sources"><button class="story-topic" data-topic="${esc(p.topic)}"># ${esc(p.topic)}</button>${p.links.map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} ↗ <small>${esc(new URL(l.url).hostname.replace(/^www\./,''))}</small></a>`).join('')}</div>
   <div class="post-actions"><button class="read ${read?'selected':''}" data-action="read" data-id="${p.id}" aria-pressed="${read}">${icon('check')}${read?'已读':'标为已读'}</button><button class="save ${saved?'selected':''}" data-action="save" data-id="${p.id}" aria-pressed="${saved}" aria-label="${saved?'取消收藏':'收藏'}：${esc(p.title)}">${icon('bookmark')}${saved?'已收藏':'稍后读'}</button></div>
