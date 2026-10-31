@@ -1,0 +1,24 @@
+{
+  "files": [
+    ".nojekyll",
+    "app.js",
+    "assets/2026-10-31/mistral-large4.webp",
+    "assets/2026-10-31/suncatcher.webp",
+    "data.js",
+    "icon.svg",
+    "index.html",
+    "manifest.webmanifest",
+    "style.css"
+  ],
+  "sha256": {
+    ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app.js": "3b24783e0cd60b58600858183306fe924166de42cdcd9c14b8b88b6760aa1837",
+    "assets/2026-10-31/mistral-large4.webp": "fac142c7191f872c9a3b92f04ca11bb081c283861bd6ccbb22ac3ae27a6bd56f",
+    "assets/2026-10-31/suncatcher.webp": "b622d117475647548527440683b8a9fe895006452c9846cec5279568df57631a",
+    "data.js": "5c2a5920b1ac58836016aab6df44ee5773d18cec7dc1926e21c105044adc8495",
+    "icon.svg": "985cc8c70634ffee1cf8de29d7dd7ee176fa0716af6ee7994d9f8e69a77dfdcf",
+    "index.html": "f2a815daa114f6d85ca7a6e0cd83fae5a1b157815e89bbe61ba4ac74489d67f0",
+    "manifest.webmanifest": "aca72b60ed7a877c8c15a015957d5ac4f0083e48cc0056911d429b04e4919109",
+    "style.css": "b1ff033ac85703a8bec9e5deaa2876bdaedf55a80eb6316053b0049c38f8d9bf"
+  }
+}
