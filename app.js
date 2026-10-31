@@ -7,6 +7,7 @@ const icons = {
  down:'<path d="m7 10 5 5 5-5"/>',
  up:'<path d="m7 14 5-5 5 5"/>',
  link:'<path d="M14 3h7v7m-12 5L21 3M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/>',
+ thumb:'<path d="M7 10v11H3V10zm0 0 5-8c2 0 3 2 2 5l-1 3h6a2 2 0 0 1 2 2l-2 7a3 3 0 0 1-3 2H7"/>',
  inbox:'<path d="M3 13 6 4h12l3 9v7H3zM3 13h5l2 3h4l2-3h5"/>'
 };
 const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name] || icons.info}</svg>`;
@@ -20,6 +21,43 @@ const issueLabel=id=>{const i=issues.find(x=>issueKey(x)===id);return i?(i.label
 const state = {stream:'all',learningCat:'all',filter:'all',topic:'',sort:'curated',query:'',expanded:new Set(),comments:new Set(),issue:issueKey(issues[0])};
 const feed = document.querySelector('#feed');
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ratingStorageKey='daily-feed-ratings-v1';
+let ratings={},ratingStorageOK=true;
+function readRatings(){
+ try{const raw=JSON.parse(localStorage.getItem(ratingStorageKey)||'{}');
+  if(!raw||typeof raw!=='object'||Array.isArray(raw))return {};
+  return Object.fromEntries(Object.entries(raw).filter(([key,r])=>/^(news|case):[\w-]+$/.test(key)&&r&&['up','down'].includes(r.value)&&typeof r.title==='string'&&typeof r.updatedAt==='string'));
+ }catch{ratingStorageOK=false;return {}}
+}
+ratings=readRatings();
+function ratingHTML(key){const value=ratings[key]?.value;
+ return `<div class="rating-row" data-rating-row="${esc(key)}" role="group" aria-label="评价这条内容"><button class="rating-button ${value==='up'?'positive selected':''}" data-rate="up" data-rating-key="${esc(key)}" aria-pressed="${value==='up'}">${icon('thumb')}有收获</button><button class="rating-button ${value==='down'?'negative selected':''}" data-rate="down" data-rating-key="${esc(key)}" aria-pressed="${value==='down'}">${icon('thumb')}不太喜欢</button><span class="rating-saved">${value?(ratingStorageOK?'已记录':'仅本次有效'):''}</span></div>`;
+}
+function ratingItems(){return Object.entries(ratings).sort((a,b)=>b[1].updatedAt.localeCompare(a[1].updatedAt))}
+function updateRatingCount(){document.querySelector('#rating-count').textContent=Object.keys(ratings).length||''}
+function setRating(key,value){
+ const type=key.startsWith('case:')?'case':'news',id=key.slice(key.indexOf(':')+1);
+ const item=(type==='case'?cases:data).find(x=>x.id===id);if(!item)return;
+ if(ratings[key]?.value===value)delete ratings[key];
+ else ratings[key]={value,title:item.title,type,topic:item.topic,url:type==='case'?item.sources[0][1]:item.links[0].url,updatedAt:new Date().toISOString()};
+ try{localStorage.setItem(ratingStorageKey,JSON.stringify(ratings));ratingStorageOK=true}catch{ratingStorageOK=false}
+ document.querySelectorAll('[data-rating-row]').forEach(row=>{if(row.dataset.ratingRow===key){const holder=document.createElement('div');holder.innerHTML=ratingHTML(key);row.replaceWith(holder.firstElementChild)}});
+ updateRatingCount();
+ document.querySelector('#rating-status').textContent=ratings[key]?(ratingStorageOK?'评价已记录':'浏览器未能保存，评价仅本次有效'):'已取消评价';
+ document.querySelector(`[data-rating-key="${key}"][data-rate="${value}"]`)?.focus({preventScroll:true});
+}
+function showRatings(){
+ const list=ratingItems();
+ document.querySelector('#rating-list').innerHTML=list.length?list.map(([key,r])=>`<li><span class="rating-verdict ${r.value==='up'?'positive':'negative'}">${r.value==='up'?'有收获':'不太喜欢'}</span><p>${esc(r.title)}</p><small>${r.type==='case'?'研究案例':'业界消息'} · ${esc(r.topic||'')}</small></li>`).join(''):'<p class="rating-empty">还没有评价。读到有收获或不合口味的内容，点一下就好。</p>';
+ document.querySelector('#copy-ratings').disabled=!list.length;
+ document.querySelector('#rating-storage-note').textContent=ratingStorageOK?'评价保存在当前浏览器，不会自动同步或调整选题。可以复制后发给我，用来调整后续内容。':'浏览器未能保存，当前评价仅本次有效；可以先复制留存。';
+ document.querySelector('#rating-export').hidden=true;
+ document.querySelector('#rating-copy-status').textContent='';
+ document.querySelector('#rating-dialog').showModal();
+}
+function ratingExportText(){return '我的信息流评价（未评价不代表不喜欢）\n\n'+ratingItems().map(([key,r])=>`${r.value==='up'?'好评 · 有收获':'差评 · 不太喜欢'}｜${r.title}\n${r.type==='case'?'研究案例':'业界消息'} · ${r.topic||''}\n条目：${key}\n${r.url||''}`).join('\n\n')}
+async function copyRatings(){const text=ratingExportText();try{await navigator.clipboard.writeText(text);document.querySelector('#rating-copy-status').textContent='已复制，可以粘贴到聊天里。'}catch{const box=document.querySelector('#rating-export');box.value=text;box.hidden=false;box.focus();box.select();document.querySelector('#rating-copy-status').textContent='请复制下方已选中的评价。'}}
+window.addEventListener('storage',event=>{if(event.key!==ratingStorageKey&&event.key!==null)return;ratings=readRatings();document.querySelectorAll('[data-rating-row]').forEach(row=>{const holder=document.createElement('div');holder.innerHTML=ratingHTML(row.dataset.ratingRow);row.replaceWith(holder.firstElementChild)});updateRatingCount();if(document.querySelector('#rating-dialog').open)showRatings()});
 function emphasize(text,phrases=[]){
  const value=String(text||'');
  const spans=phrases.map(phrase=>({phrase,start:value.indexOf(phrase)})).filter(x=>x.start>=0&&x.phrase.length).sort((a,b)=>a.start-b.start);
@@ -47,6 +85,7 @@ function postHTML(p){
   ${hasDetails?`<button class="story-more" data-action="expand" data-id="${p.id}" aria-expanded="${open}" aria-controls="detail-${p.id}">${icon(open?'up':'down')}<span>${open?'收起':esc(p.detailLabel||'更多细节')}</span></button><div class="detail" id="detail-${p.id}" ${open?'':'hidden'}>${paragraphs(p.body,p.highlights?.body)}${mediaHTML(p,'details')}</div>`:''}
   ${commentsHTML(p)}
   <div class="story-sources"><button class="story-topic" data-topic="${esc(p.topic)}"># ${esc(p.topic)}</button>${p.links.map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} ↗ <small>${esc(new URL(l.url).hostname.replace(/^www\./,''))}</small></a>`).join('')}</div>
+ ${ratingHTML('news:'+p.id)}
  </article>`;
 }
 function caseHTML(a){
@@ -61,7 +100,7 @@ function caseHTML(a){
  <details class="case-evidence"><summary>实验结果与适用条件</summary>${paragraphs(a.evidence)}${paragraphs(a.limits)}</details>
  <h3>可以借走的思路</h3>${paragraphs(a.transfer)}
  <details class="case-evidence"><summary>${esc(a.counter.q)}</summary>${paragraphs(a.counter.a)}</details>
- </div><div class="story-sources"><span>${esc(a.topic)}</span>${a.sources.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`).join('')}</div></article>`;
+ </div><div class="story-sources"><span>${esc(a.topic)}</span>${a.sources.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`).join('')}</div>${ratingHTML('case:'+a.id)}</article>`;
 }
 function render(){
  let visible=data.filter(p=>(state.filter==='all'||state.filter===p.channel)&&(state.issue==='all'||p.issueDate===state.issue)&&(!state.topic||state.topic===p.topic));
@@ -100,7 +139,8 @@ function render(){
 function reset(){state.stream='all';state.learningCat='all';state.filter='all';state.topic='';state.query='';state.issue='all';document.querySelector('#issue-select').value='all';document.querySelector('#search').value='';render()}
 document.addEventListener('click',event=>{
  const el=event.target.closest('button');if(!el)return;
- if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
+ if(el.dataset.rate){setRating(el.dataset.ratingKey,el.dataset.rate);}
+ else if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
  else if(el.hasAttribute('data-home')){state.stream='all';state.learningCat='all';state.issue=issueKey(issues[0]);document.querySelector('#issue-select').value=state.issue;state.filter='all';state.topic='';state.query='';document.querySelector('#search').value='';render();window.scrollTo({top:0});}
  else if(el.dataset.stream){state.stream=el.dataset.stream;state.filter='all';state.topic='';state.learningCat='all';render();document.querySelector('.controls').scrollIntoView({block:'start'});}
  else if(el.dataset.learningCat){state.learningCat=el.dataset.learningCat;render();}
@@ -123,6 +163,10 @@ document.querySelector('#coverage').onclick=()=>dialog.showModal();document.quer
 dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()}});
 document.querySelector('#back-top').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 
+document.querySelector('#my-ratings').onclick=showRatings;
+document.querySelector('#close-ratings').onclick=()=>document.querySelector('#rating-dialog').close();
+document.querySelector('#copy-ratings').onclick=copyRatings;
+updateRatingCount();
 const latest=issues[0];
 const day=new Date(latest.date+'T12:00:00+08:00');
 document.querySelector('.feed-header .eyebrow').textContent=latest.date+' · 每日业界';
