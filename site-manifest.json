@@ -11,6 +11,9 @@
     "icon.svg",
     "index.html",
     "manifest.webmanifest",
+    "preview.css",
+    "preview.html",
+    "preview.js",
     "ratings-sync.js",
     "style.css"
   ],
@@ -26,6 +29,9 @@
     "icon.svg": "985cc8c70634ffee1cf8de29d7dd7ee176fa0716af6ee7994d9f8e69a77dfdcf",
     "index.html": "e0ecea37df48816251806f7855d4fc1293f2a12309eaec3ca279e1f7474e325c",
     "manifest.webmanifest": "aca72b60ed7a877c8c15a015957d5ac4f0083e48cc0056911d429b04e4919109",
+    "preview.css": "ea755f74af05d53e145409fe4c35fdaeb2c4e0d6e38eca8bdbd7ca826a20ac46",
+    "preview.html": "c99389c92d1649fff67ee2f7e2ae657f5b47a13784c33276951ef0f02a279c60",
+    "preview.js": "7a14e4932d2c9a66b3b0370a6266855121a72d80d6bb4e5a4566694e3b2acffd",
     "ratings-sync.js": "f60963d8ebb622957b3df45701e32726a32c32c73a9fa8aa5da2204f6b24630b",
     "style.css": "f20c3ac3387799865cee2b46190e24107755c9443df45f416b54ad02aaa0a3b1"
   }
