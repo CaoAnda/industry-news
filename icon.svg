@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
-  <title>沿线观察</title>
-  <rect width="192" height="192" rx="42" fill="#386EAA"/>
-  <path d="M34 122C34 111 37 103 46 96C70 65 122 65 146 96C155 89 158 81 158 70" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M46 96C70 127 122 127 146 96" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="96" cy="96" r="13" fill="#F4C88B"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none"><title>沿线观察 · 地平线</title><rect width="192" height="192" rx="42" fill="#F1E5D4"/><path d="M53 105A43 43 0 0 1 139 105" stroke="#386EAA" stroke-width="11" stroke-linecap="round"/><path d="M32 114H160M56 139H136" stroke="#386EAA" stroke-width="10" stroke-linecap="round"/><circle cx="96" cy="76" r="12" fill="#CB7B48"/></svg>
