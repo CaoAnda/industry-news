@@ -72,3 +72,5 @@ html[data-layout=live]{--preview-height:0px}
 .post,[data-layout=live] .post{scroll-margin-top:calc(var(--preview-height) + var(--feed-controls-height,80px) + 12px)}
 
 .brand{font-size:24px;white-space:nowrap}
+
+.brand-icon,[data-look=feed] .brand-icon,[data-look=night] .brand-icon{width:44px;height:44px;background:none;border-radius:10px;transform:none}.brand-icon img{display:block;width:44px;height:44px}

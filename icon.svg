@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="42" fill="#4779ad"/><text x="96" y="133" text-anchor="middle" font-family="sans-serif" font-size="120" font-weight="700" fill="white">沿</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
+  <title>沿线观察</title>
+  <rect width="192" height="192" rx="42" fill="#386EAA"/>
+  <path d="M34 122C34 111 37 103 46 96C70 65 122 65 146 96C155 89 158 81 158 70" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M46 96C70 127 122 127 146 96" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="96" cy="96" r="13" fill="#F4C88B"/>
+</svg>
