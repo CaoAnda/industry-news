@@ -100,18 +100,24 @@ function render(){
  document.querySelectorAll('.stream-tabs [data-stream]').forEach(el=>{el.classList.toggle('active',el.dataset.stream===state.stream);el.setAttribute('aria-pressed',el.dataset.stream===state.stream)});
  document.querySelectorAll('[data-learning-cat]').forEach(el=>{el.classList.toggle('active',el.dataset.learningCat===state.learningCat);el.setAttribute('aria-pressed',el.dataset.learningCat===state.learningCat)});
 }
+function scrollToFeedStart(){
+ const controls=document.querySelector('.controls');
+ // A sticky bar's viewport position is not its position in the document.
+ const top=window.scrollY+feed.getBoundingClientRect().top-controls.getBoundingClientRect().height-(parseFloat(getComputedStyle(controls).top)||0);
+ window.scrollTo({top:Math.max(0,top),behavior:'instant'});
+}
 function reset(){state.stream='all';state.learningCat='all';state.filter='all';state.topic='';state.query='';state.issue='all';document.querySelector('#issue-select').value='all';document.querySelector('#search').value='';render()}
 document.addEventListener('click',event=>{
  const el=event.target.closest('button');if(!el)return;
  if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
  else if(el.hasAttribute('data-home')){state.stream='all';state.learningCat='all';state.issue=issueKey(issues[0]);document.querySelector('#issue-select').value=state.issue;state.filter='all';state.topic='';state.query='';document.querySelector('#search').value='';render();window.scrollTo({top:0});}
- else if(el.dataset.stream){state.stream=el.dataset.stream;state.filter='all';state.topic='';state.learningCat='all';render();document.querySelector('.controls').scrollIntoView({block:'start'});}
- else if(el.dataset.learningCat){state.learningCat=el.dataset.learningCat;render();}
+ else if(el.dataset.stream){state.stream=el.dataset.stream;state.filter='all';state.topic='';state.learningCat='all';render();scrollToFeedStart();}
+ else if(el.dataset.learningCat){state.learningCat=el.dataset.learningCat;render();scrollToFeedStart();}
  else if(el.dataset.mode){labMode=el.dataset.mode;updateLab();}
  else if(el.dataset.q){labQ=Number(el.dataset.q);updateLab();}
- else if(el.dataset.filter){state.filter=el.dataset.filter;render();}
- else if(el.dataset.sort){state.sort=el.dataset.sort;render();}
- else if(el.dataset.topic){state.stream='news';state.topic=el.dataset.topic;state.filter='all';render();document.querySelector('.controls').scrollIntoView({block:'start'});}
+ else if(el.dataset.filter){state.filter=el.dataset.filter;render();scrollToFeedStart();}
+ else if(el.dataset.sort){state.sort=el.dataset.sort;render();scrollToFeedStart();}
+ else if(el.dataset.topic){state.stream='news';state.topic=el.dataset.topic;state.filter='all';render();scrollToFeedStart();}
  else if(el.hasAttribute('data-clear-topic')){state.topic='';render()}
  else if(el.hasAttribute('data-reset')){reset();window.scrollTo({top:0})}
  else if(el.dataset.action){const {id,action}=el.dataset;if(action==='comments'){state.comments.has(id)?state.comments.delete(id):state.comments.add(id)}else if(action==='expand'){state.expanded.has(id)?state.expanded.delete(id):state.expanded.add(id)}else {return}render();document.querySelector(`[data-action="${action}"][data-id="${id}"]`)?.focus({preventScroll:true});}
@@ -141,7 +147,7 @@ document.querySelector('#learning-count').textContent=cases.length;
 document.querySelector('#updated-label').textContent='更新于 '+window.FEED_META.updatedAt.slice(5,16).replace('T',' ')+'（北京）';
 document.querySelector('#issue-select').innerHTML='<option value="all">全部期数</option>'+issues.map(i=>`<option value="${esc(issueKey(i))}">${esc(i.label||i.date)} · ${i.count} 条</option>`).join('');
 document.querySelector('#issue-select').value=state.issue;
-document.querySelector('#issue-select').onchange=e=>{state.issue=e.target.value;render()};
+document.querySelector('#issue-select').onchange=e=>{state.issue=e.target.value;render();scrollToFeedStart()};
 document.querySelector('#coverage-copy').innerHTML=issues.map(i=>`<h3>${esc(i.label||i.date)}</h3><p>${esc(i.coverage)}</p>`).join('');
 document.querySelector('#trends').innerHTML=data.filter(p=>p.issueDate===issueKey(latest)&&((p.comments||[]).length||(p.images||[]).length)).slice(0,3).map((p,i)=>`<button class="trend" data-jump="${esc(p.id)}"><em>0${i+1}</em><div>${esc(p.title)}<small>${esc(p.source)}${p.comments.length?' · 有评论补充':' · 有原文配图'}</small></div></button>`).join('');
 const imageDialog=document.querySelector('#image-dialog');

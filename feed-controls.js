@@ -1,6 +1,9 @@
 /* Shared reading controls for the approved layout and its previews. */
 (() => {
   const controls = document.querySelector('.controls');
+  new ResizeObserver(() => {
+    document.documentElement.style.setProperty('--feed-controls-height', controls.getBoundingClientRect().height + 'px');
+  }).observe(controls);
   const filter = document.createElement('button');
   filter.className = 'preview-filter';
   filter.textContent = '筛选与搜索';
