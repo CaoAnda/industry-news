@@ -27,3 +27,42 @@ html[data-look=night]{color-scheme:dark;--bg:#101820;--paper:#18232d;--ink:#ecf1
  [data-look=night] .layout{padding:0 12px}[data-look=night] .feed-header{padding:25px 8px 18px}[data-look=night] h1{font-size:27px}[data-look=night] .editor-note{padding:20px;border-radius:14px;margin-bottom:10px}[data-look=night] .editor-note h2{font-size:22px}[data-look=night] .editor-note p{font-size:13px}[data-look=night] .note-label>span:last-child{display:none}[data-look=night] .controls{padding:0 7px}[data-look=night] .controls .stream-tabs{gap:17px}[data-look=night] .post{padding:22px 18px;margin-bottom:12px;border-radius:14px}[data-look=night] .post h2{font-size:21px}[data-look=night] .post-story p{font-size:16px;line-height:1.9}[data-look=night] .evidence{font-size:9px;padding:4px 6px}[data-look=night] .post-head{gap:8px}[data-look=night] .avatar{width:31px;height:31px}
 }
 @media(max-width:360px){.controls .stream-tabs{gap:12px!important}.stream-tabs button.preview-filter{font-size:9px;padding:5px 7px}[data-look=paper] .layout{padding:0 17px}}
+
+/* A, richer palette: blue navigation, apricot briefing, lilac research, sage discussion. */
+html[data-look=feed]{--bg:#f4f6fa;--accent:#3069a7;--tint:#edf4fc}
+[data-look=feed] .feed-header .eyebrow{color:#657d9c}
+[data-look=feed] h1{color:#233e5b}
+[data-look=feed] .editor-note{background:#fff4e5;border:1px solid #f0ddc2;border-radius:12px;padding:16px 18px 15px}
+[data-look=feed] .note-label{color:#9b5734}
+[data-look=feed] .editor-note h2{color:#65452f}
+[data-look=feed] .editor-note p{color:#756151}
+[data-look=feed] .note-meta{color:#826a55}
+[data-look=feed] .stream-tabs button[data-stream=all].active{color:#275e9b;border-color:#4d85c0}
+[data-look=feed] .stream-tabs button[data-stream=news].active{color:#287561;border-color:#43967f}
+[data-look=feed] .stream-tabs button[data-stream=learning].active{color:#7353a4;border-color:#9c7cc7}
+[data-look=feed] .stream-tabs button.preview-filter{color:#38658e;background:#f0f6fc;border-color:#dce8f4}
+[data-look=feed] .post .evidence{padding:4px 7px;border-radius:5px;background:#eef6f0;color:#426e50}
+[data-look=feed] .post .evidence:has(.opinion){background:#fff0e7;color:#9a582e}
+[data-look=feed] .post .evidence:has(.interview){background:#edf2fc;color:#4c6594}
+[data-look=feed] .post .evidence:has(.lead){background:#fff4db;color:#836626}
+[data-look=feed] .post:has(.avatar.reddit) .source-name{color:#9b582f}
+[data-look=feed] .post:has(.avatar.anthropic) .source-name{color:#8a5e3f}
+[data-look=feed] .post:has(.avatar.maimai) .source-name{color:#287a86}
+[data-look=feed] .post:has(.avatar.xhs) .source-name{color:#a24b59}
+[data-look=feed] .story-topic{background:#edf4fc;color:#3b6591;border-radius:5px;padding:5px 9px;align-self:center}
+[data-look=feed] .learning-post{background:#faf8ff;box-shadow:inset 3px 0 #b2a0d4}
+[data-look=feed] .learning-post h2{color:#4c3b6a}
+[data-look=feed] .learning-post .source-name,[data-look=feed] .learning-post .story-more,[data-look=feed] .learning-post .story-sources a{color:#75529d}
+[data-look=feed] .learning-post .evidence{background:#eee7f8;color:#735297}
+[data-look=feed] .learning-avatar{background:#eae2f7;color:#7856a3}
+[data-look=feed] .learning-post .case-example{background:#f0ebf8}
+[data-look=feed] .comments-section{background:#eff7f2;border-left:3px solid #83b69b;border-radius:0 9px 9px 0}
+[data-look=feed] .comments-toggle,[data-look=feed] .comment-author{color:#38674f}
+[data-look=feed] .comments-toggle b{background:#dceee2;color:#436d52}
+[data-look=feed] .comment-teaser,[data-look=feed] .comment p{color:#496657}
+[data-look=feed] .comment{border-color:#d5e7dc}
+[data-look=feed] .comment-foot a{color:#347557}
+[data-look=feed] .brand-icon{background:#4779ad}
+[data-look=feed] .nav-item.active{background:#e8f0fa;color:#315a88}
+[data-look=feed] .end-mark{color:#be8f6a}
+@media(max-width:740px){[data-look=feed] .editor-note{padding:14px 16px;margin-bottom:14px}}
