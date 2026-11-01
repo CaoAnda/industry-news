@@ -11,11 +11,12 @@
     "icon.svg",
     "index.html",
     "manifest.webmanifest",
+    "ratings-sync.js",
     "style.css"
   ],
   "sha256": {
     ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "app.js": "b892f4ec265114bbc1c5a241ae49fee2307a981ab643ed7f23b8dd86cd709456",
+    "app.js": "18c8622f97c06eab891ce9a05a860ae603d86f724b80f6475e62127ae8a1ef4f",
     "assets/2026-10-31/manus-team.webp": "555809c7e478f1452de193557b3e53d840e1dba6804d42452b258d0fa94ba160",
     "assets/2026-10-31/meta-workflow.jpg": "de4f9d4ae08215e5761424b43e239b659c006d2b164815e7dbf2c3e6e6d1ee70",
     "assets/2026-10-31/mistral-large4.webp": "fac142c7191f872c9a3b92f04ca11bb081c283861bd6ccbb22ac3ae27a6bd56f",
@@ -23,8 +24,9 @@
     "assets/2026-11-01/anthropic-em-harness.png": "715b1de058e03f5045cd18230548765021c90f3540cebc01eb6844783262e5d8",
     "data.js": "b618072151856bccc405cb74def5116e4b8dd1c2a09d18fcd3400e79550fde48",
     "icon.svg": "985cc8c70634ffee1cf8de29d7dd7ee176fa0716af6ee7994d9f8e69a77dfdcf",
-    "index.html": "101ad4f4142d7bf887a231d3620f875c9ad73670c4dd672ffcb14f13e6e97ff1",
+    "index.html": "3fa3806f0c670d2934972222afca99e628821774787dc9d1cee0890aa85b9531",
     "manifest.webmanifest": "aca72b60ed7a877c8c15a015957d5ac4f0083e48cc0056911d429b04e4919109",
+    "ratings-sync.js": "c1635fb70908caae94e96d0210081772fa05e3c95e0a64cb9281b3ebd689ba43",
     "style.css": "14d9f305b84db8a4617b3c72f4f518d25e9f3213b4177e14b0b88708ee22ea60"
   }
 }

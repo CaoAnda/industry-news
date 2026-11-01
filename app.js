@@ -21,43 +21,50 @@ const issueLabel=id=>{const i=issues.find(x=>issueKey(x)===id);return i?(i.label
 const state = {stream:'all',learningCat:'all',filter:'all',topic:'',sort:'curated',query:'',expanded:new Set(),comments:new Set(),issue:issueKey(issues[0])};
 const feed = document.querySelector('#feed');
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const ratingStorageKey='daily-feed-ratings-v1';
-let ratings={},ratingStorageOK=true;
-function readRatings(){
- try{const raw=JSON.parse(localStorage.getItem(ratingStorageKey)||'{}');
-  if(!raw||typeof raw!=='object'||Array.isArray(raw))return {};
-  return Object.fromEntries(Object.entries(raw).filter(([key,r])=>/^(news|case):[\w-]+$/.test(key)&&r&&['up','down'].includes(r.value)&&typeof r.title==='string'&&typeof r.updatedAt==='string'));
- }catch{ratingStorageOK=false;return {}}
+const feedbackEndpoint=location.hostname==='127.0.0.1'||location.hostname==='localhost'?'http://127.0.0.1:8767/api/feedback':'https://industry-feed-feedback.caoandada.chatgpt.site/api/feedback';
+let feedbackReady=false;
+const feedback=new FeedbackStore({endpoint:feedbackEndpoint,onChange:()=>{if(feedbackReady)refreshRatings()}});
+function ratingInfo(key){const type=key.startsWith('case:')?'case':'news',id=key.slice(key.indexOf(':')+1),item=(type==='case'?cases:data).find(x=>x.id===id);return {type,title:item?.title||id,topic:item?.topic||'',url:item?(type==='case'?item.sources[0][1]:item.links[0].url):''}}
+function ratingItems(){return Object.entries(feedback.records).filter(([,r])=>r.value).sort((a,b)=>b[1].updatedAt-a[1].updatedAt).map(([key,r])=>[key,{...r,...ratingInfo(key)}])}
+function ratingHTML(key){const value=feedback.records[key]?.value;
+ return `<div class="rating-row" data-rating-row="${esc(key)}" role="group" aria-label="评价这条内容"><button class="rating-button ${value==='up'?'positive selected':''}" data-rate="up" data-rating-key="${esc(key)}" aria-pressed="${value==='up'}">${icon('thumb')}有收获</button><button class="rating-button ${value==='down'?'negative selected':''}" data-rate="down" data-rating-key="${esc(key)}" aria-pressed="${value==='down'}">${icon('thumb')}不太喜欢</button><span class="rating-saved">${esc(feedback.status(key))}</span></div>`;
 }
-ratings=readRatings();
-function ratingHTML(key){const value=ratings[key]?.value;
- return `<div class="rating-row" data-rating-row="${esc(key)}" role="group" aria-label="评价这条内容"><button class="rating-button ${value==='up'?'positive selected':''}" data-rate="up" data-rating-key="${esc(key)}" aria-pressed="${value==='up'}">${icon('thumb')}有收获</button><button class="rating-button ${value==='down'?'negative selected':''}" data-rate="down" data-rating-key="${esc(key)}" aria-pressed="${value==='down'}">${icon('thumb')}不太喜欢</button><span class="rating-saved">${value?(ratingStorageOK?'已记录':'仅本次有效'):''}</span></div>`;
-}
-function ratingItems(){return Object.entries(ratings).sort((a,b)=>b[1].updatedAt.localeCompare(a[1].updatedAt))}
-function updateRatingCount(){document.querySelector('#rating-count').textContent=Object.keys(ratings).length||''}
+function updateRatingCount(){document.querySelector('#rating-count').textContent=ratingItems().length||''}
 function setRating(key,value){
- const type=key.startsWith('case:')?'case':'news',id=key.slice(key.indexOf(':')+1);
- const item=(type==='case'?cases:data).find(x=>x.id===id);if(!item)return;
- if(ratings[key]?.value===value)delete ratings[key];
- else ratings[key]={value,title:item.title,type,topic:item.topic,url:type==='case'?item.sources[0][1]:item.links[0].url,updatedAt:new Date().toISOString()};
- try{localStorage.setItem(ratingStorageKey,JSON.stringify(ratings));ratingStorageOK=true}catch{ratingStorageOK=false}
- document.querySelectorAll('[data-rating-row]').forEach(row=>{if(row.dataset.ratingRow===key){const holder=document.createElement('div');holder.innerHTML=ratingHTML(key);row.replaceWith(holder.firstElementChild)}});
- updateRatingCount();
- document.querySelector('#rating-status').textContent=ratings[key]?(ratingStorageOK?'评价已记录':'浏览器未能保存，评价仅本次有效'):'已取消评价';
+ feedback.set(key,value);
+ document.querySelector('#rating-status').textContent=feedback.records[key]?.value?'评价已记录':'已取消评价';
  document.querySelector(`[data-rating-key="${key}"][data-rate="${value}"]`)?.focus({preventScroll:true});
 }
-function showRatings(){
- const list=ratingItems();
- document.querySelector('#rating-list').innerHTML=list.length?list.map(([key,r])=>`<li><span class="rating-verdict ${r.value==='up'?'positive':'negative'}">${r.value==='up'?'有收获':'不太喜欢'}</span><p>${esc(r.title)}</p><small>${r.type==='case'?'研究案例':'业界消息'} · ${esc(r.topic||'')}</small></li>`).join(''):'<p class="rating-empty">还没有评价。读到有收获或不合口味的内容，点一下就好。</p>';
- document.querySelector('#copy-ratings').disabled=!list.length;
- document.querySelector('#rating-storage-note').textContent=ratingStorageOK?'评价保存在当前浏览器，不会自动同步或调整选题。可以复制后发给我，用来调整后续内容。':'浏览器未能保存，当前评价仅本次有效；可以先复制留存。';
- document.querySelector('#rating-export').hidden=true;
- document.querySelector('#rating-copy-status').textContent='';
- document.querySelector('#rating-dialog').showModal();
+function ratingSyncMessage(){
+ if(!feedback.key)return '在手机浏览器打开一次专属连接链接，就能自动同步。已有评价会一起补传。';
+ if(feedback.state==='invalid')return '连接已失效，请重新打开专属连接链接。评价仍保存在本机。';
+ if(feedback.state==='offline')return '暂时没连上，评价已留在本机，恢复连接后会自动补传。';
+ if(feedback.state!=='synced')return '正在同步评价…';
+ return feedback.storageOK?'评价已同步，之后每天选题会参考这些反馈。':'评价已同步；浏览器没有保存连接，下次打开时需重新连接。';
 }
+function updateRatingDialog(){
+ const list=ratingItems();
+ document.querySelector('#rating-list').innerHTML=list.length?list.map(([key,r])=>`<li><span class="rating-verdict ${r.value==='up'?'positive':'negative'}">${r.value==='up'?'有收获':'不太喜欢'}</span><p>${esc(r.title)}</p><small>${r.type==='case'?'研究案例':'业界消息'} · ${esc(r.topic||'')} · ${esc(feedback.status(key))}</small></li>`).join(''):'<p class="rating-empty">还没有评价。读到有收获或不合口味的内容，点一下就好。</p>';
+ document.querySelector('#copy-ratings').disabled=!list.length;
+ document.querySelector('#rating-storage-note').textContent=ratingSyncMessage();
+ document.querySelector('#retry-ratings').hidden=!feedback.key||feedback.state==='synced';
+}
+function refreshRatings(){
+ document.querySelectorAll('[data-rating-row]').forEach(row=>{const key=row.dataset.ratingRow,value=feedback.records[key]?.value;row.querySelectorAll('[data-rate]').forEach(button=>{const selected=button.dataset.rate===value;button.classList.toggle('selected',selected);button.classList.toggle('positive',selected&&value==='up');button.classList.toggle('negative',selected&&value==='down');button.setAttribute('aria-pressed',String(selected))});row.querySelector('.rating-saved').textContent=feedback.status(key)});
+ updateRatingCount();if(document.querySelector('#rating-dialog').open)updateRatingDialog();
+}
+function showRatings(){updateRatingDialog();document.querySelector('#rating-export').hidden=true;document.querySelector('#rating-copy-status').textContent='';document.querySelector('#rating-dialog').showModal()}
 function ratingExportText(){return '我的信息流评价（未评价不代表不喜欢）\n\n'+ratingItems().map(([key,r])=>`${r.value==='up'?'好评 · 有收获':'差评 · 不太喜欢'}｜${r.title}\n${r.type==='case'?'研究案例':'业界消息'} · ${r.topic||''}\n条目：${key}\n${r.url||''}`).join('\n\n')}
-async function copyRatings(){const text=ratingExportText();try{await navigator.clipboard.writeText(text);document.querySelector('#rating-copy-status').textContent='已复制，可以粘贴到聊天里。'}catch{const box=document.querySelector('#rating-export');box.value=text;box.hidden=false;box.focus();box.select();document.querySelector('#rating-copy-status').textContent='请复制下方已选中的评价。'}}
-window.addEventListener('storage',event=>{if(event.key!==ratingStorageKey&&event.key!==null)return;ratings=readRatings();document.querySelectorAll('[data-rating-row]').forEach(row=>{const holder=document.createElement('div');holder.innerHTML=ratingHTML(row.dataset.ratingRow);row.replaceWith(holder.firstElementChild)});updateRatingCount();if(document.querySelector('#rating-dialog').open)showRatings()});
+async function copyRatings(){const text=ratingExportText();try{await navigator.clipboard.writeText(text);document.querySelector('#rating-copy-status').textContent='已复制。已同步的评价无需再发给我。'}catch{const box=document.querySelector('#rating-export');box.value=text;box.hidden=false;box.focus();box.select();document.querySelector('#rating-copy-status').textContent='请复制下方已选中的评价。'}}
+window.addEventListener('storage',event=>{if(event.key!=='daily-feed-ratings-v2'&&event.key!==null)return;feedback.restore();refreshRatings();void feedback.sync()});
+window.addEventListener('online',()=>void feedback.sync());
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void feedback.sync()});
+async function startFeedback(){
+ feedbackReady=true;
+ const params=new URLSearchParams(location.hash.slice(1)),key=params.get('feedback');
+ if(key){history.replaceState(null,'',location.pathname+location.search);try{await feedback.connect(key)}catch{}showRatings()}
+ else void feedback.sync();
+}
 function emphasize(text,phrases=[]){
  const value=String(text||'');
  const spans=phrases.map(phrase=>({phrase,start:value.indexOf(phrase)})).filter(x=>x.start>=0&&x.phrase.length).sort((a,b)=>a.start-b.start);
@@ -167,6 +174,7 @@ document.querySelector('#back-top').onclick=()=>window.scrollTo({top:0,behavior:
 document.querySelector('#my-ratings').onclick=showRatings;
 document.querySelector('#close-ratings').onclick=()=>document.querySelector('#rating-dialog').close();
 document.querySelector('#copy-ratings').onclick=copyRatings;
+document.querySelector('#retry-ratings').onclick=()=>void feedback.sync();
 updateRatingCount();
 const latest=issues[0];
 const day=new Date(latest.date+'T12:00:00+08:00');
@@ -213,3 +221,5 @@ let explain=labMode==='draft'?`直接采用草稿，最终比例就是 ${percent
 $('#lab-result').innerHTML=`<div class="probability-result ${r.error<1e-10?'matched':'mismatched'}"><span>最终输出</span><strong>A ${percent(r.output[0])} <i>／</i> B ${percent(r.output[1])}</strong><span>${r.error<1e-10?'✓ 与目标分布一致':`与目标相差 ${(r.error*100).toFixed(1).replace(/\.0$/,'')} 个百分点`}</span></div><div class="table-scroll"><table><caption>逐项核对概率贡献</caption><thead><tr><th scope="col">计算项</th><th scope="col">A</th><th scope="col">B</th></tr></thead><tbody>${rows.map(row=>`<tr><th scope="row">${row[0]}</th><td>${percent(row[1][0])}</td><td>${percent(row[1][1])}</td></tr>`).join('')}</tbody></table></div><p class="lab-explanation">${explain}</p>`}
 
 render();
+
+void startFeedback();
