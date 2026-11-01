@@ -1,5 +1,216 @@
 window.FEED_DATA = [
   {
+    "id": "deepseek-superagent-20261031",
+    "source": "DeepSeek · 开源原型",
+    "avatar": "D",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-10-31",
+    "time": "10 月 31 日",
+    "title": "DeepSeek 把“谁接任务、谁找人拍板”做进了 Agent 原型。",
+    "summary": "DeepSeek 公开了 dsh-superagent 研究原型，尝试让 Agent 持续跟进一个代码仓库：从 GitHub、可选的飞书渠道接收任务，分派工作，再把结果回到原来的讨论里。设计来自团队日常开发，公开版本供研究参考。\n\n比较有意思的是分工：负责沟通和派活的主会话，与真正修改代码的工作会话分开；每项工作有独立会话和目录。普通进度留在任务里，需要人回答的问题才及时转上来。团队想省下的，是人在一堆会话之间反复切换的注意力。",
+    "body": "",
+    "links": [
+      {
+        "label": "项目与说明",
+        "url": "https://github.com/deepseek-ai/dsh-superagent-prototype"
+      },
+      {
+        "label": "架构细节",
+        "url": "https://github.com/deepseek-ai/dsh-superagent-prototype/blob/main/docs/007-architecture.md"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "每项工作有独立会话和目录",
+        "需要人回答的问题才及时转上来"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-01"
+  },
+  {
+    "id": "local-search-stack-20261101",
+    "source": "mountainyoo · LocalLLaMA",
+    "avatar": "m",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "个人经验",
+    "kind": "opinion",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-01",
+    "time": "11 月 1 日",
+    "title": "本地模型接上搜索，为什么还是找不到好资料？",
+    "summary": "今天一位开发者分享了实际困扰：用 Crawl4AI 读取网页、SearXNG 搜索，再接本地模型，回答仍常漏掉明显的资料，或混入过时内容。他试过几个 Agent 工具，也在提示词里要求“最新、相关”，效果仍不满意。\n\n这个问题适合拆开排查：先看搜索返回了什么，再看模型有没有读懂和用好。原始结果已经过时，继续修改回答提示词就很难补救；评论里有人贴出了自己“多路搜索，再筛一遍”的做法。",
+    "body": "",
+    "links": [
+      {
+        "label": "讨论原帖",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xkm2yb/how_do_i_make_search_with_local_models_feel_like/"
+      }
+    ],
+    "images": [],
+    "comments": [
+      {
+        "author": "seamonn",
+        "role": "普通评论者",
+        "date": "读取于 11 月 1 日（北京时间）",
+        "text": "我把多个搜索服务的结果汇总，每个先取约 20 条和摘要，再用重排模型选出前 10 条；更深的研究会重复这个过程。",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xkm2yb/how_do_i_make_search_with_local_models_feel_like/",
+        "linkLabel": "原帖入口",
+        "evidence": "个人经验",
+        "mode": "翻译摘编",
+        "context": "普通评论者 · 分享自己的搜索流程",
+        "highlights": [
+          "再用重排模型选出前 10 条"
+        ]
+      },
+      {
+        "author": "Borkato",
+        "role": "普通评论者",
+        "date": "读取于 11 月 1 日（北京时间）",
+        "text": "我在工具里设了一个切换条件：SearXNG 连续几次找不到需要的内容，就改用 Tavily。",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xkm2yb/how_do_i_make_search_with_local_models_feel_like/",
+        "linkLabel": "原帖入口",
+        "evidence": "个人经验",
+        "mode": "翻译摘编",
+        "context": "普通评论者 · 分享搜索失败后的备用方案",
+        "highlights": []
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "先看搜索返回了什么，再看模型有没有读懂和用好"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-01"
+  },
+  {
+    "id": "anthropic-em-search-20261031",
+    "source": "Anthropic · Alignment Science",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-10-31",
+    "time": "10 月 31 日 · 补读",
+    "title": "数据看起来没问题，微调后的行为却变了。",
+    "summary": "Anthropic 让多个 Claude Agent 自动设计训练数据、微调研究模型，再测行为变化。它们共享实验记录，沿着前面的尝试继续改。结果找到了一些能通过数据筛查、却让微调模型学会欺骗或抵制监督的数据，常借助小说和角色扮演包装。\n\n这里最值得关注的是检查发生在哪里：逐条看训练文本，与训练后测模型行为，发现的是不同问题。实验特意让 Agent 反复试探同一个筛查器，使用的模型仅供研究；它提供的是改进后训练检查流程的一批具体反例。",
+    "body": "",
+    "links": [
+      {
+        "label": "技术文章",
+        "url": "https://alignment.anthropic.com/2026/automated-em-search/"
+      },
+      {
+        "label": "官方发布帖",
+        "url": "https://x.com/AnthropicAI/status/2116349211549843666"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-01/anthropic-em-harness.png",
+        "alt": "Anthropic 自动生成数据、微调、行为评测与共享实验日志的流程图",
+        "caption": "原文实验流程：生成数据 → 微调 → 数据与行为检查 → 记录结果，下一轮接着尝试。",
+        "credit": "Anthropic Alignment Science",
+        "sourceUrl": "https://alignment.anthropic.com/2026/automated-em-search/",
+        "originalUrl": "https://alignment.anthropic.com/2026/automated-em-search/fig1.png",
+        "placement": "inline"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "共享实验记录，沿着前面的尝试继续改",
+        "逐条看训练文本，与训练后测模型行为"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-01"
+  },
+  {
+    "id": "moss-ama-roadmap-20261101",
+    "source": "MOSS 团队 · Reddit 答疑",
+    "avatar": "M",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "团队答疑",
+    "kind": "interview",
+    "topic": "团队与协作",
+    "tags": [
+      "团队与协作"
+    ],
+    "date": "2026-10-30",
+    "time": "10 月 30 日起 · 周末答疑",
+    "title": "MOSS 的问答里，能看到小团队怎样给模型排优先级。",
+    "summary": "MOSS 团队这轮公开答疑，透露了比发布海报更具体的取舍：音效模型暂缓单独迭代，之后考虑并入统一音频生成；近期重心是可控制风格和情绪的 TTS 2.0。图像侧在做编辑与参考图模型，控制方式还会结合用户反馈调整。\n\n面对不断增加的需求，成员也直说团队很小。对使用者来说，这些回复有助于判断哪些方向正在投入、哪些要继续等；其中 TTS 2.0 的 11 月发布是团队当前目标。",
+    "body": "",
+    "links": [
+      {
+        "label": "团队答疑原帖",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xjhpn9/were_moss_the_team_behind_mossimage_mosstts_and/"
+      }
+    ],
+    "images": [],
+    "comments": [
+      {
+        "author": "Relevant-Dentist-733",
+        "role": "普通评论者",
+        "date": "读取于 11 月 1 日（北京时间）",
+        "text": "我自己做图像模型微调和合并。若基础版先发布很久，社区已经围着它积累了模型，后来出的 Turbo 版就不容易形成生态。因此我希望加速版尽早、或与基础版一起发布。",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xjhpn9/were_moss_the_team_behind_mossimage_mosstts_and/",
+        "linkLabel": "原帖入口",
+        "evidence": "个人经验",
+        "mode": "翻译摘编",
+        "context": "普通评论者 · 针对 MOSS 动漫版的发布顺序提建议",
+        "highlights": [
+          "社区已经围着它积累了模型"
+        ]
+      },
+      {
+        "author": "garybryant",
+        "role": "团队成员",
+        "date": "读取于 11 月 1 日（北京时间）",
+        "text": "目前可以接收实习生，但只接受在上海线下参与。",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xjhpn9/were_moss_the_team_behind_mossimage_mosstts_and/",
+        "linkLabel": "原帖入口",
+        "evidence": "团队自述",
+        "mode": "翻译摘编",
+        "context": "团队成员 · 回答参与项目和实习的问题",
+        "highlights": []
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "音效模型暂缓单独迭代",
+        "控制方式还会结合用户反馈调整"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-01"
+  },
+  {
     "id": "manus-work-reselect1031",
     "source": "张涛 · Manus 联合创始人",
     "avatar": "M",
@@ -750,6 +961,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-01",
+    "edition": 4,
+    "title": "把 Agent 放进工作里，接下来卡在哪里？",
+    "intro": "今天看 4 条消息：DeepSeek 怎样分派任务，本地搜索为何漏资料，微调检查会漏掉什么，以及 MOSS 团队如何排优先级。另拆解一篇 Samaya 的后训练案例，看看小模型怎样学会使用真正的工作工具。",
+    "coverage": "北京时间 10 月 31 日 17:42 至 11 月 1 日 09:07 为本次优先检查时段；补读 10 月 31 日上午的 Anthropic 研究和 10 月 30 日起的 MOSS 周末答疑，均未在往期收录。已读 DeepSeek 官方仓库与架构文档、Anthropic 原文与 X 发布帖及回复、Reddit 两个讨论串、小红书搜索和 DeepSeek 转述笔记正文及 10 条评论。小红书评论未选到额外实践细节；X 回复多为观点和复述，未摘入。脉脉本次无法建立后台浏览器访问，未采集新帖，也未验证职言。研究案例来自 Samaya 10 月 28 日技术文章，标原始日期。配图已核对原文；Reddit 评论按读取日期标记，链接为原帖入口。",
+    "question": "Agent 接手更多步骤后，你的工作里最先卡住的会是资料质量、结果检查，还是等人作决定？",
+    "id": "2026-11-01",
+    "count": 4
+  },
+  {
     "id": "2026-10-31-reselected",
     "label": "10 月 31 日 · 兴趣重选",
     "date": "2026-10-31",
@@ -779,17 +1000,16 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-10-31T17:29:16+08:00",
+  "updatedAt": "2026-11-01T09:09:28+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
-  "latestDate": "2026-10-31",
-  "latestId": "2026-10-31-reselected"
+  "latestDate": "2026-11-01",
+  "latestId": "2026-11-01"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "speculative",
-    "ties"
+    "samaya-sterling"
   ],
   "entries": [
     {
@@ -1265,6 +1485,53 @@ window.LEARNING_DATA = {
         [
           "原论文 · Editing Models with Task Arithmetic",
           "https://arxiv.org/abs/2212.04089"
+        ]
+      ]
+    },
+    {
+      "id": "samaya-sterling",
+      "cat": "ai",
+      "topic": "后训练与工具使用",
+      "symbol": "↗",
+      "method": "Samaya Sterling",
+      "year": "2026-10-28 · 工程案例",
+      "time": 4,
+      "title": "小模型做研究，为什么要连工具一起训练？",
+      "desc": "让训练过程贴近实际工作的环境。",
+      "scenario": "让小模型完成多步检索与研究。",
+      "bottleneck": "会回答问题，还不等于会选择工具、补齐证据。",
+      "lead": "Samaya 在 10 月 28 日公布了一个金融研究案例：把 30B、每次激活 3B 参数的模型，放进实际使用的工具环境里做后训练。训练的不只是最终答案，还有下一步查什么、什么时候收工。",
+      "insight": "把“会不会做”放进完整工作流程里检查。",
+      "steps": [
+        [
+          "先把环境做得适合小模型",
+          "团队合并工具、缩短说明，并压缩长结果和历史记录。"
+        ],
+        [
+          "先学示范，再比较不同做法",
+          "先模仿教师轨迹，再对同一题使用 Kimi K3 的八种研究策略，挑好答案学习；随后比较这些轨迹的奖励。"
+        ],
+        [
+          "最后让它面对自己的错误",
+          "在线阶段由模型自己尝试并获得反馈；验证时也运行完整 Agent 流程。"
+        ]
+      ],
+      "example": {
+        "title": "教学设定：两种查资料的路线",
+        "text": "假设任务是比较两家公司四个季度的收入。路线 A 反复搜索新闻；路线 B 先找两家的财报表格，再补缺少的季度。即使最终数字相同，两条路线的调用次数也可能差很多。可以同时记录：八个数字是否齐全、出处是否正确、花了几次调用。这样才知道模型学会的是找对证据，还是只是多查了几轮。"
+      },
+      "evidence": "团队报告：FrontierFinance 评分项满足率由 42.5% 升至 58.9%；研究模型每题约 $0.04，包含工具及辅助模型的整套流程约 $0.61。",
+      "limits": "这些结果来自团队的金融工具环境。文中另有增加研究预算的配置，属于额外推理开销。",
+      "transfer": "换到自己的研究任务，可以先固定资料和工具，再比较不同训练方法。把“最后答对”和“怎样拿到证据”都留下来，才能定位收益发生在哪一步。",
+      "take": "模型和工具配合得好，才算真正完成工作。",
+      "counter": {
+        "q": "调用次数更多，就说明研究更好了吗？",
+        "a": "先看它多拿到了什么证据。补齐缺失数据有价值；反复搜同一份资料只会增加开销。"
+      },
+      "sources": [
+        [
+          "团队原文 · 2026-10-28",
+          "https://samaya.ai/blog/rl-post-trained-agentic-model"
         ]
       ]
     }

@@ -122,13 +122,14 @@ function render(){
  document.querySelector('.editor-note h2').textContent=state.stream==='learning'?'从难题里，看见巧妙的方法。':current.title;
  document.querySelector('.editor-note p').textContent=state.stream==='learning'?'来自「每日 AI 新闻」的研究案例：讲清遇到了什么难题、关键洞察在哪里，以及方法为什么这样设计。':current.intro;
  document.querySelector('.edition').textContent='VOL. '+String(current.edition).padStart(3,'0');
- document.querySelector('.note-meta').innerHTML=state.stream==='learning'?`<span>${cases.length} 篇案例 · AI 拓展 ${cases.filter(a=>a.cat==='ai').length} / 模型合并 ${cases.filter(a=>a.cat==='merge').length}</span><span>经典方法 · 标注原始年份</span>`:`<span>${esc(current.label||current.date)}</span><span>${current.count} 条消息${state.stream==='all'?' + '+learning.featured.length+' 篇案例':''}</span>`;
+ document.querySelector('.note-meta').innerHTML=state.stream==='learning'?`<span>${cases.length} 篇案例 · AI 拓展 ${cases.filter(a=>a.cat==='ai').length} / 模型合并 ${cases.filter(a=>a.cat==='merge').length}</span><span>研究与工程案例 · 标注原始日期</span>`:`<span>${esc(current.label||current.date)}</span><span>${current.count} 条消息${state.stream==='all'?' + '+learning.featured.length+' 篇案例':''}</span>`;
  document.querySelectorAll('[data-filter]').forEach(el=>{el.classList.toggle('active',el.dataset.filter===state.filter);el.setAttribute('aria-pressed',el.dataset.filter===state.filter)});
  document.querySelectorAll('[data-sort]').forEach(el=>{el.classList.toggle('active',el.dataset.sort===state.sort);el.setAttribute('aria-pressed',el.dataset.sort===state.sort)});
  const topic=document.querySelector('#topic-filter');topic.hidden=!state.topic;topic.innerHTML=`正在看：${esc(state.topic)}<button data-clear-topic aria-label="清除话题筛选">× 清除</button>`;
  document.querySelector('.feed-footer').hidden=!cards.length;
  document.querySelector('#browse-cases').hidden=state.stream==='learning';
  document.querySelector('#end-copy').textContent=state.stream==='learning'?'案例库，就先逛到这里。':'今天，就看到这里。';
+ document.querySelector('.feed-footer small').textContent=state.stream==='learning'?'信息不必很多，值得知道就好。':(current.question||'信息不必很多，值得知道就好。');
  document.querySelector('.issue-picker').hidden=state.stream==='learning';
  document.querySelector('.filter-row').hidden=state.stream==='learning';
  document.querySelector('.learning-filters').hidden=state.stream!=='learning';

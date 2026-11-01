@@ -6,6 +6,7 @@
     "assets/2026-10-31/meta-workflow.jpg",
     "assets/2026-10-31/mistral-large4.webp",
     "assets/2026-10-31/suncatcher.webp",
+    "assets/2026-11-01/anthropic-em-harness.png",
     "data.js",
     "icon.svg",
     "index.html",
@@ -14,14 +15,15 @@
   ],
   "sha256": {
     ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "app.js": "1214cf365c6b67789ebd1c9cc6fd56b0519d6e4018e6230b046a9658ebafb55a",
+    "app.js": "b892f4ec265114bbc1c5a241ae49fee2307a981ab643ed7f23b8dd86cd709456",
     "assets/2026-10-31/manus-team.webp": "555809c7e478f1452de193557b3e53d840e1dba6804d42452b258d0fa94ba160",
     "assets/2026-10-31/meta-workflow.jpg": "de4f9d4ae08215e5761424b43e239b659c006d2b164815e7dbf2c3e6e6d1ee70",
     "assets/2026-10-31/mistral-large4.webp": "fac142c7191f872c9a3b92f04ca11bb081c283861bd6ccbb22ac3ae27a6bd56f",
     "assets/2026-10-31/suncatcher.webp": "b622d117475647548527440683b8a9fe895006452c9846cec5279568df57631a",
-    "data.js": "f058b2f14a03822ad3dd430e6faa2e4b7994d54f87ace46411f4bae28541b140",
+    "assets/2026-11-01/anthropic-em-harness.png": "715b1de058e03f5045cd18230548765021c90f3540cebc01eb6844783262e5d8",
+    "data.js": "b618072151856bccc405cb74def5116e4b8dd1c2a09d18fcd3400e79550fde48",
     "icon.svg": "985cc8c70634ffee1cf8de29d7dd7ee176fa0716af6ee7994d9f8e69a77dfdcf",
-    "index.html": "bdd7dd4b6876c29f057f3d157ac165ee6ca0c82b9a1290dde50122052e2d3313",
+    "index.html": "101ad4f4142d7bf887a231d3620f875c9ad73670c4dd672ffcb14f13e6e97ff1",
     "manifest.webmanifest": "aca72b60ed7a877c8c15a015957d5ac4f0083e48cc0056911d429b04e4919109",
     "style.css": "14d9f305b84db8a4617b3c72f4f518d25e9f3213b4177e14b0b88708ee22ea60"
   }
