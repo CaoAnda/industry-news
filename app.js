@@ -21,56 +21,6 @@ const issueLabel=id=>{const i=issues.find(x=>issueKey(x)===id);return i?(i.label
 const state = {stream:'all',learningCat:'all',filter:'all',topic:'',sort:'curated',query:'',expanded:new Set(),comments:new Set(),issue:issueKey(issues[0])};
 const feed = document.querySelector('#feed');
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const feedbackEndpoint=location.hostname==='127.0.0.1'||location.hostname==='localhost'?'http://127.0.0.1:8767/api/feedback':'https://industry-feed-feedback.caoandada.chatgpt.site/api/feedback';
-let feedbackReady=false;
-const feedback=new FeedbackStore({endpoint:feedbackEndpoint,onChange:()=>{if(feedbackReady)refreshRatings()}});
-function ratingInfo(key){const type=key.startsWith('case:')?'case':'news',id=key.slice(key.indexOf(':')+1),item=(type==='case'?cases:data).find(x=>x.id===id);return {type,title:item?.title||id,topic:item?.topic||'',url:item?(type==='case'?item.sources[0][1]:item.links[0].url):''}}
-function ratingItems(){return Object.entries(feedback.records).filter(([,r])=>r.value).sort((a,b)=>b[1].updatedAt-a[1].updatedAt).map(([key,r])=>[key,{...r,...ratingInfo(key)}])}
-function ratingHTML(key){const value=feedback.records[key]?.value;
- return `<div class="rating-row" data-rating-row="${esc(key)}" role="group" aria-label="评价这条内容"><button class="rating-button ${value==='up'?'positive selected':''}" data-rate="up" data-rating-key="${esc(key)}" aria-pressed="${value==='up'}">${icon('thumb')}有收获</button><button class="rating-button ${value==='down'?'negative selected':''}" data-rate="down" data-rating-key="${esc(key)}" aria-pressed="${value==='down'}">${icon('thumb')}不太喜欢</button><span class="rating-saved">${esc(feedback.status(key))}</span></div>`;
-}
-function updateRatingCount(){document.querySelector('#rating-count').textContent=ratingItems().length||''}
-function setRating(key,value){
- feedback.set(key,value);
- document.querySelector('#rating-status').textContent=feedback.records[key]?.value?'评价已记录':'已取消评价';
- document.querySelector(`[data-rating-key="${key}"][data-rate="${value}"]`)?.focus({preventScroll:true});
-}
-function ratingSyncMessage(){
- if(!feedback.key)return '在手机浏览器打开一次专属连接链接，就能自动同步。已有评价会一起补传。';
- if(feedback.state==='invalid')return '连接已失效，请重新打开专属连接链接。评价仍保存在本机。';
- if(feedback.state==='offline')return '暂时没连上，评价已留在本机，恢复连接后会自动补传。';
- if(feedback.state!=='synced')return '正在同步评价…';
- return feedback.storageOK?'评价已同步，之后每天选题会参考这些反馈。':'评价已同步；浏览器没有保存连接，下次打开时需重新连接。';
-}
-function updateRatingDialog(){
- const list=ratingItems();
- document.querySelector('#rating-list').innerHTML=list.length?list.map(([key,r])=>`<li><span class="rating-verdict ${r.value==='up'?'positive':'negative'}">${r.value==='up'?'有收获':'不太喜欢'}</span><p>${esc(r.title)}</p><small>${r.type==='case'?'研究案例':'业界消息'} · ${esc(r.topic||'')} · ${esc(feedback.status(key))}</small></li>`).join(''):'<p class="rating-empty">还没有评价。读到有收获或不合口味的内容，点一下就好。</p>';
- document.querySelector('#copy-ratings').disabled=!list.length;
- document.querySelector('#rating-storage-note').textContent=ratingSyncMessage();
- document.querySelector('#retry-ratings').hidden=!feedback.key||feedback.state==='synced';
- document.querySelector('#connect-ratings').hidden=!!feedback.key&&feedback.state!=='invalid';
-}
-function refreshRatings(){
- document.querySelectorAll('[data-rating-row]').forEach(row=>{const key=row.dataset.ratingRow,value=feedback.records[key]?.value;row.querySelectorAll('[data-rate]').forEach(button=>{const selected=button.dataset.rate===value;button.classList.toggle('selected',selected);button.classList.toggle('positive',selected&&value==='up');button.classList.toggle('negative',selected&&value==='down');button.setAttribute('aria-pressed',String(selected))});row.querySelector('.rating-saved').textContent=feedback.status(key)});
- updateRatingCount();if(document.querySelector('#rating-dialog').open)updateRatingDialog();
-}
-function showRatings(){updateRatingDialog();document.querySelector('#rating-export').hidden=true;document.querySelector('#rating-copy-status').textContent='';document.querySelector('#rating-dialog').showModal()}
-function ratingExportText(){return '我的信息流评价（未评价不代表不喜欢）\n\n'+ratingItems().map(([key,r])=>`${r.value==='up'?'好评 · 有收获':'差评 · 不太喜欢'}｜${r.title}\n${r.type==='case'?'研究案例':'业界消息'} · ${r.topic||''}\n条目：${key}\n${r.url||''}`).join('\n\n')}
-async function copyRatings(){const text=ratingExportText();try{await navigator.clipboard.writeText(text);document.querySelector('#rating-copy-status').textContent='已复制。已同步的评价无需再发给我。'}catch{const box=document.querySelector('#rating-export');box.value=text;box.hidden=false;box.focus();box.select();document.querySelector('#rating-copy-status').textContent='请复制下方已选中的评价。'}}
-window.addEventListener('storage',event=>{if(event.key!=='daily-feed-ratings-v2'&&event.key!==null)return;feedback.restore();refreshRatings();void feedback.sync()});
-window.addEventListener('online',()=>void feedback.sync());
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void feedback.sync()});
-async function startFeedback(){
- feedbackReady=true;
- const params=new URLSearchParams(location.hash.slice(1)),key=params.get('feedback');
- if(key){history.replaceState(null,'',location.pathname+location.search);try{await feedback.connect(key)}catch{}showRatings()}
- else void feedback.sync();
-}
-window.addEventListener('hashchange',()=>void startFeedback());
-async function submitFeedbackConnection(event){
- event.preventDefault();const input=document.querySelector('#rating-connection-input');let value=input.value.trim();
- try{if(value.startsWith('https://')){const url=new URL(value);if(url.origin!=='https://caoanda.github.io'||url.pathname!=='/industry-news/')throw new Error('wrong_link');value=new URLSearchParams(url.hash.slice(1)).get('feedback')||''}if(!/^[a-f0-9]{64}$/.test(value))throw new Error('invalid_key');input.value='';document.querySelector('#rating-connect-form').hidden=true;await feedback.connect(value)}catch{document.querySelector('#rating-copy-status').textContent='请粘贴完整的专属连接链接或连接码。'}
-}
 function emphasize(text,phrases=[]){
  const value=String(text||'');
  const spans=phrases.map(phrase=>({phrase,start:value.indexOf(phrase)})).filter(x=>x.start>=0&&x.phrase.length).sort((a,b)=>a.start-b.start);
@@ -98,7 +48,7 @@ function postHTML(p){
   ${hasDetails?`<button class="story-more" data-action="expand" data-id="${p.id}" aria-expanded="${open}" aria-controls="detail-${p.id}">${icon(open?'up':'down')}<span>${open?'收起':esc(p.detailLabel||'更多细节')}</span></button><div class="detail" id="detail-${p.id}" ${open?'':'hidden'}>${paragraphs(p.body,p.highlights?.body)}${mediaHTML(p,'details')}</div>`:''}
   ${commentsHTML(p)}
   <div class="story-sources"><button class="story-topic" data-topic="${esc(p.topic)}"># ${esc(p.topic)}</button>${p.links.map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} ↗ <small>${esc(new URL(l.url).hostname.replace(/^www\./,''))}</small></a>`).join('')}</div>
- ${ratingHTML('news:'+p.id)}
+ 
  </article>`;
 }
 function caseHTML(a){
@@ -113,7 +63,7 @@ function caseHTML(a){
  <details class="case-evidence"><summary>实验结果与适用条件</summary>${paragraphs(a.evidence)}${paragraphs(a.limits)}</details>
  <h3>可以借走的思路</h3>${paragraphs(a.transfer)}
  <details class="case-evidence"><summary>${esc(a.counter.q)}</summary>${paragraphs(a.counter.a)}</details>
- </div><div class="story-sources"><span>${esc(a.topic)}</span>${a.sources.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`).join('')}</div>${ratingHTML('case:'+a.id)}</article>`;
+ </div><div class="story-sources"><span>${esc(a.topic)}</span>${a.sources.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`).join('')}</div></article>`;
 }
 function render(){
  let visible=data.filter(p=>(state.filter==='all'||state.filter===p.channel)&&(state.issue==='all'||p.issueDate===state.issue)&&(!state.topic||state.topic===p.topic));
@@ -153,8 +103,7 @@ function render(){
 function reset(){state.stream='all';state.learningCat='all';state.filter='all';state.topic='';state.query='';state.issue='all';document.querySelector('#issue-select').value='all';document.querySelector('#search').value='';render()}
 document.addEventListener('click',event=>{
  const el=event.target.closest('button');if(!el)return;
- if(el.dataset.rate){setRating(el.dataset.ratingKey,el.dataset.rate);}
- else if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
+ if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
  else if(el.hasAttribute('data-home')){state.stream='all';state.learningCat='all';state.issue=issueKey(issues[0]);document.querySelector('#issue-select').value=state.issue;state.filter='all';state.topic='';state.query='';document.querySelector('#search').value='';render();window.scrollTo({top:0});}
  else if(el.dataset.stream){state.stream=el.dataset.stream;state.filter='all';state.topic='';state.learningCat='all';render();document.querySelector('.controls').scrollIntoView({block:'start'});}
  else if(el.dataset.learningCat){state.learningCat=el.dataset.learningCat;render();}
@@ -177,13 +126,6 @@ document.querySelector('#coverage').onclick=()=>dialog.showModal();document.quer
 dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()}});
 document.querySelector('#back-top').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 
-document.querySelector('#my-ratings').onclick=showRatings;
-document.querySelector('#close-ratings').onclick=()=>document.querySelector('#rating-dialog').close();
-document.querySelector('#copy-ratings').onclick=copyRatings;
-document.querySelector('#retry-ratings').onclick=()=>void feedback.sync();
-document.querySelector('#connect-ratings').onclick=()=>{document.querySelector('#rating-connect-form').hidden=false;document.querySelector('#rating-connection-input').focus()};
-document.querySelector('#rating-connect-form').onsubmit=submitFeedbackConnection;
-updateRatingCount();
 const latest=issues[0];
 const day=new Date(latest.date+'T12:00:00+08:00');
 document.querySelector('.feed-header .eyebrow').textContent=latest.date+' · 每日业界';
@@ -230,4 +172,4 @@ $('#lab-result').innerHTML=`<div class="probability-result ${r.error<1e-10?'matc
 
 render();
 
-void startFeedback();
+
