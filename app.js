@@ -59,7 +59,7 @@ function caseHTML(a){
  <button class="story-more" data-action="expand" data-id="case-${esc(a.id)}" aria-expanded="${open}" aria-controls="case-detail-${esc(a.id)}">${icon(open?'up':'down')}<span>${open?'收起案例':'看方法拆解与算例 · 约 '+a.time+' 分钟'}</span></button>
  <div class="case-detail" id="case-detail-${esc(a.id)}" ${open?'':'hidden'}>
  <h3>方法怎样设计</h3><ol>${a.steps.map(([title,text])=>`<li><h4>${esc(title)}</h4>${paragraphs(text)}</li>`).join('')}</ol>
- <section class="case-example"><span class="case-label">教学算例</span><h3>${esc(a.example.title)}</h3>${paragraphs(a.example.text)}${a.example.lab?speculativeLab():''}</section>
+ <section class="case-example"><span class="case-label">${esc(a.example.label||'教学算例')}</span><h3>${esc(a.example.title)}</h3>${paragraphs(a.example.text)}${a.example.lab?speculativeLab():''}</section>
  <details class="case-evidence"><summary>实验结果与适用条件</summary>${paragraphs(a.evidence)}${paragraphs(a.limits)}</details>
  <h3>可以借走的思路</h3>${paragraphs(a.transfer)}
  <details class="case-evidence"><summary>${esc(a.counter.q)}</summary>${paragraphs(a.counter.a)}</details>
