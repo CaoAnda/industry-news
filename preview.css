@@ -66,3 +66,7 @@ html[data-look=feed]{--bg:#f4f6fa;--accent:#3069a7;--tint:#edf4fc}
 [data-look=feed] .nav-item.active{background:#e8f0fa;color:#315a88}
 [data-look=feed] .end-mark{color:#be8f6a}
 @media(max-width:740px){[data-look=feed] .editor-note{padding:14px 16px;margin-bottom:14px}}
+
+/* Approved home: the comparison toolbar exists only on preview.html. */
+html[data-layout=live]{--preview-height:0px}
+[data-layout=live] .post{scroll-margin-top:80px}
