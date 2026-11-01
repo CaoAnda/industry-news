@@ -1000,7 +1000,7 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-01T09:09:28+08:00",
+  "updatedAt": "2026-11-01T09:47:57+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
   "latestDate": "2026-11-01",
   "latestId": "2026-11-01"

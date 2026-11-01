@@ -53,12 +53,9 @@
     }
     async connect(key){
       if(!/^[a-f0-9]{64}$/.test(key))throw new Error('connection_invalid');
-      this.state='connecting';this.notify();
-      try{
-        const remote=await this.request(key);
-        this.key=key;try{this.storage.setItem(CONNECTION,key)}catch{this.storageOK=false}
-        this.merge(remote);this.state='pending';this.notify();await this.sync();
-      }catch(error){this.state=error.message==='connection_invalid'?'invalid':'offline';this.notify();throw error}
+      // Keep the connection before the first network attempt so a timeout can retry.
+      this.key=key;try{this.storage.setItem(CONNECTION,key)}catch{this.storageOK=false}
+      this.state='pending';this.notify();await this.sync();
     }
     async sync(){
       if(!this.key)return;
@@ -77,7 +74,7 @@
         if(this.state==='offline'){this.retry=setTimeout(()=>void this.sync(),this.delay);this.delay=Math.min(this.delay*2,60000)}
       }finally{this.busy=false;this.notify()}
     }
-    status(key){const r=this.records[key];if(!r)return '';if(!this.storageOK&&r.pending)return '待同步 · 本机未保存';if(r.pending)return this.key?(this.state==='offline'?'待同步':'同步中…'):'已存本机';return r.value?'已同步':'已取消 · 已同步'}
+    status(key){const r=this.records[key];if(!r)return '';if(!this.storageOK&&r.pending)return '待同步 · 本机未保存';if(r.pending)return this.key?(this.state==='invalid'?'连接失效':this.state==='offline'?'待同步':'同步中…'):'已存本机';return r.value?'已同步':'已取消 · 已同步'}
   }
   root.FeedbackStore=FeedbackStore;
 })(typeof window==='undefined'?globalThis:window);

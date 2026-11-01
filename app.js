@@ -48,6 +48,7 @@ function updateRatingDialog(){
  document.querySelector('#copy-ratings').disabled=!list.length;
  document.querySelector('#rating-storage-note').textContent=ratingSyncMessage();
  document.querySelector('#retry-ratings').hidden=!feedback.key||feedback.state==='synced';
+ document.querySelector('#connect-ratings').hidden=!!feedback.key&&feedback.state!=='invalid';
 }
 function refreshRatings(){
  document.querySelectorAll('[data-rating-row]').forEach(row=>{const key=row.dataset.ratingRow,value=feedback.records[key]?.value;row.querySelectorAll('[data-rate]').forEach(button=>{const selected=button.dataset.rate===value;button.classList.toggle('selected',selected);button.classList.toggle('positive',selected&&value==='up');button.classList.toggle('negative',selected&&value==='down');button.setAttribute('aria-pressed',String(selected))});row.querySelector('.rating-saved').textContent=feedback.status(key)});
@@ -64,6 +65,11 @@ async function startFeedback(){
  const params=new URLSearchParams(location.hash.slice(1)),key=params.get('feedback');
  if(key){history.replaceState(null,'',location.pathname+location.search);try{await feedback.connect(key)}catch{}showRatings()}
  else void feedback.sync();
+}
+window.addEventListener('hashchange',()=>void startFeedback());
+async function submitFeedbackConnection(event){
+ event.preventDefault();const input=document.querySelector('#rating-connection-input');let value=input.value.trim();
+ try{if(value.startsWith('https://')){const url=new URL(value);if(url.origin!=='https://caoanda.github.io'||url.pathname!=='/industry-news/')throw new Error('wrong_link');value=new URLSearchParams(url.hash.slice(1)).get('feedback')||''}if(!/^[a-f0-9]{64}$/.test(value))throw new Error('invalid_key');input.value='';document.querySelector('#rating-connect-form').hidden=true;await feedback.connect(value)}catch{document.querySelector('#rating-copy-status').textContent='请粘贴完整的专属连接链接或连接码。'}
 }
 function emphasize(text,phrases=[]){
  const value=String(text||'');
@@ -175,6 +181,8 @@ document.querySelector('#my-ratings').onclick=showRatings;
 document.querySelector('#close-ratings').onclick=()=>document.querySelector('#rating-dialog').close();
 document.querySelector('#copy-ratings').onclick=copyRatings;
 document.querySelector('#retry-ratings').onclick=()=>void feedback.sync();
+document.querySelector('#connect-ratings').onclick=()=>{document.querySelector('#rating-connect-form').hidden=false;document.querySelector('#rating-connection-input').focus()};
+document.querySelector('#rating-connect-form').onsubmit=submitFeedbackConnection;
 updateRatingCount();
 const latest=issues[0];
 const day=new Date(latest.date+'T12:00:00+08:00');
