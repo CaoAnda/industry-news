@@ -70,3 +70,5 @@ html[data-look=feed]{--bg:#f4f6fa;--accent:#3069a7;--tint:#edf4fc}
 /* Approved home: the comparison toolbar exists only on preview.html. */
 html[data-layout=live]{--preview-height:0px}
 [data-layout=live] .post{scroll-margin-top:80px}
+
+.brand{font-size:24px;white-space:nowrap}

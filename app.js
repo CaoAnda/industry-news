@@ -128,7 +128,7 @@ document.querySelector('#back-top').onclick=()=>window.scrollTo({top:0,behavior:
 
 const latest=issues[0];
 const day=new Date(latest.date+'T12:00:00+08:00');
-document.querySelector('.feed-header .eyebrow').textContent=latest.date+' · 每日业界';
+document.querySelector('.feed-header .eyebrow').textContent=latest.date+' · AI 业界与研究';
 document.querySelector('.edition').textContent='VOL. '+String(latest.edition).padStart(3,'0');
 document.querySelector('.editor-note h2').textContent=latest.title;
 document.querySelector('.editor-note p').textContent=latest.intro;

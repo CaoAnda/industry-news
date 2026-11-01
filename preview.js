@@ -12,12 +12,12 @@
     const oldTop = anchor?.getBoundingClientRect().top;
     document.documentElement.dataset.look = look;
     document.querySelector('#view-title').textContent = {
-      feed:'今天，有什么值得知道？', paper:'业界手记', night:'今天，值得一看。'
+      feed:'沿线观察', paper:'沿线观察', night:'沿线观察'
     }[look];
     document.querySelectorAll('[data-look-choice]').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.lookChoice === look));
     });
-    document.title = `${looks[look]} · 外观预览`;
+    document.title = `沿线观察 · ${looks[look]}`;
     document.querySelector('meta[name="theme-color"]').content =
       {feed:'#ffffff', paper:'#f7f2e8', night:'#101820'}[look];
     const url = new URL(location.href);
