@@ -1,5 +1,241 @@
 window.FEED_DATA = [
   {
+    "id": "glb-3d-coder-20261102",
+    "source": "CCORE · 小模型开发者",
+    "avatar": "C",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "个人实践",
+    "kind": "opinion",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-02",
+    "time": "11 月 2 日",
+    "title": "4B 模型生成的 3D 场景，怎样真正变成游戏素材？",
+    "summary": "开发者 CCORE 之前做过一个会写 3D 场景代码的小模型。用户随后提出一个实际需求：画面能在浏览器里看，但能不能拿进自己的游戏？他于是基于 Qwen3.5-4B 继续训练，让输出包含 GLB 导出功能——这是一种游戏引擎能读取的 3D 文件格式。\n\n现在，输入“做一瓶魔法药水”，模型会生成一个带导出按钮的网页。网页用 Three.js 绘制物体；点导出后，把几何形状和材质存成 GLB，再导入 Godot 游戏编辑器。作者展示了角色、药水和建筑导入后的画面，接通了从文字描述到可复用素材的流程。\n\n评论里更有价值的是训练过程：作者说，他多次试过只训练少量附加参数的 LoRA，效果很快停滞，有时还下降，后来采用全参数微调。更费功夫的是生成、筛选训练数据，再运行代码、检查画面是否正确；这些工作甚至可能比 GPU 训练更贵。目前发布的是首个可用检查点和量化权重，仍有样例需要重试或修代码。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "模型与原始演示",
+        "url": "https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder"
+      },
+      {
+        "label": "作者发布与讨论",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xlh0zw/glb3dcoder_a_tiny_4b_coding_model_that_creates_3d/"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-02/glb-godot.webp",
+        "alt": "作者把生成的低多边形角色、道具和建筑导入 Godot 编辑器的截图",
+        "caption": "作者展示的 Godot 导入结果：角色、道具与建筑已成为可选取的 3D 素材。",
+        "credit": "CCORE · Hugging Face 模型页",
+        "sourceUrl": "https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder",
+        "originalUrl": "https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder/resolve/main/images/godot-scene.png"
+      }
+    ],
+    "comments": [
+      {
+        "author": "ConfidentDinner6648",
+        "role": "原帖作者",
+        "date": "读取于 11 月 2 日（北京时间）",
+        "text": "这轮只训练了语言模型部分，没有训练视觉层。作者计划补充图片输入所需的连接文件；上一版曾尝试过图片输入，这个新 GLB 版本还没有测试。",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xlh0zw/glb3dcoder_a_tiny_4b_coding_model_that_creates_3d/",
+        "linkLabel": "原帖入口",
+        "evidence": "作者补充",
+        "mode": "翻译摘编",
+        "context": "原帖作者回应读者能否提供参考图片的问题",
+        "highlights": [
+          "只训练了语言模型部分，没有训练视觉层"
+        ]
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把几何形状和材质存成 GLB，再导入 Godot 游戏编辑器",
+        "生成、筛选训练数据，再运行代码、检查画面是否正确"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-02"
+  },
+  {
+    "id": "strata-startup-cache-20261102",
+    "source": "HearMeOut-13 · Strata 补丁作者",
+    "avatar": "H",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "个人实践",
+    "kind": "opinion",
+    "topic": "推理与部署",
+    "tags": [
+      "推理与部署"
+    ],
+    "date": "2026-11-02",
+    "time": "11 月 2 日",
+    "title": "开一个编程会话先等 100 秒，他发现是在反复读同一份提示词",
+    "summary": "一位开发者用 16GB 显卡、64GB 内存和 SSD 运行量化后的 DeepSeek V4.1 Flash，接给编程助手 OpenCode。生成速度约每秒 7 个 token，还能接受；真正难受的是每次新开项目，都要先等约 100 秒。\n\n他查到，助手会把工作目录、日期和项目说明放进约 3.7 万 token 的系统提示词里。缓存只能复用开头完全相同的部分，前面几行一变，后面大段相同内容也得重算。他做的第一项修改，是对齐新旧内容，拼接已缓存的计算状态，只重新处理变化的行。\n\n另一个等待来自模型的“专家”子网络：显卡放不下全部参数，读提示词时又会用到很多专家，导致频繁从 SSD 搬数据。他把这个阶段改为只选显存或内存中已有的专家，正式生成答案时恢复正常选择。两项修改合用后，作者报告新项目启动从约 100 秒降到约 5 秒；一个短提示词的 SSD 读取量从 58GB 降到 1.3GB。\n\n这份补丁用近似计算换速度：缓存沿用了旧上下文的状态，读提示词时也换了部分专家。13 道编程题前后都答对 12 道，但有一题由对变错、另一题由错变对。目前作者只在 AMD 的这套环境验证。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "实测与结果图",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xljdnj/sorry_sam_my_quite_terrible_home_dram_is_at_100/"
+      },
+      {
+        "label": "缓存问题与早期对照",
+        "url": "https://github.com/Niko1221/Strata/issues/4921"
+      },
+      {
+        "label": "作者补丁分支",
+        "url": "https://github.com/PhialsBasement/Strata/tree/dsv41-kv-splice"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-02/strata-startup.webp",
+        "alt": "作者公布的原版与补丁版启动耗时、SSD 读取量和 13 道编程题结果对照表",
+        "caption": "作者同机对照：约 100 秒→5 秒是新会话启动耗时；编程题总分相同，但答对的题目并非完全一致。",
+        "credit": "HearMeOut-13 · Reddit",
+        "sourceUrl": "https://www.reddit.com/r/LocalLLaMA/comments/1xljdnj/sorry_sam_my_quite_terrible_home_dram_is_at_100/",
+        "originalUrl": "https://i.redd.it/dwgmz70zi3zh1.png"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "前面几行一变，后面大段相同内容也得重算",
+        "用近似计算换速度"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-02"
+  },
+  {
+    "id": "ava-browser-tool-tradeoff-20261102",
+    "source": "townbox · Ava 开发记录",
+    "avatar": "t",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "个人实践",
+    "kind": "opinion",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-02",
+    "time": "11 月 2 日",
+    "title": "给语音角色加上手势工具，为什么反而聊不好了？",
+    "summary": "Ava 想做一个能面对面聊天的网页角色：你说话，它听懂、回答，屏幕里的头像同步动嘴。项目使用 LFM3-Omni-2B，直接把音频交给模型，再接收交错输出的文字和语音；嘴形由另一套程序根据声音生成。\n\n开发者复用已有头像界面时，遇到一个具体问题：把工具说明交给这个模型，会打乱对话。沿用原界面的工具时，“我们玩个小游戏”竟触发计时器；给它控制头像的工具后，又出现每轮都做手势、回答变浅，甚至循环却不说话的情况。\n\n最终实现把手势从模型的工具调用里拿了出来：模型专心输出对话，程序根据已经说出的文字触发表情、挥手等动作。模型在后台工作线程运行，避免计算堵住头像动画；用户插话时，立即停止生成和播放。\n\n现在已有可打开的演示，首次需下载约 1.6GB 模型，要求支持相应 WebGPU 功能的桌面浏览器。模型仍会重复提问，也难以持续玩“二十个问题”这类游戏。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "演示与项目说明",
+        "url": "https://huggingface.co/spaces/townbox/ava"
+      },
+      {
+        "label": "开发记录原文",
+        "url": "https://huggingface.co/spaces/townbox/ava/blob/main/README.md"
+      },
+      {
+        "label": "社区演示帖",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xl9577/meet_ava_inbrowser_local_ai_avatar_with_lfm3omni/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把手势从模型的工具调用里拿了出来",
+        "程序根据已经说出的文字触发表情、挥手等动作"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-02"
+  },
+  {
+    "id": "tandem-cpu-gpu-20261102",
+    "source": "smflx · tandem.cpp",
+    "avatar": "s",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "个人实践",
+    "kind": "opinion",
+    "topic": "推理与部署",
+    "tags": [
+      "推理与部署"
+    ],
+    "date": "2026-11-02",
+    "time": "11 月 2 日",
+    "title": "显存装不下 MoE，怎样让 CPU 和 GPU 一起干活？",
+    "summary": "tandem.cpp 是一套给 llama.cpp 的补丁，针对一个常见场景：混合专家模型总参数很大，但每生成一个 token，只需要其中部分专家。显卡装不下全部专家时，剩下的计算和数据搬运会拖慢生成。\n\n作者把常用专家缓存在显卡上；本轮缺少的专家，一部分交给 CPU 计算，一部分搬到显卡，并根据 CPU 速度和传输速度分配比例。这样，GPU 算缓存里的专家时，CPU 也能并行工作，所选专家仍全部参与计算。\n\n在 i5-12400F、64GB 内存、RTX 4090 上，作者用 GSM8K 前 200 道数学题测试：同一份 Qwen3.8-Flash-Next 量化模型、相同的多 token 预测配置下，生成速度从 29.8 升到 97.3 token/秒。换成大幅超出内存容量的 DeepSeek 配置，速度却从 6.86 降到 5.99：当前 CPU 路径接不了需要从 SSD 读取的那些专家，瓶颈又回到了数据搬运。",
+    "body": "这套补丁主要针对单用户生成，已测试 Linux + NVIDIA CUDA。作者也展示了一个容易踩的坑：在只有 6 个 CPU 核心的机器上，为 gpt-oss 加 EAGLE3 草稿模型后反而变慢，因为一批验证多个 token 会增加 CPU 要计算的专家数量；在 10 核工作站上，同一方向才带来加速。能否受益，要把草稿验证产生的工作量一起算进去。",
+    "detailLabel": "为什么加草稿模型也可能变慢",
+    "links": [
+      {
+        "label": "实现、四台机器与测试条件",
+        "url": "https://github.com/ewhacc/tandem.cpp"
+      },
+      {
+        "label": "开发者讨论",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xldent/tandemcpp_qwen38flashnext_at_97_toks_on_a_single/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "一部分交给 CPU 计算，一部分搬到显卡",
+        "当前 CPU 路径接不了需要从 SSD 读取的那些专家"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-02"
+  },
+  {
+    "id": "agent-interview-errors-20261101",
+    "source": "moon · 秋招面试复盘",
+    "avatar": "m",
+    "avatarClass": "xhs",
+    "channel": "xiaohongshu",
+    "evidence": "个人经历",
+    "kind": "opinion",
+    "topic": "岗位与工作要求",
+    "tags": [
+      "岗位与工作要求"
+    ],
+    "date": "2026-11-01",
+    "time": "11 月 1 日",
+    "title": "Agent 面试会追问：工具选对了，但参数错了，算成功吗？",
+    "summary": "小红书作者 moon 把自己秋招遇到的 Agent 开发问题脱敏整理成 27 题。比起框架名，更具体的追问是：工具调用超时该不该重试？重试写操作怎样避免执行两次？模型选对了工具、参数却填错了，该计入哪一种失败？\n\n作者给出的准备思路，是把一次调用拆开讲：先找到候选工具，再检查权限和参数，执行后区分超时、参数错误与业务失败。对可能重试的写操作，用唯一请求编号等办法避免重复执行；评测时把“选对工具”和“成功完成调用”分开记录。\n\n这份材料适合拿自己的项目逐项检查：能否解释失败发生在哪一步，以及恢复之后有没有真正完成任务。公开内容是题目和作者的回答思路，没有展开他实际项目里的处理结果。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原帖与题目配图",
+        "url": "https://www.xiaohongshu.com/explore/6ae74619000000000e026431"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把“选对工具”和“成功完成调用”分开记录"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-02"
+  },
+  {
     "id": "deepseek-superagent-20261031",
     "source": "DeepSeek · 开源原型",
     "avatar": "D",
@@ -949,6 +1185,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-02",
+    "edition": 5,
+    "title": "从能演示到好用，工作具体卡在哪一步？",
+    "intro": "今天看几次具体的工程取舍：4B 模型怎样产出能进游戏引擎的素材，编程助手怎样少等一分钟，以及语音角色为什么删掉工具调用。另有 CPU/GPU 协同推理的正反例、一份 Agent 面试复盘；研究栏新添 Model Soups 经典案例，回看那些没有拿第一的微调模型还能怎样用。",
+    "coverage": "北京时间 11 月 1 日 11:15 至 11 月 2 日 09:07 为本次优先检查时段，按原始事件和链接与往期去重。实际读取 Reddit 最新列表及 4 个讨论串、小红书搜索及 1 篇正文、6 张题目图片和 1 条评论、X 搜索结果；核对 Hugging Face 模型页、Ava 开发说明、Strata issue、tandem.cpp 仓库及 Model Soups 原论文。X 未选到足够新增的独立材料，小红书评论只有追问，未摘入。脉脉本次未取得可用的后台页面，未读新帖、职言或评论。研究栏为新增整理的 2022 年经典案例，不是今日新论文。评论按读取日期标记，链接为原帖入口。",
+    "question": "如果只看模型跑分，你会漏掉自己系统里哪一种等待或失败？",
+    "id": "2026-11-02",
+    "count": 5
+  },
+  {
     "date": "2026-11-01",
     "edition": 4,
     "title": "把 Agent 放进工作里，接下来卡在哪里？",
@@ -988,16 +1234,16 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-01T11:14:05+08:00",
+  "updatedAt": "2026-11-02T09:07:55+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
-  "latestDate": "2026-11-01",
-  "latestId": "2026-11-01"
+  "latestDate": "2026-11-02",
+  "latestId": "2026-11-02"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "samaya-sterling"
+    "model-soups"
   ],
   "entries": [
     {
@@ -1525,6 +1771,62 @@ window.LEARNING_DATA = {
         [
           "团队原文 · 2026-10-28",
           "https://samaya.ai/blog/rl-post-trained-agentic-model"
+        ]
+      ]
+    },
+    {
+      "id": "model-soups",
+      "cat": "merge",
+      "topic": "模型选择与合并",
+      "symbol": "∪",
+      "method": "Model Soups",
+      "year": "ICML 2022 · 经典回看",
+      "time": 5,
+      "title": "调了十几组参数，没拿第一的模型就该丢掉吗？",
+      "desc": "把同一起点的微调模型平均起来，用验证集决定谁值得加入。",
+      "scenario": "同一个预训练模型，用不同学习率、训练轮数和数据增强微调出多个版本。",
+      "bottleneck": "只选验证集第一名会丢掉其他训练结果；部署多个模型再综合预测，又会增加每次推理的开销。",
+      "lead": "做一次微调调参，通常会得到一批模型：学习率不同，训练轮数不同，数据增强也不同。常规做法是在验证集上挑第一名，其他模型就闲置了。Model Soups 问的是：这些模型从同一个预训练权重出发，能不能直接平均参数，保留它们的共同收益？\n\n论文采用一种逐个尝试的做法：先拿最好的模型，再把其他候选加入平均；验证集成绩不下降，就留下它。最终只部署一份平均后的权重。在论文的 ViT-G 图像分类实验中，调参得到的最佳单模型 ImageNet 准确率为 90.78%，合并后为 90.94%，推理仍只运行一个模型。",
+      "insight": "候选模型单独不是第一名，并不意味着它加入平均后没有价值；要评估的是合并后的效果。",
+      "steps": [
+        [
+          "共同起点让参数有机会直接对应",
+          "候选使用相同结构、同一个预训练初始化，在目标任务上分别微调。论文观察到，这类模型之间常有一片误差较低的区域，因此参数取平均后仍可能表现良好。"
+        ],
+        [
+          "先排序，再逐个试",
+          "按独立验证集准确率从高到低排列候选，以最好模型起步。设已经接纳 k 个模型，平均权重为 θs；加入候选 θc 时，试算 (kθs + θc)/(k+1)。"
+        ],
+        [
+          "用合并结果决定是否接纳",
+          "在验证集上评测这个新平均值，成绩不下降就接纳，否则保留原平均值。每个被接纳的模型最终权重相同，不是每次都把新旧模型各取一半。"
+        ],
+        [
+          "部署一次平均后的结果",
+          "模型数量和单次推理结构保持不变。此前的多次微调和选择时的验证仍要付出成本；节省的是部署多个模型、逐个预测的额外开销。"
+        ]
+      ],
+      "example": {
+        "title": "单独更弱的候选，为什么仍可能入选？",
+        "label": "教学算例",
+        "text": "假设 A、B、C 的验证准确率分别为 82%、81%、80%。先保留 A；平均 A 与 B 后得到 83%，接纳 B。接着尝试 (A+B+C)/3，得到 82.5%，就拒绝 C，最终保留 (A+B)/2。这里的数字是教学假设：B 单独比 A 差，却能改善合并结果；C 是否有用，也要实际评测平均后的模型才能知道。"
+      },
+      "evidence": "原论文 Table 1：ViT-G 的最佳调参模型在 ImageNet 上为 90.78%，贪心合并为 90.94%；五个分布变化测试集的平均准确率从 84.68% 到 85.02%。§2 的选择验证集与训练集、最终测试集分开。",
+      "limits": "贪心合并要使用验证数据。共同预训练起点是这里的重要条件；学习率过大、微调走得太远的候选可能拉低平均结果，因此论文没有把所有模型一律加入。",
+      "transfer": "设计合并实验时，除了问“哪个单模型最好”，还可以比较“哪个候选加入后最有帮助”。把单模型质量与合并边际收益分开观察，有助于发现选择标准漏掉的互补关系。",
+      "take": "最终部署一个模型，也能利用多次微调的结果；关键是挑选能改善平均结果的候选。",
+      "counter": {
+        "q": "这是不需要数据的合并方法吗？",
+        "a": "参数求平均本身不读数据，但本文的贪心候选选择要反复查看验证集。描述整体方法时，需要把这两步一起交代。"
+      },
+      "sources": [
+        [
+          "原论文 · ICML 2022；方法 §2、Table 1",
+          "https://proceedings.mlr.press/v162/wortsman22a/wortsman22a.pdf"
+        ],
+        [
+          "作者代码",
+          "https://github.com/mlfoundations/model-soups"
         ]
       ]
     }
