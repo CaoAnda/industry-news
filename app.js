@@ -15,7 +15,7 @@ document.querySelectorAll('[data-icon]').forEach(el => el.innerHTML = icon(el.da
 const data = window.FEED_DATA;
 const issues=window.FEED_ISSUES;
 const learning=window.LEARNING_DATA;
-const cases=learning.entries;
+const cases=[...learning.entries].sort((a,b)=>Number(Boolean(a.classic))-Number(Boolean(b.classic))||(b.publishedOn||'').localeCompare(a.publishedOn||''));
 const issueKey=i=>i.id||i.date;
 const issueLabel=id=>{const i=issues.find(x=>issueKey(x)===id);return i?(i.label||i.date):id};
 const state = {stream:'all',learningCat:'all',filter:'all',topic:'',sort:'curated',query:'',expanded:new Set(),comments:new Set(),issue:issueKey(issues[0])};
@@ -54,12 +54,14 @@ function postHTML(p){
 function caseHTML(a){
  const open=state.expanded.has('case-'+a.id);
  return `<article class="post learning-post" id="case-${esc(a.id)}" aria-labelledby="case-title-${esc(a.id)}">
- <div class="post-head"><div class="avatar learning-avatar" aria-hidden="true">${esc(a.symbol)}</div><div><div class="source-name">拾知 · ${a.cat==='merge'?'模型合并':'AI 拓展'}</div><div class="source-meta">${esc(a.method)} · ${esc(a.year)}</div></div><span class="evidence">研究案例</span></div>
+ <div class="post-head"><div class="avatar learning-avatar" aria-hidden="true">${esc(a.symbol)}</div><div><div class="source-name">拾知 · ${a.cat==='merge'?'模型合并':'AI 拓展'}</div><div class="source-meta">${esc(a.method)} · ${esc(a.year)}</div></div><span class="evidence">${a.classic?'经典回看':'研究案例'}</span></div>
  <h2 id="case-title-${esc(a.id)}">${esc(a.title)}</h2><div class="post-story">${paragraphs(a.lead)}<p><strong class="key-point">${esc(a.insight)}</strong></p></div>
+ ${mediaHTML({...a,id:'case-'+a.id})}
  <button class="story-more" data-action="expand" data-id="case-${esc(a.id)}" aria-expanded="${open}" aria-controls="case-detail-${esc(a.id)}">${icon(open?'up':'down')}<span>${open?'收起案例':'看方法拆解与算例 · 约 '+a.time+' 分钟'}</span></button>
  <div class="case-detail" id="case-detail-${esc(a.id)}" ${open?'':'hidden'}>
  <h3>方法怎样设计</h3><ol>${a.steps.map(([title,text])=>`<li><h4>${esc(title)}</h4>${paragraphs(text)}</li>`).join('')}</ol>
  <section class="case-example"><span class="case-label">${esc(a.example.label||'教学算例')}</span><h3>${esc(a.example.title)}</h3>${paragraphs(a.example.text)}${a.example.lab?speculativeLab():''}</section>
+ ${mediaHTML({...a,id:'case-'+a.id},'details')}
  <details class="case-evidence"><summary>实验结果与适用条件</summary>${paragraphs(a.evidence)}${paragraphs(a.limits)}</details>
  <h3>可以借走的思路</h3>${paragraphs(a.transfer)}
  <details class="case-evidence"><summary>${esc(a.counter.q)}</summary>${paragraphs(a.counter.a)}</details>
@@ -82,8 +84,8 @@ function render(){
  feed.querySelectorAll('.post-media img').forEach(img=>img.addEventListener('error',()=>{const button=img.closest('button');button.disabled=true;button.classList.add('image-failed');button.innerHTML='<span>图片暂时无法显示，请从图源查看</span>'}));
  document.querySelector('.result-count').textContent=`${visible.length+selectedCases.length} 条内容`;
  const current=issues.find(i=>issueKey(i)===state.issue)||issues[0];
- document.querySelector('.editor-note h2').textContent=state.stream==='learning'?'从难题里，看见巧妙的方法。':current.title;
- document.querySelector('.editor-note p').textContent=state.stream==='learning'?'来自「每日 AI 新闻」的研究案例：讲清遇到了什么难题、关键洞察在哪里，以及方法为什么这样设计。':current.intro;
+ document.querySelector('.editor-note h2').textContent=state.stream==='learning'?'最近的研究，值得细看。':current.title;
+ document.querySelector('.editor-note p').textContent=state.stream==='learning'?'近期论文与实践排在前面，讲清问题、做法和结果。经典案例保留在后面，随时可以回看。':current.intro;
  document.querySelector('.edition').textContent='VOL. '+String(current.edition).padStart(3,'0');
  document.querySelector('.note-meta').innerHTML=state.stream==='learning'?`<span>${cases.length} 篇案例 · AI 拓展 ${cases.filter(a=>a.cat==='ai').length} / 模型合并 ${cases.filter(a=>a.cat==='merge').length}</span><span>研究与工程案例 · 标注原始日期</span>`:`<span>${esc(current.label||current.date)}</span><span>${current.count} 条消息${state.stream==='all'?' + '+learning.featured.length+' 篇案例':''}</span>`;
  document.querySelectorAll('[data-filter]').forEach(el=>{el.classList.toggle('active',el.dataset.filter===state.filter);el.setAttribute('aria-pressed',el.dataset.filter===state.filter)});
@@ -109,7 +111,7 @@ function scrollToFeedStart(){
 function reset(){state.stream='all';state.learningCat='all';state.filter='all';state.topic='';state.query='';state.issue='all';document.querySelector('#issue-select').value='all';document.querySelector('#search').value='';render()}
 document.addEventListener('click',event=>{
  const el=event.target.closest('button');if(!el)return;
- if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
+ if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture)||cases.find(p=>'case-'+p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
  else if(el.hasAttribute('data-home')){state.stream='all';state.learningCat='all';state.issue=issueKey(issues[0]);document.querySelector('#issue-select').value=state.issue;state.filter='all';state.topic='';state.query='';document.querySelector('#search').value='';render();window.scrollTo({top:0});}
  else if(el.dataset.stream){state.stream=el.dataset.stream;state.filter='all';state.topic='';state.learningCat='all';render();scrollToFeedStart();}
  else if(el.dataset.learningCat){state.learningCat=el.dataset.learningCat;render();scrollToFeedStart();}

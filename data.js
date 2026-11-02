@@ -1237,7 +1237,7 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-02T11:22:21+08:00",
+  "updatedAt": "2026-11-02T22:22:54+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
   "latestDate": "2026-11-02",
   "latestId": "2026-11-02"
@@ -1246,9 +1246,172 @@ window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "model-soups"
+    "tokenworth",
+    "hybrid-reasoning-agents"
   ],
   "entries": [
+    {
+      "id": "tokenworth",
+      "cat": "ai",
+      "topic": "Agent 记忆与学习",
+      "symbol": "◈",
+      "method": "TokenWorth",
+      "year": "2026-10-19 首发 · 预印本",
+      "publishedOn": "2026-10-19",
+      "revisedOn": "2026-10-21",
+      "addedOn": "2026-11-02",
+      "time": 4,
+      "title": "Agent 记下了成功经验，下一次该用哪一条？",
+      "desc": "不微调大模型，改为根据任务成败学习怎样挑选记忆。",
+      "scenario": "让 Agent 连续处理数据库、操作系统或知识图谱任务，并利用之前的成功经验。",
+      "bottleneck": "输出和尝试次数很有限时，一条不适用的旧经验也会占用解决问题的机会。",
+      "lead": "给 Agent 加上记忆，通常是先保存成功经历，再找一条与新问题相似的记录供它参考。但“看起来相似”不等于“这次有用”：数据库操作的目标变了，旧的操作步骤就可能帮倒忙。\n\nTokenWorth 不改大模型的参数，而是在外面训练一个小型评分器。它结合文字相似度、过去使用效果等信息挑选记忆；每次任务结束后，再用成功或失败的反馈更新评分，让之后的选择逐步改变。记忆库满了，也按这些评分决定淘汰谁。\n\n在论文的本地数据库任务中，模型使用 Qwen2.5-14B，每题最多生成128个 token、交互3轮，每次只能取1条记忆。成功率从普通相似检索的33.0%升至65.0%。这是一个刻意限制资源的实验，关键变化是把有限的记忆名额用得更好。",
+      "insight": "检索不仅要问“哪段经历最像”，还要根据过去的执行结果，学习“这次更值得参考哪段”。",
+      "steps": [
+        [
+          "先召回，再选一条",
+          "先用文字匹配找到候选，再综合相似度、历史效果、可靠性和近期使用情况评分。评分器还会学习基础评分没解释好的差异。"
+        ],
+        [
+          "用反馈调整下一次选择",
+          "每道题只执行一次，完成后用环境给出的成败反馈更新评分；大模型保持冻结。"
+        ],
+        [
+          "把选择与保留接起来",
+          "成功且经过外部验证的执行可成为新记忆。容量满后，估计它对近期问题的用处，再决定是否替换旧记录。"
+        ]
+      ],
+      "example": {
+        "label": "教学算例",
+        "title": "两条都提到“订单”，不代表同样有用",
+        "text": "假设新任务是找出重复订单。记忆A讲“按客户汇总订单金额”，记忆B讲“按订单号分组并筛出重复项”。两者都包含订单、分组等词，但B更贴近这次操作。若后续任务结果能帮助系统学会这种区别，就比只按文字相似度选A更有价值。这是解释检索目标的教学例子，不是论文中的实际题目。"
+      },
+      "evidence": "原文 Table 1：相同本地模型下，无记忆／普通检索／TokenWorth 的成功率，数据库为25.2%／33.0%／65.0%，操作系统为50.2%／54.6%／59.4%，知识图谱为30.7%／11.3%／36.7%。三类任务的输出预算分别为128、512、128个 token；记忆容量均为64条。",
+      "limits": "反馈来自整次任务的成败，论文没有把同一任务换成其他记忆重跑。因此，评分学到的是与成功相关的选择规律，不能直接确定某条记忆单独贡献了多少。",
+      "transfer": "做自己的 Agent 记忆实验，可以把“没有记忆”“只按相似度检索”“按执行反馈选择”放在相同输出与工具预算下比较，看看增益究竟来自多给资料，还是更会选资料。",
+      "take": "有限预算下，选择经验也是需要学习的能力。",
+      "counter": {
+        "q": "它是在继续训练大模型吗？",
+        "a": "没有。更新的是外部的记忆评分与管理机制；负责执行任务的大模型参数保持不变。"
+      },
+      "sources": [
+        [
+          "原论文 · 10月19日首发，10月21日修订",
+          "https://arxiv.org/html/2610.26453v2"
+        ],
+        [
+          "作者代码",
+          "https://github.com/AIGNLAI/TokenWorth"
+        ]
+      ]
+    },
+    {
+      "id": "hybrid-reasoning-agents",
+      "cat": "ai",
+      "topic": "推理与工具使用",
+      "symbol": "⇄",
+      "method": "Hybrid Reasoning Agents",
+      "year": "2026-10-13 首发 · 预印本",
+      "publishedOn": "2026-10-13",
+      "addedOn": "2026-11-02",
+      "time": 4,
+      "title": "让 Agent 少写一些思考文字，同时保留工具调用",
+      "desc": "内部用连续向量计算，搜索、执行代码和交付答案时再回到文字。",
+      "scenario": "Agent 要一边推理，一边搜索或运行代码。",
+      "bottleneck": "逐字写出全部思考需要时间；但工具又需要明确的文字指令。",
+      "lead": "会用工具的 Agent 通常先生成一段思考，再写出搜索词或代码，拿到结果后继续生成文字。HybridAgent 想省掉其中一部分“把思考写成字”的步骤，同时保留正常的工具接口。\n\n它加了一个小型转换模块，把模型内部的向量变成下一步可以继续处理的输入。需要搜索、运行代码或给答案时，再切回文字；工具返回后，也保留此前的向量和文字上下文继续推理。团队先用示范训练这种切换，再通过强化学习改进任务表现。\n\n原文以相同 Qwen3-8B 底座和训练预算比较：MATH500 准确率从文字推理 GRPO 的82.0%升到84.6%。效率图中，8B模型平均总生成步数由约2300降至1100，后者已经把向量计算的步骤算在内。它需要专门训练和推理支持，不是隐藏思考文本就能得到的加速。",
+      "insight": "外部工具需要可读的指令，但模型内部的每一步计算未必都要先变成一个词。",
+      "steps": [
+        [
+          "把内部状态接回模型输入",
+          "HybridLink 是一个轻量转换模块，负责把末层隐藏向量映射回输入空间，减少直接接回去时的表示差异。"
+        ],
+        [
+          "在交互时保留完整上下文",
+          "连续向量、已生成文字与工具返回一起进入后续计算，避免每次调用工具后只剩文字记录。"
+        ],
+        [
+          "训练何时切换",
+          "先通过示范学习混合生成，再用答案正确性、格式和工具使用的奖励优化；推理预算同时计算文字位置和向量计算步骤。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "少输出文字，是否真的减少了计算步骤？",
+        "text": "原文 Figure 6 的8B结果：纯文字基线约2300步，混合模式约1100步，其中约37%是连续向量步骤。只数可见文字会高估省下来的计算，因此图里把两类步骤都列出来。"
+      },
+      "evidence": "Table 2 的8B对照中，MATH500 为GRPO 82.0%、HybridAgent RL 84.6%；多跳问答MuSiQue为27.5%与32.0%。数学与搜索任务的生成预算均把文字和向量步骤计入。",
+      "limits": "每个向量步骤仍然要运行主模型。论文里的美元成本是按硬件价格和利用率估算的生成计算成本，不包含输入预处理和外部工具；这里不把它当成完整服务账单。",
+      "transfer": "研究推理加速时，可以同时记录可见文字数、总模型步数和端到端耗时，避免把“写得少”直接等同于“算得少”。",
+      "take": "保留工具接口，改变内部推理的表达方式。",
+      "counter": {
+        "q": "把这些向量翻译成文字，就能完整看懂模型在想什么吗？",
+        "a": "论文尝试用最接近的词来观察向量，但这种读出是对内部表示的近似解释，不是完整思维过程的逐字记录。"
+      },
+      "images": [
+        {
+          "src": "assets/2026-11-02/hybrid-generation.png",
+          "alt": "HybridAgent 在4B、8B和14B模型上的文字与连续向量生成步数对比",
+          "caption": "原文 Figure 6：混合模式的深蓝部分是文字，浅蓝部分是连续向量步骤；两者相加才是总生成步数。",
+          "credit": "Zou 等，Hybrid Reasoning Agents · CC BY 4.0",
+          "sourceUrl": "https://arxiv.org/html/2610.18861v1#S5.F6",
+          "originalUrl": "https://arxiv.org/html/2610.18861v1/token_effeciency.png",
+          "placement": "details"
+        }
+      ],
+      "sources": [
+        [
+          "原论文 · 10月13日首发",
+          "https://arxiv.org/html/2610.18861v1"
+        ]
+      ]
+    },
+    {
+      "id": "crossmean",
+      "cat": "merge",
+      "topic": "模型合并与特征变化",
+      "symbol": "⋈",
+      "method": "CrossMean",
+      "year": "2026-10-10 首发 · 预印本",
+      "publishedOn": "2026-10-10",
+      "addedOn": "2026-11-02",
+      "time": 3,
+      "title": "合并后，每层收到的输入变了：CrossMean 怎样补上这个差异",
+      "desc": "把合并模型的实际输入，与专家模型原本产生的输出对应起来。",
+      "scenario": "把同一底座微调出的多个专家合成一个模型。",
+      "bottleneck": "前面的层合并后，后面的层收到的特征也随之改变。",
+      "lead": "有些合并方法会收集每个专家的中间特征，再求出各层的合并权重。但真正运行合并模型时，前面的层已经变了，后面收到的输入也不再是原专家的输入。\n\nCrossMean 同时读取同一样本经过合并前缀和专家前缀的特征，让新层在实际会收到的输入上，尽量恢复专家的输出。实现还平均了合并前缀、原专家前缀及两者中点的统计量。\n\n论文在 ViT-B/32 的8个图像任务上合并全部线性层，平均准确率为84.4%；RegMean为80.4%，逐层重新测量合并输入的对照为82.5%。它需要校准样本，并增加合并时的计算。",
+      "insight": "保留专家权重之外，还要处理“这些权重现在接到了什么输入”。",
+      "steps": [
+        [
+          "同一样本走两条路径",
+          "分别记录合并前缀与专家前缀产生的特征，保持样本对应。"
+        ],
+        [
+          "按层匹配输出",
+          "以合并输入作为新层的输入，以专家侧输出作为目标，求解线性系统；实际方法对三个插值位置取平均。"
+        ]
+      ],
+      "example": {
+        "label": "教学算例",
+        "title": "权重没错，输入翻倍也会改变输出",
+        "text": "设专家某层原本收到2，权重是3，输出为6。合并前面的层后，同一样本传来的值变成4，照搬权重3就会输出12。若这个简化例子仍以6为目标，新层权重应为1.5。真实网络是多维、多样本情形；这个算例只说明为什么要一起考虑输入与目标。"
+      },
+      "evidence": "上述数字来自 Table 3，同一批专家、每任务256张无标签校准图像，报告三个校准种子的平均测试准确率。",
+      "limits": "无标签不等于不用数据。另一个 ViT-B/32 八任务成本实验中，CrossMean 合并耗时为 RegMean 的31.2倍；这是离线合并成本，不是部署推理变慢。",
+      "transfer": "比较合并方法时，把“只更新输入统计”和“同时重新配对目标”分开做对照，才能判断改动究竟解决了哪一部分偏差。",
+      "take": "合并改变了中间特征，也就改变了后续层要解决的问题。",
+      "counter": {
+        "q": "校准不使用标签，是否意味着整个流程不需要验证数据？",
+        "a": "不意味着。要分别检查采集统计、选择参数和报告结果时用了什么数据，不能只看“无标签校准”这个描述。"
+      },
+      "sources": [
+        [
+          "原论文 · 10月10日首发",
+          "https://arxiv.org/html/2610.14762v1"
+        ]
+      ]
+    },
     {
       "id": "speculative",
       "aliases": "推测解码 推测采样 speculative sampling",
@@ -1256,7 +1419,7 @@ window.LEARNING_DATA = {
       "topic": "推理加速",
       "symbol": "⇢",
       "method": "Speculative Decoding",
-      "year": "ICML 2023",
+      "year": "ICML 2023 · 经典回看",
       "time": 8,
       "title": "小模型先起草，为什么能给大模型加速？",
       "desc": "把串行生成变成批量验证，再用概率校正保住目标分布。",
@@ -1300,7 +1463,8 @@ window.LEARNING_DATA = {
           "原论文 · 方法 §2、速度分析 §3、实验 §4",
           "https://proceedings.mlr.press/v202/leviathan23a/leviathan23a.pdf"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "flash-attention",
@@ -1308,7 +1472,7 @@ window.LEARNING_DATA = {
       "topic": "高效计算",
       "symbol": "▦",
       "method": "FlashAttention",
-      "year": "2022",
+      "year": "2022 · 经典回看",
       "time": 6,
       "title": "算得更多，为什么反而能跑得更快？",
       "desc": "瓶颈在数据搬运时，重排计算比少做乘法更有效。",
@@ -1347,7 +1511,8 @@ window.LEARNING_DATA = {
           "原论文 · §3.1 分块与重算、Algorithm 1",
           "https://arxiv.org/html/2205.14135v2"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "ties",
@@ -1355,7 +1520,7 @@ window.LEARNING_DATA = {
       "topic": "干扰与聚合",
       "symbol": "⋈",
       "method": "TIES-Merging",
-      "year": "NeurIPS 2023",
+      "year": "NeurIPS 2023 · 经典回看",
       "time": 6,
       "title": "合并之前，为什么先决定往哪边改？",
       "desc": "把“选方向”和“算幅度”拆开，避免相反更新在平均中抵消。",
@@ -1394,7 +1559,8 @@ window.LEARNING_DATA = {
           "原论文 · Algorithm 1、§4.2、§7.3",
           "https://arxiv.org/html/2306.01708v2"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "dpo",
@@ -1402,7 +1568,7 @@ window.LEARNING_DATA = {
       "topic": "偏好学习",
       "symbol": "⇌",
       "method": "Direct Preference Optimization",
-      "year": "2023",
+      "year": "2023 · 经典回看",
       "time": 5,
       "title": "能不能把训练流程中的一个模型消掉？",
       "desc": "把奖励改写成概率比，让难算的归一化项在比较中抵消。",
@@ -1441,7 +1607,8 @@ window.LEARNING_DATA = {
           "原论文 · §4 与附录 A 的推导",
           "https://arxiv.org/html/2305.18290v3"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "lora",
@@ -1449,7 +1616,7 @@ window.LEARNING_DATA = {
       "topic": "高效微调",
       "symbol": "⊞",
       "method": "LoRA",
-      "year": "2021",
+      "year": "2021 · 经典回看",
       "time": 4,
       "title": "要适配新任务，真的需要改动整张参数表吗？",
       "desc": "把任务变化限制在低秩更新中，缩小需要训练的自由度。",
@@ -1488,7 +1655,8 @@ window.LEARNING_DATA = {
           "原论文 · Low-Rank Adaptation",
           "https://arxiv.org/abs/2106.09685"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "self-consistency",
@@ -1496,7 +1664,7 @@ window.LEARNING_DATA = {
       "topic": "推理策略",
       "symbol": "∴",
       "method": "Self-Consistency",
-      "year": "ICLR 2023",
+      "year": "ICLR 2023 · 经典回看",
       "time": 4,
       "title": "思路不一致，为什么答案反而可以更可靠？",
       "desc": "采样不同推理路径，在答案层聚合，而不挑看起来最顺的一条。",
@@ -1535,7 +1703,8 @@ window.LEARNING_DATA = {
           "原论文 · 多路径采样与答案聚合",
           "https://arxiv.org/abs/2203.11171"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "react",
@@ -1543,7 +1712,7 @@ window.LEARNING_DATA = {
       "topic": "智能体设计",
       "symbol": "↗",
       "method": "ReAct",
-      "year": "ICLR 2023",
+      "year": "ICLR 2023 · 经典回看",
       "time": 4,
       "title": "为什么要让“思考”被外部结果打断？",
       "desc": "把推理与行动交错，让下一步能被新证据改变。",
@@ -1582,7 +1751,8 @@ window.LEARNING_DATA = {
           "原论文 · ReAct",
           "https://arxiv.org/abs/2210.03629"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "rag-design",
@@ -1590,7 +1760,7 @@ window.LEARNING_DATA = {
       "topic": "外部知识",
       "symbol": "▧",
       "method": "Retrieval-Augmented Generation",
-      "year": "NeurIPS 2020",
+      "year": "NeurIPS 2020 · 经典回看",
       "time": 4,
       "title": "知识一定要全装进模型参数里吗？",
       "desc": "把可检索的知识与生成能力拆开，并对多个候选证据建模。",
@@ -1629,7 +1799,8 @@ window.LEARNING_DATA = {
           "原论文 · RAG-Sequence 与 RAG-Token",
           "https://arxiv.org/abs/2005.11401"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "dare",
@@ -1637,7 +1808,7 @@ window.LEARNING_DATA = {
       "topic": "稀疏化与补偿",
       "symbol": "⋯",
       "method": "DARE",
-      "year": "ICML 2024",
+      "year": "ICML 2024 · 经典回看",
       "time": 5,
       "title": "随机扔掉很多更新，为什么还要把剩下的放大？",
       "desc": "稀疏化负责删减，重缩放负责补偿平均改动。",
@@ -1676,7 +1847,8 @@ window.LEARNING_DATA = {
           "原论文 · Language Models are Super Mario",
           "https://arxiv.org/abs/2311.03099"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "task-arithmetic",
@@ -1684,7 +1856,7 @@ window.LEARNING_DATA = {
       "topic": "任务表示",
       "symbol": "±",
       "method": "Task Arithmetic",
-      "year": "ICLR 2023",
+      "year": "ICLR 2023 · 经典回看",
       "time": 4,
       "title": "为什么要合并“变化”，而不是直接相加模型？",
       "desc": "把共享底座剥离出来，用任务向量表达训练带来的改动。",
@@ -1723,7 +1895,8 @@ window.LEARNING_DATA = {
           "原论文 · Editing Models with Task Arithmetic",
           "https://arxiv.org/abs/2212.04089"
         ]
-      ]
+      ],
+      "classic": true
     },
     {
       "id": "samaya-sterling",
@@ -1775,7 +1948,8 @@ window.LEARNING_DATA = {
           "团队原文 · 2026-10-28",
           "https://samaya.ai/blog/rl-post-trained-agentic-model"
         ]
-      ]
+      ],
+      "publishedOn": "2026-10-28"
     },
     {
       "id": "model-soups",
@@ -1831,7 +2005,14 @@ window.LEARNING_DATA = {
           "作者代码",
           "https://github.com/mlfoundations/model-soups"
         ]
-      ]
+      ],
+      "classic": true
     }
-  ]
+  ],
+  "freshnessPolicy": {
+    "preferredDays": 30,
+    "fallbackDays": 60,
+    "classicOnHomepage": false,
+    "updatedOn": "2026-11-02"
+  }
 };
