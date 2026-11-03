@@ -1,5 +1,227 @@
 window.FEED_DATA = [
   {
+    "id": "local-invoice-workflow-20261103",
+    "source": "sammyranks · 本地编程实践",
+    "avatar": "s",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "个人实践",
+    "kind": "opinion",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-02",
+    "time": "11 月 2 日",
+    "title": "几乎不会写代码的用户，把五年开票资料搬进了自制应用",
+    "summary": "用户 sammyranks 原本每年付100美元使用在线开票软件。他想把这项日常工作留在自己的电脑上，于是用本地 Qwen 模型配合 OpenCode，做了一款桌面应用。\n\n他的主要操作是发截图、描述想要的功能，让编程助手写代码和修问题。除了生成报价单、转成账单和导出 PDF，他还让助手做了导入工具，把五年多的旧资料搬进新应用；原软件没有的深色模式，也一并加了进去。\n\n作者展示了开票界面，并说自己已用上这些功能。应用含有他的业务资料，没有公开代码。",
+    "body": "LM Studio 负责在本机运行模型，OpenCode 负责读写项目、运行工具和修代码。作者使用的是现有 RTX 5090 32GB 显卡、96GB 内存的电脑。\n\n长时间开发时，OpenCode 会压缩旧对话，保留继续工作所需的信息。作者报告对话通常维持在约5.7万至9万 token，而不是每次都从头解释项目。",
+    "detailLabel": "模型、编程工具与旧对话怎样分工",
+    "links": [
+      {
+        "label": "作者演示与讨论",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xm0i9m/made_my_own_invoicing_dekstop_app_with_qwen_38/"
+      }
+    ],
+    "images": [],
+    "comments": [
+      {
+        "author": "sammyranks",
+        "role": "原帖作者",
+        "date": "读取于 11 月 3 日（北京时间）",
+        "text": "作者估算开发期间多用了约15美元电费；此前的软件订阅是每年100美元。这个估算只谈电费，没有把现有电脑的购置成本计入。",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xm0i9m/made_my_own_invoicing_dekstop_app_with_qwen_38/",
+        "linkLabel": "原帖入口",
+        "evidence": "作者估算",
+        "mode": "翻译摘编",
+        "context": "原帖作者 · 回复开发成本的追问"
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "发截图、描述想要的功能",
+        "把五年多的旧资料搬进新应用"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-03"
+  },
+  {
+    "id": "anthropic-short-term-compute-20261103",
+    "source": "Anthropic · 官方披露",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "商业与成本",
+    "tags": [
+      "商业与成本"
+    ],
+    "date": "2026-11-02",
+    "time": "11 月 2 日 · 补读",
+    "title": "Anthropic 的算力效率在提高，短期采购却压低了利润率",
+    "summary": "Anthropic 在11月2日更新的上市文件里披露：第三季度使用了50亿美元的短期合同算力，同等算力的价格明显高于多年合同。这部分开销抵消了一部分训练和推理优化带来的节省。\n\n按公司剔除部分费用后的调整口径，季度经营利润从22亿升至25亿美元，但经营利润率从19%降到15%。公司把利润率回落主要归因于这批短期算力。\n\n它的应对是逐步加入直接租芯片、由专门设施托管的采购方式：先锁定建设较慢的机房，等需求更明确再投入芯片。随着这些设施上线，再替换需求高峰期间采购的昂贵短期算力。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "11月2日披露文件 · 算力效率与投入",
+        "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026068676/anthropicpbc-sx1ax1.htm"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "同等算力的价格明显高于多年合同",
+        "先锁定建设较慢的机房，等需求更明确再投入芯片"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-03"
+  },
+  {
+    "id": "v100-long-prompt-bottleneck-20261103",
+    "source": "TumbleweedNew6515 · 部署实测",
+    "avatar": "T",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "个人实践",
+    "kind": "opinion",
+    "topic": "推理与部署",
+    "tags": [
+      "推理与部署"
+    ],
+    "date": "2026-11-03",
+    "time": "11 月 3 日",
+    "title": "四张旧 V100 能流畅生成，长提示词仍要先等一分钟",
+    "summary": "一位开发者把 DeepSeek V4.1 Flash 的量化版本跑在四张32GB V100上。显存装不下的专家参数——模型按需选用的子网络——放在系统内存里，使用时再搬到显卡；另有草稿模型帮助加快输出。\n\n在关闭思考、一次处理一个请求的测试中，8千 token 提示词的生成速度是38.3 token/秒，等首个输出要6.6秒；输入加长到7.5万 token，生成仍有35.8 token/秒，但最初等待变成69.1秒。流式输出看起来很顺，并不意味着整次请求很快。\n\n他还查到一个搬运瓶颈：四张卡共用一条通向主机的连接。单卡搬数据能到6.5GB/秒，四卡同时搬时合计只有12.9GB/秒，平均每卡反而降到约3.2GB/秒。下一步计划扩到八卡测试，目前还没有扩容后的结果。",
+    "body": "测试机器另有256GB系统内存，约三分之一专家权重按需从内存搬到显卡；运行社区的 1Cat-vLLM 分支，并使用5个草稿 token 的推测解码。正文生成速度取三次运行的中位数，每次请求使用不同缓存标识，避免复用前一次提示词缓存。",
+    "detailLabel": "机器配置与计时条件",
+    "links": [
+      {
+        "label": "完整配置与实测记录",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xmcibh/gpu_lawyer_deepseek_41_flash_1018_on_4_32gb_v100s/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "最初等待变成69.1秒",
+        "四张卡共用一条通向主机的连接"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-03"
+  },
+  {
+    "id": "minimax-maya-calibration-20261103",
+    "source": "PeasantSmith · Project Maya",
+    "avatar": "P",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "个人实践",
+    "kind": "opinion",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-02",
+    "time": "11 月 2 日 · 补读",
+    "title": "MiniMax 的93GB版本，把更多精度留给敏感层",
+    "summary": "MiniMax 的428B模型需要大量内存。社区作者 PeasantSmith 为128GB内存的电脑做了 Maya-XS 量化版本，模型占用约93GB；运行时由 Project Maya 把常用专家留在显卡，其余交给系统内存和 CPU。\n\n压缩时没有给所有层一刀切地设相同精度。作者先用工具调用、代码、推理和聊天文本测量各层的敏感程度，再把更多位数留给损失大的部分；校准后面的层时，还会使用前面已经压缩过的层实际产生的输入。\n\n在留出的工具调用与 Agent 对话中，压缩版与原版选择同一个下一词的比例为88.8%；更大的122.4GB版本为92.1%。这是逐词一致性测试，真正完成任务的表现还需要另测。MiniMax 已在官方帖里介绍并感谢这项社区工作。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "作者量化方法与分项测试",
+        "url": "https://huggingface.co/peasantsmith/MiniMax-M3.1-Flash-Maya-GGUF"
+      },
+      {
+        "label": "MiniMax 官方介绍 · 11月2日北京时间",
+        "url": "https://x.com/MiniMax_AI/status/2116996123164569606"
+      }
+    ],
+    "images": [],
+    "comments": [
+      {
+        "author": "LegacyRemaster",
+        "role": "普通评论者",
+        "date": "读取于 11 月 3 日（北京时间）",
+        "text": "这位使用者说，他们的配置只能把64K上下文缓存放在显存，剩余部分放系统内存。上下文变长后，缓存与专家参数都要占用显存和主机传输带宽，压小权重只是部署的一部分。",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xm0b7r/builders_got_minimax_m31_flashs_open_weights_from/",
+        "linkLabel": "原帖入口",
+        "evidence": "个人配置经验",
+        "mode": "翻译摘编",
+        "context": "普通评论者 · 补充自己的上下文缓存放置方式"
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把更多位数留给损失大的部分",
+        "前面已经压缩过的层实际产生的输入"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-03"
+  },
+  {
+    "id": "lfm3-quant-memory-20261103",
+    "source": "crusaderky · 量化测试",
+    "avatar": "c",
+    "avatarClass": "reddit",
+    "channel": "reddit",
+    "evidence": "个人实践",
+    "kind": "opinion",
+    "topic": "推理与部署",
+    "tags": [
+      "推理与部署"
+    ],
+    "date": "2026-11-03",
+    "time": "11 月 3 日",
+    "title": "1.7B 模型的显存账：权重之外，长上下文也占了一大块",
+    "summary": "开发者 crusaderky 把 LFM3-1.7B 的权重压缩和上下文缓存压缩一起测，想找到小显存机器上的合适配置。他给出的256K上下文方案约占3.6GiB显存：权重约1.4GiB，上下文缓存约1.1GiB，临时计算空间又约1.1GiB。只看模型下载文件的大小，会漏掉后两笔。\n\n继续压到约2.2GiB时，需要把上下文减到128K，进一步降低权重与缓存精度，并保留最近1,024个 token 的高精度缓存。作者在 RTX 3090 上观察到，这种更激进的缓存处理使读取提示词约慢了三倍。它省下的是显存，付出的还包括等待时间。",
+    "body": "3.6GiB方案使用 bartowski 的 Q6_K_S 权重，K/V缓存分别用 q6_0 和 q5_0；q6_0需要 BeeLLaMA.cpp 支持。2.2GiB方案改用 Q4_K_M 权重、q4_0/q3_0缓存，并保留高精度尾部。\n\n报告比较的是压缩前后下一词概率、首选词及采样结果的差异。报告中的“接近无损”指这些逐词指标接近原版。图的横轴只计权重和缓存，没有计临时计算空间。",
+    "detailLabel": "两套配置与原始质量曲线",
+    "links": [
+      {
+        "label": "完整量化报告",
+        "url": "https://github.com/crusaderky/pixi-llm-recipes/blob/main/perplexity/LFM3-1.7B/README.md"
+      },
+      {
+        "label": "作者讨论帖",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xme6c5/lfm317b_quantization_report_36_gb_vram_lossless/"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-03/lfm-quantization.png",
+        "alt": "LFM3量化配置的显存占用与采样一致性曲线",
+        "caption": "作者报告的采样一致性曲线。横轴按256K上下文计算权重与缓存，不含临时空间；纵轴不是任务准确率。",
+        "credit": "crusaderky · 原始量化报告",
+        "sourceUrl": "https://github.com/crusaderky/pixi-llm-recipes/blob/main/perplexity/LFM3-1.7B/README.md",
+        "originalUrl": "https://raw.githubusercontent.com/crusaderky/pixi-llm-recipes/main/perplexity/LFM3-1.7B/report.same-sampled.png",
+        "placement": "details"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "只看模型下载文件的大小，会漏掉后两笔",
+        "读取提示词约慢了三倍"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-03"
+  },
+  {
     "id": "glb-3d-coder-20261102",
     "source": "CCORE · 小模型开发者",
     "avatar": "C",
@@ -1188,6 +1410,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-03",
+    "edition": 6,
+    "title": "做成自己的工具，也算清运行的代价",
+    "intro": "一位用户用本地模型把五年的开票资料迁进自制应用；Anthropic 的新披露则说明，算法省下的算力可能被昂贵的短期采购抵消。今天还看三份部署与压缩记录，以及 RidgeFill 怎样缩短读长文时的等待。",
+    "coverage": "本次优先检查北京时间11月2日22:27至11月3日09:15的新内容；另补读11月2日的 Anthropic 披露和 MiniMax 社区量化，均未在往期报道。实际读取 Reddit 最新列表与6个讨论串、X搜索与MiniMax官方帖及回复、小红书搜索；核对作者技术报告、模型页、SEC披露及RidgeFill论文。小红书本次未选到合适的新内容，未读新笔记正文和评论；脉脉后台页面连接超时，未读取新帖、职言或评论。研究新增整理RidgeFill：技术说明10月5日首发，11月2日发布含新测量的完整论文；没有把它算成11月2日首次提出的方法。",
+    "question": "你正在优化的系统里，用户真正等得最久的是哪一步：读输入、搬数据，还是生成答案？",
+    "id": "2026-11-03",
+    "count": 5
+  },
+  {
     "date": "2026-11-02",
     "edition": 5,
     "title": "让生成的素材能用，让等待的时间变短",
@@ -1237,19 +1469,89 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-02T22:22:54+08:00",
+  "updatedAt": "2026-11-03T09:16:20+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
-  "latestDate": "2026-11-02",
-  "latestId": "2026-11-02"
+  "latestDate": "2026-11-03",
+  "latestId": "2026-11-03"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "tokenworth",
-    "hybrid-reasoning-agents"
+    "ridgefill",
+    "crossmean"
   ],
   "entries": [
+    {
+      "id": "ridgefill",
+      "cat": "ai",
+      "topic": "长上下文推理",
+      "symbol": "↦",
+      "method": "RidgeFill",
+      "year": "2026-10-05 首发 · 11-02 完整论文",
+      "publishedOn": "2026-10-05",
+      "revisedOn": "2026-11-02",
+      "addedOn": "2026-11-03",
+      "time": 5,
+      "title": "RidgeFill 少算一部分深层网络，缩短读长文的等待",
+      "desc": "先估计后面各层需要的输入，对容易出错的部分保留完整计算。",
+      "scenario": "让模型阅读很长的资料后回答问题，用户往往在第一个字出现前就要等很久。",
+      "bottleneck": "传统处理会让提示词中的每个 token 经过全部模型层，长输入的启动成本很高。",
+      "lead": "模型回答长文问题之前，先要读完输入，并建立之后生成答案要用的缓存。RidgeFill 把这段处理拆开：前面的层照常算，后面的大部分层改用一个线性映射估计输入，再让原层写入缓存，从而省去部分完整计算。映射用少量校准文本一次求出，不需要反复微调大模型。\n\n但近似会漏掉细节。作者早期让模型找回藏在长文里的数字，发现它能抄对前面几位，却弄错最后一位。于是让部分重要位置和末尾一段文字继续走完整网络，正式生成答案时也照常计算。\n\n在单张 A100 的 Qwen3.8-27B 测试中，处理65,536个 token 的等待从60.50秒降到46.28秒，代价是多占约2.2GiB显存。另一组32K长文本测试的平均得分从87.85降到86.42；其中提取常见词的子任务掉分更明显。10月初技术说明之后，11月2日完整论文补上了27B部署测量、逐任务结果和误差分析。",
+      "insight": "把计算省在多数位置，把精确计算留给容易影响答案的部分；节省多少，要和具体任务的损失一起看。",
+      "steps": [
+        [
+          "用校准文本建立对应关系",
+          "运行原模型，同时记录中间层状态和后面每层的真实输入；用带正则项的线性回归求出映射。这里仍然需要数据，只是不做反复梯度训练。"
+        ],
+        [
+          "大部分位置走近似，少数位置照常算",
+          "27B配置先完整计算前16层；后48层的大部分位置使用预测输入。最后4,096个 token，以及探测器等规则挑选的位置保留完整计算。"
+        ],
+        [
+          "检查平均分藏住了什么",
+          "除了总分，作者把近似缓存的键或值分别换回原版，观察误差如何变化；也单独测需要从远处复制数字、名字等内容的题目。不同模型中，主要误差所在的部分并不相同。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "平均只降1.4分，个别任务降了13.5分",
+        "text": "Qwen3.8-27B 的32K RULER测试包含13类任务、每类20题。平均得分从87.85降到86.42，但常见词提取一项从82.0降到68.5。这类题要求从长词表中找出出现次数最多的词。作者还发现，近似版在该项中更容易用完输出长度预算。"
+      },
+      "evidence": "速度来自同一张 A100 PCIe 40GB、同一 Q4_K_XL 权重和相同运行设置的比较，关闭提示词缓存复用；预热后取三次中位数，映射常驻显存。Table 8 给出65,536-token时间60.50秒和46.28秒，峰值显存增加2,270MiB。Table 9/10给出正文的32K质量结果。",
+      "limits": "加速发生在读提示词阶段，逐字生成仍运行完整模型。长文本总分对照存在统计波动，不能把平均分接近当成所有任务都保持不变。",
+      "transfer": "如果尝试用线性映射替代部分计算，除了看整体损失，还可以放入必须精确复制数字或标识符的测试，定位哪些位置值得恢复完整计算。",
+      "take": "平均误差不大，不代表关键细节不会丢。",
+      "counter": {
+        "q": "为什么保留完整的最后一段还不够？",
+        "a": "需要回答的信息可能藏在更早的段落。尾部完整计算无法自动修复早先写错的缓存，所以方法还会选择部分前缀位置精确计算。"
+      },
+      "images": [
+        {
+          "src": "assets/2026-11-03/ridgefill-method.png",
+          "alt": "KVA与RidgeFill从中间层状态生成后续缓存的两种方法",
+          "caption": "原文图2：右侧RidgeFill先预测后层的输入，再经过原层的投影生成缓存；左侧对照直接预测缓存。精确计算的位置不走映射。",
+          "credit": "Dylan Johnston、Robert P Smith · CC BY 4.0",
+          "sourceUrl": "https://approximate-science.github.io/ridgefill/",
+          "originalUrl": "https://approximate-science.github.io/ridgefill/assets/fig/fig_fill_vs_kva.png",
+          "placement": "details"
+        }
+      ],
+      "sources": [
+        [
+          "完整论文 · 2026年11月2日",
+          "https://approximate-science.github.io/ridgefill/assets/RidgeFill.pdf"
+        ],
+        [
+          "技术说明 · 2026年10月5日首发",
+          "https://doi.org/10.5281/zenodo.23179168"
+        ],
+        [
+          "项目页与实验表格",
+          "https://approximate-science.github.io/ridgefill/"
+        ]
+      ]
+    },
     {
       "id": "tokenworth",
       "cat": "ai",
