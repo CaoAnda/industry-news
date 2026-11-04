@@ -1,5 +1,237 @@
 window.FEED_DATA = [
   {
+    "id": "trl-mopd-token-balance-20261104",
+    "source": "Sergio Paniego · Hugging Face",
+    "avatar": "S",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方实践",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-03",
+    "time": "11 月 3 日",
+    "title": "题目占了两成，训练分量却只剩百分之几",
+    "summary": "Hugging Face 发布了用 TRL 做多教师蒸馏的示例：让同一个学生模型学习数学、代码和指令遵循三个专家。学生先自己作答，再由对应领域的老师逐词打分，训练学生向老师靠近。\n\n这次短跑暴露了一个配比问题。指令遵循题占20%，例如“写两段话，用星号隔开”；这类回答往往只有几百个 token，数学和代码却会写出几千个。损失按 token 平均后，指令遵循实际只分到约1%—3%的训练分量。日志里，学生持续接近数学和代码老师，与指令遵循老师的差距却没有稳定缩小。\n\n作者用四张 H200 跑了60步，指令遵循测试仍从67.5升到73.0。这个示例提供了可运行的多教师训练流程，也让人看到：安排了多少题，和这些题实际占多少训练权重，是两回事。",
+    "body": "学生与三个老师都来自 SmolLM3-3B 的同一监督微调起点。示例给每道题标上 teacher_id，只交给一个领域老师评分；各模型需要使用相同分词器。\n\n四张卡分别承担学生生成、两个较短回答的老师、代码老师、学生训练。60步只是演示短跑；正文的指令遵循分数是 IFEval 严格整题准确率。数学、代码、指令遵循的题目采样比例为40/40/20。",
+    "detailLabel": "四张卡怎样分工，分数怎样计算",
+    "links": [
+      {
+        "label": "原文与测试细节",
+        "url": "https://huggingface.co/blog/sergiopaniego/mopd-trl"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-04/mopd-tokens.png",
+        "alt": "三类任务的训练token占比，以及学生与各老师的分布差距",
+        "caption": "上图绿线区域是指令遵循的实际训练份额，虚线是它20%的题目占比；下图显示学生与各老师的差距。两种“配比”并不相同。",
+        "credit": "Sergio Paniego · Hugging Face 原文",
+        "sourceUrl": "https://huggingface.co/blog/sergiopaniego/mopd-trl",
+        "originalUrl": "https://cdn-uploads.huggingface.co/production/uploads/61929226ded356549e20c5da/xbYmQp1qSwjVv0p1uAMXV.png",
+        "placement": "inline"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "损失按 token 平均",
+        "实际只分到约1%—3%的训练分量"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-04"
+  },
+  {
+    "id": "realshop-cad-production-20261104",
+    "source": "Harry Peng · Afterlight",
+    "avatar": "H",
+    "avatarClass": "reddit",
+    "channel": "interview",
+    "evidence": "作者实测",
+    "kind": "opinion",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-03",
+    "time": "11 月 3 日",
+    "title": "模型把弯曲外壳画成了实心块：228份工厂图纸的测试",
+    "summary": "Afterlight 想测的是一件很具体的事：把工厂的二维零件图交给 AI，它能否还原出正确的三维零件？团队从客户授权的生产资料中选了228份图纸，让 Claude Opus 5.5 用 CAD 工具建模，每件最多尝试30分钟或60轮操作。\n\n按团队设定的形状、体积和尺寸标准，87件通过，约占38%；复杂零件只通过4/46。一个直观失败是弯曲外壳：模型保留了圆孔，却把周围的曲面做成了棱柱。另一个电机支架形状已经很接近，整体尺寸仍差了0.85毫米。\n\n这里评分的是与原生产模型的几何匹配，尚未检查加工刀路。有些真实图纸还会把曲面细节留给配套三维文件，而测试只给二维图；这也解释了为什么工厂资料比信息完整的简单练习难。团队目前开放的是评测与数据合作，还没有给出修复后的模型。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与测试细节",
+        "url": "https://tryafterlight.com/research/realshop-cad"
+      },
+      {
+        "label": "作者原帖与追问",
+        "url": "https://x.com/MerkleAnders/status/2117638585096757554"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-04/realshop-example.jpg",
+        "alt": "真实弯曲外壳与Claude生成的棱柱状零件对比",
+        "caption": "上方是原生产零件，下方是 Claude Opus 5.5 根据同一份图纸建立的模型。圆孔保留了，外壳曲面却变成了直棱结构。",
+        "credit": "Harry Peng / Afterlight · 作者配图",
+        "sourceUrl": "https://x.com/MerkleAnders/status/2117503938648047843",
+        "originalUrl": "https://pbs.twimg.com/media/HWLilKRbwAAvy70.jpg",
+        "placement": "inline"
+      }
+    ],
+    "comments": [
+      {
+        "author": "Harry Peng（MerkleAnders）",
+        "role": "原帖作者",
+        "date": "11 月 4 日 03:41（北京时间）",
+        "text": "有人追问究竟是尺寸、符号还是备注读错了。作者回答：尺寸大多能读对，主要卡在把不同视图拼成同一个三维形状。",
+        "url": "https://x.com/MerkleAnders/status/2117703799251038234",
+        "linkLabel": "作者回复",
+        "evidence": "作者补充",
+        "mode": "翻译摘编",
+        "context": "原帖作者 · 回答错误主要发生在哪一步"
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "模型保留了圆孔，却把周围的曲面做成了棱柱",
+        "测试只给二维图"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-04"
+  },
+  {
+    "id": "openai-hardware-prototype-20261104",
+    "source": "OpenAI · 硬件团队",
+    "avatar": "O",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方实践",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-04",
+    "time": "11 月 4 日 · 北京时间",
+    "title": "两人用 AI 一周做出设备设计，送厂前仍反复改装配细节",
+    "summary": "OpenAI 两位成员把一个副项目交给 Astra：设计一台能与 Codex 对话的小设备。模型负责外壳和内部固定结构、元件选择与电路板布局，也生成界面、固件和软件连接。\n\n公司说，设计在不到一周内完成，代工厂随后用不到一个月做出小批原型。真正送去制造时，团队又做了几轮审查和修改：模型没有稳定考虑工厂的生产限制、尺寸公差和装配细节。\n\n这项实践正在进入更多日常环节。硬件团队用它把三维设计转成二维制造图、准备仿真；赛车合作方则测试把旧零件的扫描数据转成可编辑模型，解决原始设计文件缺失的问题。工程师会继续检查模型和图纸是否准确、能否制造。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与测试细节",
+        "url": "https://openai.com/index/accelerating-engineering-for-the-physical-world/"
+      },
+      {
+        "label": "官方发布帖",
+        "url": "https://x.com/OpenAI/status/2117692475775258785"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "模型没有稳定考虑工厂的生产限制、尺寸公差和装配细节",
+        "把旧零件的扫描数据转成可编辑模型"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-04"
+  },
+  {
+    "id": "soniox-agent-context-20261104",
+    "source": "Soniox · 语音识别",
+    "avatar": "S",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方实践",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-03",
+    "time": "11 月 3 日",
+    "title": "语音助手把自己说的话，也交给了语音识别模型",
+    "summary": "语音助手问完问题，用户常常只答几个字。Soniox 的例子是：助手问要改签到 Porto 还是 Faro，用户回答“Faro”。如果识别模型只听到用户这半句，就少了刚才两个候选地名的上下文。\n\n新发布的 STT v6 允许开发者把助手准备朗读的文字同步传给识别模型。它既用这些文字理解短回答，也用来区分用户声音和麦克风收进去的助手播报，减少助手被自己的声音打断、接着回答自己的循环。\n\n按官方介绍，助手说话时仍可持续听用户插话，功能已进入实时接口。对语音产品，这次变化是在识别环节补上对话另一半，而不是只换一个更会听单句的模型。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与测试细节",
+        "url": "https://soniox.com/blog/soniox-stt-v6"
+      }
+    ],
+    "images": [],
+    "comments": [
+      {
+        "author": "flomeindl",
+        "role": "普通评论者",
+        "date": "11 月 4 日 00:46（北京时间）",
+        "text": "这位开发者正在自己的测试流程里试 v6，报告德国邮编、出生年份和人名仍有识别问题。其新旧版本样本量不同，当前更适合把这些具体输入加入回归测试，不能直接据此比较整体准确率。",
+        "url": "https://x.com/flomeindl/status/2117659649092497607",
+        "linkLabel": "评论原文",
+        "evidence": "个人初测",
+        "mode": "翻译摘编",
+        "context": "普通评论者 · 在官方发布帖下反馈自己的德语测试"
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把助手准备朗读的文字同步传给识别模型",
+        "区分用户声音和麦克风收进去的助手播报"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-04"
+  },
+  {
+    "id": "qwen-raw-weights-games-20261104",
+    "source": "Simon Willison · 本地测试",
+    "avatar": "S",
+    "avatarClass": "reddit",
+    "channel": "interview",
+    "evidence": "作者实测",
+    "kind": "opinion",
+    "topic": "开发者实践",
+    "tags": [
+      "开发者实践"
+    ],
+    "date": "2026-11-04",
+    "time": "11 月 4 日 · 北京时间",
+    "title": "只读一串权重，笔记本上的 Qwen 猜中了三种游戏",
+    "summary": "一项新研究把小游戏策略网络的权重写成数字文本，让语言模型判断它学的是哪款游戏。Simon Willison 拿公开的四份输入，在笔记本上用约17GB的 Qwen 3.8 27B 量化版重试；这一轮不准运行代码或调用工具。\n\nQwen 认出了吃豆人、乒乓和打砖块，认错了 Freeway。吃豆人一次用了46分12秒、43,506个推理 token；乒乓和打砖块也分别花了约65分钟和52分钟。输入除权重之外相同，作者还公开了回答和推理记录。\n\n这次复测展示的是从小型策略网络的数值中判断用途。它没有修改模型，也没有训练新策略；成功样例需要长时间推理，适合继续检验模型究竟利用了权重里的哪些线索。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与测试细节",
+        "url": "https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "不准运行代码或调用工具",
+        "认出了吃豆人、乒乓和打砖块，认错了 Freeway"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-04"
+  },
+  {
     "id": "local-invoice-workflow-20261103",
     "source": "sammyranks · 本地编程实践",
     "avatar": "s",
@@ -1410,6 +1642,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-04",
+    "edition": 7,
+    "title": "从能生成，到交付得对",
+    "intro": "今天看两种容易被总分掩盖的落差：训练题目配得均匀，实际训练分量可能很偏；零件画得像，尺寸和曲面仍可能出错。另有硬件团队的工作记录、语音识别的新接法，以及一项让 AI 从问需求到交付数据库模型的近期研究。",
+    "coverage": "优先检查北京时间11月3日09:15至11月4日10:10的新内容；新增研究为11月2日首次公开的企业交付案例。实际读取 X 的4个官方或作者讨论串及回复、小红书12条搜索结果与1篇笔记正文，并核对技术博客、作者报告和论文全文。小红书候选是旧实践的转述，本期未入选；评论读取未取得可用结果。Reddit 后台接口两次返回非数据页面，未读取到新帖子；脉脉没有可复用页面，当前浏览器接口不支持后台建页，本期未覆盖职言或评论。",
+    "question": "你的模型通过公开测试后，还需要满足哪一条真实工作要求，才能算交付完成？",
+    "id": "2026-11-04",
+    "count": 5
+  },
+  {
     "date": "2026-11-03",
     "edition": 6,
     "title": "做成自己的工具，也算清运行的代价",
@@ -1469,19 +1711,69 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-03T09:16:20+08:00",
+  "updatedAt": "2026-11-04T10:24:24+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
-  "latestDate": "2026-11-03",
-  "latestId": "2026-11-03"
+  "latestDate": "2026-11-04",
+  "latestId": "2026-11-04"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "ridgefill",
+    "fde-enterprise-sql",
     "crossmean"
   ],
   "entries": [
+    {
+      "id": "fde-enterprise-sql",
+      "cat": "ai",
+      "topic": "Agent 与企业交付",
+      "symbol": "↗",
+      "method": "FDE Agents · 企业 Text-to-SQL",
+      "year": "2026-11-02 首发 · 预印本",
+      "publishedOn": "2026-11-02",
+      "addedOn": "2026-11-04",
+      "time": 5,
+      "title": "AI 会微调模型，却未必交得出客户能用的系统",
+      "desc": "从追问需求到部署验收，八组交付中只有两组同时过关。",
+      "scenario": "企业想让用户用自然语言查询数据库，并且免费提供这项功能。",
+      "bottleneck": "模型答题正确之外，还要满足数据库语法、CPU运行成本和响应时间。",
+      "lead": "客户只说：“想做个把问题转成 SQL（数据库查询语句）的模型，够准、别太慢、便宜。”研究者依据一次真实企业项目的记录，构造了模拟客户，让 AI 先追问需求，再微调并部署数据库查询模型。\n\n具体交付要同时满足三件事：公开开发集准确率至少60%，100条生产查询的语法编译失败不超过10条，CPU上至少九成请求的响应时间低于15秒。四个模型各试两种工作流，八组交付只有两组同时通过。\n\n最能说明问题的是 Grok 的一次自主交付：公开开发集拿到75.82%，100条生产查询却有13条连数据库编译都过不了。客户的表结构、SQL用法和提问方式，与公开测试不同。只盯公开分数，会漏掉系统在客户那里根本跑不通的错误。",
+      "insight": "把客户环境中的可执行性和响应时间纳入验收，才看得出“会做题”离“能交付”还有多远。",
+      "steps": [
+        [
+          "先问清楚，再留下书面要求",
+          "模拟客户掌握真实项目中整理的17条核心要求，以及6项尚未确定的决策。发现阶段与交付阶段分别测试；问出了要求，还要在最终交接文件里保留下来。"
+        ],
+        [
+          "同一任务比较两种工作方式",
+          "一种先固定计划再执行，另一种边做边调整。两种方式各有一组通过全部验收，没有哪种在这八组中全面胜出。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "准确、能运行、够快，三项一起验收",
+        "text": "Grok 自主交付的开发集准确率75.82%、CPU响应时间90分位9.24秒都达标，但生产查询编译失败13/100，超过10%的上限，因此整体未通过。"
+      },
+      "evidence": "论文 Table 2：四种模型 × 两种工作流，共8组交付；2组通过全部条件。生产查询共100条，CPU延迟做5轮测量。研究依据一个已完成的企业项目，客户对话由模型模拟。",
+      "limits": "作者建议人工复核需求、执行计划和环境配置，尚未报告这套干预完整实施后的通过率。",
+      "transfer": "做模型评测时，可以先列出部署中“一项失败就不能用”的条件，再与总体准确率一起报告；这些条件往往不会自动体现在公开基准里。",
+      "take": "交付标准应从用户环境中长出来。",
+      "counter": {
+        "q": "生产查询能编译，就算答对了吗？",
+        "a": "不算。编译只说明数据库接受这条 SQL 的语法，查询含义和返回结果还需要进一步验证。"
+      },
+      "sources": [
+        [
+          "原论文 · Table 2 与交付失败分析",
+          "https://arxiv.org/abs/2611.03551"
+        ],
+        [
+          "论文全文",
+          "https://arxiv.org/html/2611.03551v1"
+        ]
+      ]
+    },
     {
       "id": "ridgefill",
       "cat": "ai",
