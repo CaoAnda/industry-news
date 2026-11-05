@@ -1,5 +1,206 @@
 window.FEED_DATA = [
   {
+    "id": "together-persistent-compiler-20261105",
+    "source": "Together AI · 推理团队",
+    "avatar": "T",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "推理与部署",
+    "tags": [
+      "推理与部署"
+    ],
+    "date": "2026-11-04",
+    "time": "11 月 4 日",
+    "title": "让 AI 优化推理代码，先把每次试跑的等待缩短",
+    "summary": "Together 的推理团队发现，用户使用新模型两周后，输入长度会随 Agent 任务增多而明显增长，原先合适的优化方案也会过时。他们让多个 AI 编程助手持续尝试优化推理代码，却碰到一个瓶颈：每改一版，都要重新启动引擎、加载权重和预热。\n\n新系统 Together Compiler 把引擎一直留在内存里，只替换待测试的计算代码。原文的一组启动拆账中，从准备到可服务的等待由467秒变为9秒。它还分两轮测试：先只加载少数层快速筛选，再在更多层和真实输入分布上复核，避免一个小算子跑得快，放进完整模型却没收益。\n\n公司报告，在不到24小时的优化中，相比 InferenceX 已公布的开源引擎配置，部分模型设置的生成速度最高达到2.6倍。这次值得看的具体做法，是把“提出改法—测量—再修改”的实验循环做快，而不只让模型一次写出更好的代码。",
+    "body": "输入内容也会改变优化结果：混合专家模型会因任务不同，把工作分给不同专家；只用随机输入测速度，可能选错方案。Together 因此把快速筛选和接近完整服务的复核分开，并结合实测选择多卡分工。\n\n配图展示的是这套循环：流量变化触发重新优化，多位 Agent 提出候选代码，经过正确性与速度检查后组合有效改动，再部署最好的配置。",
+    "detailLabel": "为什么还要用真实输入复核",
+    "links": [
+      {
+        "label": "原文与实验设置",
+        "url": "https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-05/compiler-loop.png",
+        "alt": "Together Compiler从流量变化到多Agent优化、两级引擎测试和部署的循环",
+        "caption": "先在少数层上快速试，再在更多层上复核；模型权重与缓存留在引擎中，候选代码直接替换。图中百分比是流程示意。",
+        "credit": "Together AI · 原文 Figure 1",
+        "sourceUrl": "https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference",
+        "originalUrl": "https://cdn.prod.website-files.com/69654e88dce9154b5f12070c/6aeaef19bddbf4ee964def1a_02-compiler-loop%402x.png",
+        "placement": "details"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "只替换待测试的计算代码",
+        "先只加载少数层快速筛选"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-05"
+  },
+  {
+    "id": "breunig-routines-20261105",
+    "source": "Drew Breunig · AAIF",
+    "avatar": "D",
+    "avatarClass": "anthropic",
+    "channel": "interview",
+    "evidence": "具名经验",
+    "kind": "opinion",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-04",
+    "time": "11 月 4 日",
+    "title": "重复交给 AI 的事，可以逐渐变成自己的固定流程",
+    "summary": "Drew Breunig 分享了朋友的通勤助手：每天查骑行记录、日历里的第一场会议和渡轮班次，倒推出几点出门。最初需要大模型帮忙弄清规则，连“穿工作服骑得更慢”也是用过之后才补上的条件。\n\n他的做法是，先从与 Agent 的历史对话中找重复任务，再把步骤和修正写成可重复调用的说明文件。例如，他让 Claude Code 回看记录，找出了五类常做的事，其中一类是写代码前先调查项目、整理设计依据。\n\n流程稳定后，再把确定的步骤交给脚本，尝试用较小模型执行。他自己的助手已经采用 GLM 5.3 Flash 加 Python。积累下来的是具体要求和纠错记录，换模型时也能带走。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "作者经验原文",
+        "url": "https://aaif.io/blog/most-agentic-work-will-become-workflows"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把步骤和修正写成可重复调用的说明文件",
+        "把确定的步骤交给脚本"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-05"
+  },
+  {
+    "id": "kimi-k31-weights-20261105",
+    "source": "Moonshot AI · Kimi",
+    "avatar": "M",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "模型与产品",
+    "tags": [
+      "模型与产品"
+    ],
+    "date": "2026-11-05",
+    "time": "11 月 5 日 00:00 · 北京时间",
+    "title": "Kimi K3.1 Pro 的权重开放了，提供原生低精度部署格式",
+    "summary": "Kimi K3.1 Pro 此前已提供在线服务，现在模型仓库公开了完整权重：96个权重分片，仓库文件合计约1.56TB。模型共2.8万亿参数，每个 token 激活约1040亿参数，支持文本、图片和约100万 token 的上下文。\n\n这次文件采用 MXFP4 权重、MXFP8 激活值格式，并在训练时考虑量化误差。相较 K3，部分全注意力层也改为稀疏注意力，让长输入只重点查看选中的位置。需要自行部署的团队，现在有了可下载的模型和 vLLM、SGLang 等运行指引。\n\n接入多轮工具任务还有一个容易漏掉的要求：下一轮必须传回完整的助手消息，包括推理内容与工具调用，而不只是最后回答。模型卡给出了对应示例。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "模型卡与权重",
+        "url": "https://huggingface.co/moonshotai/Kimi-K3.1-Pro"
+      },
+      {
+        "label": "使用许可",
+        "url": "https://huggingface.co/moonshotai/Kimi-K3.1-Pro/blob/main/LICENSE"
+      },
+      {
+        "label": "官方发布帖",
+        "url": "https://x.com/Kimi_Moonshot/status/2118010528123773297"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "在训练时考虑量化误差",
+        "传回完整的助手消息"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-05"
+  },
+  {
+    "id": "openai-pierre-review-20261105",
+    "source": "OpenAI · 开发工具",
+    "avatar": "O",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-04",
+    "time": "11 月 4 日",
+    "title": "OpenAI 拟收购 Pierre，把代码审查和版本管理进一步接进 Codex",
+    "summary": "OpenAI 宣布拟收购 Pierre，这家公司做的是代码浏览、改动对比和 Git 存储工具。Codex 现有的文件树和改动查看界面，已经使用它的 Trees、Diffs 开源库。\n\n其中一个具体设计是：审查者发现某行代码有问题，可以直接在改动对比界面里修改。Pierre 的 Code Storage 则让应用通过接口保存代码和版本历史。OpenAI 希望把这些能力继续接进 Codex，让人和多个编程 Agent 从开分支到审查、交付，在同一套流程中协作。\n\n交易仍待监管等交割条件完成。公司承诺开源项目保持开源，Code Storage 在交易完成后也会继续提供服务。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "收购公告",
+        "url": "https://openai.com/index/openai-to-acquire-pierre/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "直接在改动对比界面里修改"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-05"
+  },
+  {
+    "id": "claude-marketplace-budget-20261105",
+    "source": "Anthropic · Claude Marketplace",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "商业与成本",
+    "tags": [
+      "商业与成本"
+    ],
+    "date": "2026-11-04",
+    "time": "11 月 4 日",
+    "title": "买 AI 工具的预算，开始和模型服务放在一起",
+    "summary": "Claude Marketplace 新增安全、开发、创作和办公产品，合作产品总数已超过25个。比目录变长更具体的变化是：符合条件的企业，可以用一部分已承诺给 Anthropic 的采购金额购买这些伙伴产品，而不必为每项工具另开一份新预算申请。\n\n例如，Datadog 用来追踪 Agent 调了哪些工具、耗时和费用发生在哪一步；Netlify 承接应用部署，每次修改可生成预览网址。它们补的是模型之外的运行、观察和交付环节。这种采购方式目前仍是有限预览，需要企业客户确认资格。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "新增产品公告",
+        "url": "https://claude.com/resources/articles/new-agents-and-products-claude-marketplace"
+      },
+      {
+        "label": "产品目录与采购说明",
+        "url": "https://claude.com/marketplace/agents-products"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "一部分已承诺给 Anthropic 的采购金额",
+        "运行、观察和交付环节"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-05"
+  },
+  {
     "id": "trl-mopd-token-balance-20261104",
     "source": "Sergio Paniego · Hugging Face",
     "avatar": "S",
@@ -1642,6 +1843,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-05",
+    "edition": 8,
+    "title": "把 AI 放进工作里，卡点常在模型周围",
+    "intro": "今天重点看两种实际做法：怎样缩短推理优化的试验循环，怎样把反复交给 Agent 的任务变成固定流程。另有 Kimi 权重开放、代码审查工具的团队动向，以及一篇“裁判模型没看到完整证据”的新研究。",
+    "coverage": "优先检查北京时间11月4日10:10至11月5日09:07的新内容；研究新增11月2日首次公开的评测流程案例。实际读取官方技术博客、模型卡与权重目录、论文全文；小红书读取12条搜索结果、1篇正文及4条评论，候选是9月旧研究的转述，未作今日新闻。X读取了 Kimi 官方发布帖与49条回复，未发现已完成测试等值得单列的补充。Reddit接口返回非数据页面；后台浏览器连接超时，脉脉本期未覆盖职言与评论。",
+    "question": "你现在反复交给 AI 的任务中，哪一步已经稳定到可以写成脚本，哪一步仍需要判断？",
+    "id": "2026-11-05",
+    "count": 5
+  },
+  {
     "date": "2026-11-04",
     "edition": 7,
     "title": "从能生成，到交付得对",
@@ -1711,19 +1922,69 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-04T10:24:24+08:00",
+  "updatedAt": "2026-11-05T09:07:45+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
-  "latestDate": "2026-11-04",
-  "latestId": "2026-11-04"
+  "latestDate": "2026-11-05",
+  "latestId": "2026-11-05"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "fde-enterprise-sql",
+    "judge-input-assurance",
     "crossmean"
   ],
   "entries": [
+    {
+      "id": "judge-input-assurance",
+      "cat": "ai",
+      "topic": "Agent 评测",
+      "symbol": "◎",
+      "method": "Input Assurance · 评测输入检查",
+      "year": "2026-11-02 首发 · 预印本",
+      "publishedOn": "2026-11-02",
+      "addedOn": "2026-11-05",
+      "time": 4,
+      "title": "60个待评步骤中，53个传到裁判面前时成了空白",
+      "desc": "一次漏字段，改变了裁判实际能看到的证据。",
+      "scenario": "用语言模型检查 Agent 的某一步操作是否出错。",
+      "bottleneck": "运行日志要先转成文字；转换过程中，关键动作可能被漏掉。",
+      "lead": "研究者检查一套 Agent 评测流程，发现它把运行日志转成文字时，只保留了消息正文，漏掉了单独存放的工具调用。比如，Agent 实际执行了“返回上一级目录”，但正文为空，裁判看到的这个步骤也就成了空白。\n\n30条运行记录中选出的60个待评步骤，有53个因此看不到动作。文件校验仍然通过，因为它只能说明文件没变，无法说明一开始就写全了。\n\n研究者补回工具名和参数，又加入检查失败就停止、使用前重查文件、核对调用与结果配对等措施。在19个人为构造的故障中，18个在进入裁判前被拦住；余下一个旧脚本没有被执行。这次修的是评测材料的准备过程。",
+      "insight": "评价 Agent 的动作前，先核对裁判拿到的材料里有没有这个动作。",
+      "steps": [
+        [
+          "对照原日志看最终输入",
+          "选取正文为空、动作仅存在工具调用字段里的真实步骤，逐项检查工具名、参数和位置是否保留。"
+        ],
+        [
+          "给检查程序故意放错例子",
+          "除了查每个调用是否有结果，也查每个结果是否找得到调用；再试检查失败后，后续流程是否真的停下。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "一个被漏掉的 cd 调用",
+        "text": "原日志的正文为空，工具字段记录 cd({\"folder\":\"..\"})。旧版材料只有步骤起止标记；补齐后，裁判才能看到“切换到上一级目录”这一动作。"
+      },
+      "evidence": "来自 AgentProcessBench 的30条运行记录，每条选一个错误步骤及一个更早的正确步骤。19项故障测试用记录程序代替裁判，直接确认它会读到什么。",
+      "limits": "这是一个已发现缺陷的评测流程；跨其他评测系统的验证还在计划中。",
+      "transfer": "接入自己的裁判时，抽查最终送入模型的文本，别只检查原始日志是否完整。",
+      "take": "输入完整性也是评测的一部分。",
+      "counter": {
+        "q": "文件校验通过，为什么仍会漏内容？",
+        "a": "校验比较的是文件前后有没有变化。若转换时就漏了动作，后续一直保存这份残缺文件，校验仍会通过。"
+      },
+      "sources": [
+        [
+          "原论文",
+          "https://arxiv.org/abs/2611.02676"
+        ],
+        [
+          "全文与真实例子",
+          "https://arxiv.org/html/2611.02676v1"
+        ]
+      ]
+    },
     {
       "id": "fde-enterprise-sql",
       "cat": "ai",
