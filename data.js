@@ -1,5 +1,215 @@
 window.FEED_DATA = [
   {
+    "id": "agent-memory-contracts-20261107",
+    "source": "Anthropic · Agent 记忆实验",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-06",
+    "time": "11 月 6 日",
+    "title": "多个 Agent 共写一张合同表，关键条款被彼此覆盖",
+    "summary": "Anthropic 让 Claude 阅读一组公司收购合同，先整理成知识库，再据此写简报。任务要求准确交代合同条款，但第一版简报只覆盖了57项评分事实中的41项。\n\n检查知识库后，团队发现多个 Agent 同时往一张共享表里写合同摘要：有人保存时覆盖了别人写的内容，条款在压缩成摘要时也有遗漏。后续写简报的模型，拿到的资料已经不完整。\n\n他们让 Claude 回看失败、修改建库说明并重建。新做法是每份合同单独一页，只由一个 Agent 写入，并逐字保留关键条款。用改进后的知识库生成简报，这个任务的57项事实全部得到覆盖。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与实验细节",
+        "url": "https://www.anthropic.com/research/components-of-agent-memory"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-07/memory-contracts.png",
+        "alt": "共享合同表改成一合同一页的前后对照",
+        "caption": "左侧多人共写一页，57项事实保留41项；右侧分开写入并保留条款原文，57项全部保留。",
+        "credit": "Anthropic · Figure 14",
+        "sourceUrl": "https://www.anthropic.com/research/components-of-agent-memory",
+        "originalUrl": "https://www-cdn.anthropic.com/images/4zrzovbb/website/592f604d38e90537553ab7127d1d3115924fda92-3840x1822.png",
+        "placement": "inline"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "拿到的资料已经不完整",
+        "每份合同单独一页，只由一个 Agent 写入"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-07"
+  },
+  {
+    "id": "inkling-forecast-training-20261107",
+    "source": "Thinking Machines · Inkling",
+    "avatar": "T",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-05",
+    "time": "11 月 5 日 · 补读",
+    "title": "Agent 给预测模型试了强化学习，成绩下降后退回微调方案",
+    "summary": "Thinking Machines 在 Inkling 2 Small 发布中展示了一次自动训练实验：给它电力需求、天气、空气质量和网页访问量等历史数据，让它在500美元预算内微调 Qwen3.5-4B，预测后续走势。\n\n它先搭评测，再训练。中途发现自己给8次预测用了同一个随机种子，实际得到8个相同答案；修好评测后，才看清基础模型的水平。随后，监督微调改善了预测，它又尝试直接用任务得分做强化学习奖励。作者记录显示，预测变得过于自信，得分连续下降，于是它停止这轮训练。\n\n最终保留的方案是先用历史数据微调，再用最近12个月的数据短暂补训；额外多训练一遍、换成最近两年或七个月，都没更好。整个过程用时4小时17分，Tinker 训练与采样花费426美元。公司报告，在未参与选模型的8至9月数据上，最终模型的预测误差比基础模型低约15%。",
+    "body": "实验一次生成8条可能的未来走势，既检查预测中心是否接近真实值，也检查这些预测的分散程度是否合适。强化学习之后，预测分布收得过窄，是作者对退步的解释。\n\n网页动画中约19%到29%的分数，是各自相对于“照搬最近数值”这一简单方法的误差改善，来自开发时的评测；正文的约15%是最终未见数据上，相对基础模型的误差下降。426美元是原文列出的 Tinker 用量，不是包含控制 Agent 推理等费用的完整成本。",
+    "detailLabel": "评测在量什么，426美元包含什么",
+    "links": [
+      {
+        "label": "原文与实验细节",
+        "url": "https://thinkingmachines.ai/news/inkling-2-small/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "修好评测后，才看清基础模型的水平",
+        "最近12个月的数据短暂补训"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-07"
+  },
+  {
+    "id": "eve-fast-control-20261107",
+    "source": "Anthropic · Project EVE",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-06",
+    "time": "11 月 6 日",
+    "title": "Claude 打游戏反应太慢，团队让代码接管躲避和还击",
+    "summary": "Anthropic 公布的 EVE Frontier 实验，让四个 Claude 组成舰队，采资源、建基地、升级飞船。战斗要求不到一秒的反应，模型逐次思考、发指令跟不上；飞船一旦被击毁，又要从初始装备重新积累。\n\n研究者让一个开发 Agent 通过多轮试跑改写中间控制程序：躲避威胁、还击等快速动作自动执行，过去发现的敌人和物资规律则存进可搜索的手册与数据库。\n\n同样由 Fable 5 扮演的舰队，使用 Opus 4.8 写的控制程序时经常损失飞船，教程要花几天甚至完不成；换成 Fable 5 写的程序后，报告中的队伍没有损失飞船，并在12小时内完成教程。这套程序在开发中见过的场景里较可靠，更复杂的造大型战舰任务，最好一次仍只推进到大约一半。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与实验细节",
+        "url": "https://www.anthropic.com/research/project-eve-claude-plays-mmorpgs"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "躲避威胁、还击等快速动作自动执行",
+        "同样由 Fable 5 扮演的舰队"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-07"
+  },
+  {
+    "id": "pdd-intent-review-20261107",
+    "source": "GitHub Next · Microsoft Research",
+    "avatar": "G",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-02",
+    "time": "11 月上旬 · 补读",
+    "title": "PDD Kit 先让人说清登录规则，再让机器证明代码符合规则",
+    "summary": "GitHub Next 和微软研究院展示了一个约5000行的宠物商店示例，把登录部分交给 PDD Kit 检查。开发者最初只说：密码正确才能拿到登录凭证，只有管理员才能拿管理员凭证。\n\n工具马上追问：“密码正确时，也必须允许登录吗？”这不是同一句话：一个拒绝所有人的程序，也符合“没有正确密码就不给凭证”。团队确认两个方向都要满足，才把需求变成可验证的规则。\n\n随后 Agent 写代码和证明，Verus 这个数学验证工具检查代码是否符合规则。流程还故意植入错误，检查规则能否把坏实现拦住。开发者主要审阅需求及验证结果；数据库查询、密码库等仍靠测试检查。当前它是只支持 Rust 的研究原型，示例已经把验证后的逻辑接回实际登录入口。",
+    "body": "原文的决策卡把两种含义并排给团队选择：仅保证错密码进不去，或同时保证正常条件下对密码能进去。数据库查询失败、签发凭证失败等情况另有明确规则。",
+    "detailLabel": "看看工具怎样让团队确认需求",
+    "links": [
+      {
+        "label": "原文与实验细节",
+        "url": "https://githubnext.com/projects/pdd-kit/"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-07/pdd-intent.png",
+        "alt": "PDD Kit关于正确密码是否必须获得登录凭证的决策卡",
+        "caption": "A同时检查正确密码能登录和错误密码被拒绝；B只保证后者。团队选择了A。",
+        "credit": "GitHub Next · PDD Kit",
+        "sourceUrl": "https://githubnext.com/projects/pdd-kit/",
+        "originalUrl": "https://githubnext.com/assets/projects/pdd-kit/gh-ui-decision-both-ways.png",
+        "placement": "details"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "一个拒绝所有人的程序",
+        "开发者主要审阅需求及验证结果"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-07"
+  },
+  {
+    "id": "frameboy-realtime-20261107",
+    "source": "World Labs · Atlas",
+    "avatar": "W",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "产品与落地",
+    "tags": [
+      "产品与落地"
+    ],
+    "date": "2026-11-05",
+    "time": "11 月 5 日 · 补读",
+    "title": "Atlas 把“等一段视频”变成边移动镜头、边看生成场景",
+    "summary": "用生成模型设计场景时，改一次镜头位置就等几十秒甚至几分钟，会让尝试新视角变得很费劲。World Labs 的 Frameboy 研究预览，用经过加速的 Atlas 在云端生成画面，再以最高每秒15帧传到浏览器，用户可以边移动镜头边看结果。\n\n它可以先从一张图补出多个视角，把这些画面作为空间参考，再进入实时探索。配套的 Viewfinder 则让用户逐帧搭建自己的场景，准备好后切换到实时浏览。Frameboy 目前提供精选场景，创建自己场景的 Viewfinder 仍需申请内测；实时生成依赖云端高性能 GPU。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与实验细节",
+        "url": "https://www.worldlabs.ai/blog/atlas-realtime"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-07/frameboy.webp",
+        "alt": "Viewfinder中由图像建立的飞船大厅场景",
+        "caption": "原文视频封面：先在 Viewfinder 中建立场景，再开启 Frameboy 实时浏览。静态图展示的是建场景界面。",
+        "credit": "World Labs · 演示视频封面",
+        "sourceUrl": "https://www.worldlabs.ai/blog/atlas-realtime",
+        "originalUrl": "https://www.worldlabs.ai/images/blog/atlas-realtime/viewfinder-story-poster.webp",
+        "placement": "inline"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "边移动镜头边看结果",
+        "逐帧搭建自己的场景"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-07"
+  },
+  {
     "id": "astra-sft-subtraction-20261106",
     "source": "OpenAI · Alignment",
     "avatar": "O",
@@ -2047,6 +2257,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-07",
+    "edition": 10,
+    "title": "Agent 的进步，也藏在写文件、做评测和执行动作的细节里",
+    "intro": "今天的两项新实验都把问题指向模型周围的程序：共享文件会覆盖同事的成果，实时动作也不能每一步都等模型思考。另补读自动训练、需求验证和实时场景生成的具体做法；研究栏目新增11月3日首次公开的金融 Agent 事实核验实验。",
+    "coverage": "优先检查北京时间11月6日09:50至11月7日09:07的新内容；另补读11月上旬此前未收录的三项实践，卡片已标日期。实际读取官方技术文章、论文全文，以及小红书12条搜索结果和2篇正文。小红书候选分别为内容不足的活动帖与书籍介绍，未选入；X搜索为空，用户时间线读取失败，Reddit返回非数据页面，后台浏览器连接超时，脉脉未覆盖。国内一线新经验和评论仍有缺口，本期未收录社交评论。",
+    "question": "如果 Agent 的结果不对，你能查看它实际读到的资料、写过的文件和使用的评测，定位错误发生在哪一步吗？",
+    "id": "2026-11-07",
+    "count": 5
+  },
+  {
     "date": "2026-11-06",
     "edition": 9,
     "title": "AI 怎样改变研发，得看实验和交付怎样变化",
@@ -2136,19 +2356,73 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-06T09:53:30+08:00",
+  "updatedAt": "2026-11-07T09:07:43+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
-  "latestDate": "2026-11-06",
-  "latestId": "2026-11-06"
+  "latestDate": "2026-11-07",
+  "latestId": "2026-11-07"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "heterogeneous-lora-ranks",
-    "judge-input-assurance"
+    "agenticfinbench-fact-audit",
+    "heterogeneous-lora-ranks"
   ],
   "entries": [
+    {
+      "id": "agenticfinbench-fact-audit",
+      "cat": "ai",
+      "topic": "Agent 评测",
+      "symbol": "◎",
+      "method": "AgenticFinBench · 事实核验",
+      "year": "2026-11-03 首发 · 预印本",
+      "publishedOn": "2026-11-03",
+      "addedOn": "2026-11-07",
+      "time": 5,
+      "title": "答案看起来完整，查过事实后，评测第一名变成第四名",
+      "desc": "230个真实任务，把“答到了要点”和“事实可靠”分开检查。",
+      "scenario": "让金融 Agent 查资料、比较产品或解释市场事件，再给它的回答打分。",
+      "bottleneck": "按要点打分能检查答案是否完整，却可能让建立在错误事实上的分析拿到高分。",
+      "lead": "AgenticFinBench 收集230个真实金融问题，比较18种模型与运行工具的组合。研究者先按每题的要求评分，再把回答拆成可核对的事实，检查工具记录和外部来源。\n\n一个具体例子是：DuMate 把某只基金的管理费解释为主动选股的费用，但已保存的招募说明书明确写着被动跟踪指数。原来的内容评分有92.5分；核验把这个实质错误扣除12分，得到80.5分。\n\n对全部问题重算后，原先第一名 DeepSeek V4.1 Flash 加 Pi 的平均分下降7.58分，变成第四名。这个变化来自对同一批回答补做事实核验，没有重新生成答案。",
+      "insight": "答案覆盖了要求的方面，还要检查支撑这些解释的关键事实。",
+      "steps": [
+        [
+          "先固定评分要求",
+          "在查看待评回答前，为每道题确定应覆盖的内容和严重错误，避免看了答案再临时改标准。"
+        ],
+        [
+          "把来源与真伪分开查",
+          "先看断言是否有工具记录支撑，再对缺少支撑或存在冲突的内容查外部来源。查不到证据时保留为未确定，不直接判成错误。"
+        ],
+        [
+          "按错误对任务的影响重算",
+          "只对已确认的事实错误扣分；同一个错误造成的多个后果避免重复扣除，并重新检查因此失效的得分项。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "主动管理与被动跟踪不是小措辞差别",
+        "text": "论文附录G的基金案例：原评分92.50，没有其他已有扣分；误把被动跟踪说成主动选股，被计为一项12分的重要错误，因此最终为92.50−12=80.50。对行业、国家配置的其他说法，证据口径不足以比较，未额外扣分。"
+      },
+      "evidence": "作者抽取回答交给金融专家盲评。在随机回答对上，加入事实核验后的排序与专家判断一致率为73.3%，原评分为67.8%。",
+      "limits": "比较单位包括模型、工具和推理设置；这里的排名反映整套 Agent 配置。相邻名次的分差未必显著。",
+      "transfer": "评测研究助手时，可以单独核对支撑结论的数字、条件和来源，避免“写得完整”掩盖事实错误。",
+      "take": "先查关键事实，再判断分析质量。",
+      "counter": {
+        "q": "工具记录里找不到一句话，就算它在编造吗？",
+        "a": "不是。这项评测专门区分了“缺少调用记录，但外部来源能确认”“暂时查不清”和“被外部证据推翻”。这能减少把正确常识误判为幻觉的情况。"
+      },
+      "sources": [
+        [
+          "原论文与首次公开日期",
+          "https://arxiv.org/abs/2611.04813"
+        ],
+        [
+          "论文全文 · Table 5、Section 5.3、Appendix G",
+          "https://arxiv.org/html/2611.04813v1"
+        ]
+      ]
+    },
     {
       "id": "heterogeneous-lora-ranks",
       "cat": "merge",
