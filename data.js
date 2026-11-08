@@ -2571,7 +2571,7 @@ window.FEED_ISSUES = [
 ];
 window.FEED_META = {
   "updatedAt": "2026-11-08T09:25:49+08:00",
-  "schedule": "每天北京时间 09:00 开始整理",
+  "schedule": "每天北京时间 07:00 开始整理",
   "latestDate": "2026-11-08",
   "latestId": "2026-11-08"
 };
