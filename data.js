@@ -1,5 +1,209 @@
 window.FEED_DATA = [
   {
+    "id": "google-todo-detours-20261108",
+    "source": "Google · 开发者工具团队",
+    "avatar": "G",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-06",
+    "time": "11 月 6 日 · 补读",
+    "title": "代码里一条过期 TODO，让 Agent 去查三年前修好的问题",
+    "summary": "Google 分析内部编程 Agent 的工作记录时，发现一个很具体的干扰源：代码中的 TODO 待办注释。一次任务中，Agent 读到 SurfaceControlTest.java 里带问题编号的注释，便转去调查；那个问题早在2023年已修好，注释却一直留着。另一次，它还擅自修改了任务之外的代码，需要开发者叫停。\n\n这类绕路不是都在处理有效欠账。在没有用户要求、却被问题编号引走的记录中，41%的编号已经关闭；其余不少仍在处理，但与当前任务无关。\n\n团队随后让清理 Agent 查问题状态、代码历史和注释原意，判断哪些待办已经失效，再提交给人审核。六个月里清理了数千条，人工接受率超过95%。他们具体改的是留给后续 Agent 阅读的代码环境。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与具体做法",
+        "url": "https://developers.googleblog.com/agent-distraction/"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-08/google.png",
+        "alt": "Google工作记录中的过期待办注释",
+        "caption": "原文中的触发点：高亮行指向一个已修复的问题，Agent 随后仍去调查。",
+        "credit": "Google for Developers",
+        "sourceUrl": "https://developers.googleblog.com/agent-distraction/",
+        "originalUrl": "https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/image7_TPQlISo.original.png",
+        "placement": "inline"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "那个问题早在2023年已修好",
+        "查问题状态、代码历史和注释原意"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-08"
+  },
+  {
+    "id": "zero-mismatch-async-rl-20261108",
+    "source": "vLLM · Inferact / NVIDIA / AMD",
+    "avatar": "v",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-06",
+    "time": "11 月 6 日 · 补读",
+    "title": "异步强化学习越训越不稳，团队查到生成和训练算出的概率不一致",
+    "summary": "为了减少 GPU 等待，异步强化学习让一批机器生成答案，另一批同时更新模型。生成答案时的参数可能比训练端旧几步，因此训练会用新旧模型给答案的概率之比，修正这些旧样本的影响。\n\nREINFORCE Zero 团队发现，这个比值还混进了另一种误差：即使参数和输入相同，生成端与训练端使用不同的底层计算程序，也可能算出不同概率。批量大小和计算顺序变化会放大这种偏差，让样本权重突然变得很大。\n\n他们对齐两端的计算实现，再保留针对参数新旧差异的概率修正。在 DeepSeek-R1-Distill-Qwen-1.5B 上，生成端落后2次或8次更新的训练都稳定跑到2万次更新。另一个16张 GPU、1.2万次更新的计时比较中，异步方案用68.55小时，同步方案用164.77小时，效果相当；两者都已对齐计算实现。",
+    "body": "在1.5B模型训练6000次更新的比较中，同步方案的多项推理测试平均一次作答通过率为48.91%，异步落后2次为48.80%，落后8次为48.53%。\n\n对齐计算也可能牺牲部分算子速度：另一项 OSWorld 实验中，对齐方案每步平均944.25秒，标准计算加样本筛选方案为884.17秒。异步总训练提速与单步计算开销，需要分别核算。",
+    "detailLabel": "训练效果和计算开销怎样比较",
+    "links": [
+      {
+        "label": "原文与具体做法",
+        "url": "https://vllm-project.github.io/2026/11/06/zero-mismatch-async-rl.html"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-08/rl.png",
+        "alt": "REINFORCE Zero的推理正确率与生成训练概率差异",
+        "caption": "左图是随训练更新的推理通过率；右图显示未对齐方案的概率分布差异扩大，对齐方案保持较低水平。",
+        "credit": "vLLM Blog · REINFORCE Zero Figure 1",
+        "sourceUrl": "https://vllm-project.github.io/2026/11/06/zero-mismatch-async-rl.html",
+        "originalUrl": "https://vllm-project.github.io/assets/figures/2026-11-06-zero-mismatch-async-rl/figure1.png",
+        "placement": "details"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "即使参数和输入相同",
+        "对齐两端的计算实现"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-08"
+  },
+  {
+    "id": "moe-readiness-checks-20261108",
+    "source": "Hugging Face · MoE 训练手册",
+    "avatar": "H",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-05",
+    "time": "11 月 5 日 · 补读",
+    "title": "训练 MoE 前，先测专家之间真正要走的通信路径",
+    "summary": "Hugging Face 新发布的 MoE 训练手册，给准备从普通稠密模型转向“混合专家”模型的团队补了一项开跑检查。专家分散在不同 GPU 上时，每层都要把 token 发给选中的专家，再收回结果；这和各卡汇总梯度走的是不同通信模式。\n\n手册给出一组实测：同一组双节点机器，梯度汇总类测试的带宽达到398.52 GB/s，专家之间互相交换数据的测试却只有39.84 GB/s。只看前一种测试，判断不了 MoE 真正需要的那条路径是否够快。\n\n他们建议固定机器规模、软件和消息大小，先在已确认正常的配置上建立带宽基线，再检查新分配的机器。示例中双节点基线为77.14 GB/s；若暂以90%为通过线，就是约69 GB/s，同时必须通过数据正确性检查。扩到四节点、八节点后另建各自基线，避免用同一个门槛误判。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与具体做法",
+        "url": "https://huggingface-moe-blogpost.hf.space/"
+      },
+      {
+        "label": "小红书介绍帖",
+        "url": "https://www.xiaohongshu.com/search_result/6aedaeca000000000900ffec?xsec_token=ABPjFzPjq_qbzvRDQMow8XKvS6mN84W3lnwRWoyCAuox0=&xsec_source="
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "这和各卡汇总梯度走的是不同通信模式",
+        "先在已确认正常的配置上建立带宽基线"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-08"
+  },
+  {
+    "id": "async-agent-steering-20261108",
+    "source": "LangChain · Deep Agents",
+    "avatar": "L",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-05",
+    "time": "11 月 5 日 · 补读",
+    "title": "后台 Agent 接到新要求，区分“现在改”和“做完再补”",
+    "summary": "让 Agent 后台查资料或写代码，可以让主对话继续回应用户，但新指令怎么送进去，会影响它到底做什么。LangChain 的 Deep Agents 异步子任务机制，把这两种情况分开处理。\n\n原文的例子是：用户说“数据库改用 Postgres”，默认做法是中断当前运行，带着新要求重新启动；如果说“做完再跑测试”，就把这条要求排队，等当前运行结束后执行。主 Agent 还可以查询进度或取消任务，后台完成后再通知它。\n\n这套能力已提供 Python 和 JavaScript 入口，任务通知仍处于测试阶段。接入时需要选好更新策略：一句补充，是要改变手头工作，还是追加下一步。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与具体做法",
+        "url": "https://www.langchain.com/blog/agents-are-going-async"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "中断当前运行，带着新要求重新启动",
+        "等当前运行结束后执行"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-08"
+  },
+  {
+    "id": "copilot-addressed-rate-20261108",
+    "source": "GitHub · Copilot 代码审查",
+    "avatar": "G",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-05",
+    "time": "11 月 5 日 · 补读",
+    "title": "Copilot 开始统计审查意见有没有被处理，不只看“应用建议”按钮",
+    "summary": "开发者看完 AI 的代码审查，常会自己改代码，或让 Copilot 代改；只数“应用建议”按钮的点击，会漏掉这些后续行动。GitHub 新增的仓库级指标，改为统计已检查的审查意见中，有多少得到开发者处理。\n\n这里的“处理”也包括回复“下一个改动再修”，所以它衡量的是反馈有没有得到响应，并非问题已经修好的比例。团队可以按严重程度、错误类型和自定义规则拆开看，找出哪些意见真正被开发者用上。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文与具体做法",
+        "url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "只数“应用建议”按钮的点击",
+        "反馈有没有得到响应"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-08"
+  },
+  {
     "id": "agent-memory-contracts-20261107",
     "source": "Anthropic · Agent 记忆实验",
     "avatar": "A",
@@ -2257,6 +2461,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-08",
+    "edition": 11,
+    "title": "先查工作过程里的误差，再决定怎样改模型",
+    "intro": "今天补读五条此前未收录的近期实践：过期注释怎样带偏编程 Agent，计算误差怎样干扰强化学习，以及 MoE 开跑前该测哪种通信。研究栏目新增11月2日公开的 SpecOPD，讲清它怎样并行训练草稿模型，以及训练提速和实际生成提速的区别。",
+    "coverage": "检查时段为北京时间11月7日09:07至11月8日09:25；本期精选此前未收录的11月5日至6日内容，均已标为补读。实际读取官方技术文章、论文全文、小红书12条搜索结果、1篇正文和4条评论；评论无额外技术细节，未摘入。X搜索为空，Reddit读取返回非数据页面；后台浏览器连接超时，脉脉未覆盖，国内团队一线信息仍有缺口。",
+    "question": "如果一次训练变慢或不稳定，你手头的日志能否分清：模型本身的问题、计算实现的误差，还是通信与任务安排造成的等待？",
+    "id": "2026-11-08",
+    "count": 5
+  },
+  {
     "date": "2026-11-07",
     "edition": 10,
     "title": "Agent 的进步，也藏在写文件、做评测和执行动作的细节里",
@@ -2356,19 +2570,88 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-07T09:07:43+08:00",
+  "updatedAt": "2026-11-08T09:25:49+08:00",
   "schedule": "每天北京时间 09:00 开始整理",
-  "latestDate": "2026-11-07",
-  "latestId": "2026-11-07"
+  "latestDate": "2026-11-08",
+  "latestId": "2026-11-08"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "agenticfinbench-fact-audit",
+    "specopd-branch-parallel",
     "heterogeneous-lora-ranks"
   ],
   "entries": [
+    {
+      "id": "specopd-branch-parallel",
+      "cat": "ai",
+      "topic": "推理加速",
+      "symbol": "↗",
+      "method": "SpecOPD · 草稿模型训练",
+      "year": "2026-11-02 首发 · 预印本",
+      "publishedOn": "2026-11-02",
+      "addedOn": "2026-11-08",
+      "time": 6,
+      "title": "SpecOPD 把草稿训练拆成独立分支，减少等大模型验收的时间",
+      "desc": "先让小模型写草稿，再让大模型检查；新方法加快的是草稿模型的训练过程。",
+      "scenario": "用一个便宜的小模型先写几个 token，再由大模型一起检查，减少大模型逐字生成的次数。",
+      "bottleneck": "若每轮训练都等完整答案逐段生成、验收，收集训练材料会被串行等待拖慢。",
+      "lead": "推测解码让小模型先写一段草稿，大模型一次检查多个位置；草稿连续被接受得越长，每轮能推进的内容越多。要训练出好草稿，得让它见到自己实际会写出的前文，而不只是照着固定的标准答案学习。\n\nSpecOPD 从已有参考答案里选多个位置，让当前草稿模型各自续写一小段。大模型依据每条分支真实写出的前文给出概率，供小模型学习。各段不必等整篇答案生成完，就能一起训练；共享的前文也只计算一次。\n\n论文在 Qwen3-8B 的 DFlash 草稿模型上，每轮验收平均推进的 token 数从2.649增至3.747，含大模型补出的 token，约提高41%。27B 模型的实际部署收益较小：相对原草稿模型，所测配置下的几何平均生成吞吐量最多提高2.83%。",
+      "insight": "收集一段有用的草稿训练样本，不必先走完整条“生成—验收—再生成”的路径。",
+      "steps": [
+        [
+          "把参考答案当作多个起点",
+          "从同一篇参考答案中选多个位置，当前小模型各自生成续写。这些分支使用相同的已知前文，但后续互不依赖。"
+        ],
+        [
+          "按小模型实际写出的前文教它",
+          "大模型给下一个 token 打分时，读取的是该分支自己生成的历史；小模型一旦写偏，不能继续拿原参考答案后面的概率冒充监督。"
+        ],
+        [
+          "共享前文，隔开分支",
+          "普通注意力用树状可见范围，让各分支只读自己的祖先。带线性注意力的模型还要恢复分叉点的内部状态，再让每个分支独立往前更新。"
+        ],
+        [
+          "优先让连续前缀被接受",
+          "训练目标考虑连续接受概率：前面一个位置被拒绝，后续草稿就用不上。因此早期错误会影响后面多个位置的训练项。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "16.09倍说的是训练材料处理速度",
+        "text": "在27B目标模型、8张高性能GPU的原生配置比较中，SpecOPD 每秒更新次数是串行草稿训练的4.95倍，每次更新纳入损失计算的 token 数是3.25倍，两者相乘得到每秒监督 token 数16.09倍。这个计时不含离线参考答案准备，也没有把两套配置的每次更新 token 数拉齐。"
+      },
+      "evidence": "Table 1 的8B结果来自对话、代码、数学及两类已有 Agent 交互上下文，使用温度0。27B部署比较使用 BF16、单卡张量并行、FA3 和 CUDA Graphs；相对逐字生成，并发1、8、32时的几何平均速度分别为2.97、2.23、1.35倍，相对已有推测解码方案的增益小得多。",
+      "limits": "参考答案决定分支从哪里开始；这里在分支内使用当前小模型的采样，外部上下文仍来自预先收集的材料。",
+      "transfer": "训练草稿模型时，既看损失是否下降，也直接测连续验收长度和目标并发下的生成吞吐量。",
+      "take": "把训练阶段省下的等待，与上线后真正省下的生成时间分开计量。",
+      "counter": {
+        "q": "论文里的16倍，能理解成用户拿到答案快16倍吗？",
+        "a": "不能。16.09倍的分母是串行草稿训练每秒处理的监督 token 数。用户生成速度需要另测；论文27B实验相对原草稿模型的平均吞吐增益最高为2.83%。"
+      },
+      "sources": [
+        [
+          "原论文与首次公开日期",
+          "https://arxiv.org/abs/2611.02846"
+        ],
+        [
+          "方法、Table 1 与部署比较",
+          "https://arxiv.org/html/2611.02846v1"
+        ]
+      ],
+      "images": [
+        {
+          "src": "assets/2026-11-08/specopd.png",
+          "alt": "从参考答案抽取位置并建立独立草稿分支",
+          "caption": "论文方法示意：灰色是共享参考前文，蓝色是两个独立续写分支。它们共享起点之前的计算，分叉后分别接受监督。",
+          "credit": "SpecOPD · Figure 2",
+          "sourceUrl": "https://arxiv.org/html/2611.02846v1",
+          "originalUrl": "https://arxiv.org/html/2611.02846v1/fig02-proposal-tree.png",
+          "placement": "details"
+        }
+      ]
+    },
     {
       "id": "agenticfinbench-fact-audit",
       "cat": "ai",
