@@ -1,5 +1,217 @@
 window.FEED_DATA = [
   {
+    "id": "sqlite-agent-measurement-20261109",
+    "source": "Simon Willison",
+    "avatar": "S",
+    "avatarClass": "reddit",
+    "channel": "interview",
+    "evidence": "具名实践",
+    "kind": "opinion",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-08",
+    "time": "11 月 8 日 · 原文日期",
+    "title": "让 AI 比较两种写法后，他又追问了一句：慢在哪里？",
+    "summary": "Simon Willison 想给 SQLite 数据库加一个小功能：把“-$1,234.56”这样的文字变成数字，方便求和和排序。他让 Claude 分别用 C 和 Rust 实现，再比较速度、代码量和文件大小。\n\n第一轮里，C 写出的文件小得多，运行却比 Rust 慢。AI 继续排查，发现差别主要出在把小数文字转换成数字的函数上。Simon 随后要求它重写这一步，让常见输入走更简单的计算，复杂输入仍交给原来的通用函数。\n\n他公开的实验报告显示，在200万行混合数据上，C 版本每行的额外处理时间从约67纳秒降到19纳秒。报告同时附上正确性测试、随机输入检查和原始结果，让这次对话留下了可以继续验证的代码，而不只是一句“C 比 Rust 快”。",
+    "body": "这些数值是扣除一次普通扫描开销后，15次运行中的最快结果；测试在2核 Linux 虚拟机上进行。报告由 Claude 生成，Simon 在博客中分享了过程与代码，没有将它写成所有 C、Rust 程序的通用比较。\n\n原报告列出40个固定测试，以及四个版本合计800万次随机输入比较，未发现输出不一致。",
+    "detailLabel": "计时怎样做，正确性怎样查",
+    "links": [
+      {
+        "label": "作者记录",
+        "url": "https://simonwillison.net/2026/Nov/8/sqlite-parse-number-c-vs-rust/"
+      },
+      {
+        "label": "代码、测试与完整报告",
+        "url": "https://github.com/simonw/research/tree/main/sqlite-parse-number-c-vs-rust"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "差别主要出在把小数文字转换成数字的函数上",
+        "从约67纳秒降到19纳秒"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-09"
+  },
+  {
+    "id": "giga-racer-templates-20261109",
+    "source": "Giga · 设计团队",
+    "avatar": "G",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-06",
+    "time": "11 月 6 日 · 补读",
+    "title": "Giga 做销售材料，让 AI 写内容，把排版交给固定模板",
+    "summary": "给不同客户准备演示文稿，Giga 的销售和设计团队过去每次都要来回修改几小时。他们做了一个内部工具 Racer：销售上传通话记录、客户简介和表格，再用一句话说明要做什么。\n\n团队没有让 AI 从空白页面自由设计。设计师先手工做好一份样板，固定布局、字体和间距；AI 负责选择版式、改写内容和挑选图片。图表也由程序按已有数字绘制，缺少数据就提醒销售补充。\n\n每次修改后，工具都会检查页面和截图，修正标题过长、空白过大等问题。文案还要再过两遍：一遍查写作规则，一遍删掉换一家公司的名字也能用的空话。团队说，两天做出了可用版本；他们衡量的是从提出需求到材料可以发给客户用了多久。",
+    "body": "目前 Racer 只在 Giga 内部使用。文章中的公司和业务数据是演示样例。\n\n团队会把人改后的句子与 AI 原稿一起保存。某种修改反复出现时，周报会建议把它变成新的写作规则，再由团队确认；没有把每次人工修改直接当成自动上线的规则。",
+    "detailLabel": "人工改稿怎样变成下一次的规则",
+    "links": [
+      {
+        "label": "设计团队复盘",
+        "url": "https://giga.ai/news/how-we-rebuilt-gamma-in-two-days"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-09/giga-racer.jpg",
+        "alt": "Racer 上传通话记录、客户简介与数据表的输入界面",
+        "caption": "原文演示：一句话加三份材料，要求为航空公司准备单页介绍。公司和数据为演示样例。",
+        "credit": "Giga · Racer",
+        "sourceUrl": "https://giga.ai/news/how-we-rebuilt-gamma-in-two-days",
+        "originalUrl": "https://giga.ai/_next/image?url=%2Fassets%2Fimages%2Fnews%2Fracer%2Fcover-v6.jpg&w=3840&q=75&dpl=dpl_2ySaujBzy3GXi6J2RTstnXFbtfL5",
+        "placement": "inline"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "设计师先手工做好一份样板，固定布局、字体和间距",
+        "从提出需求到材料可以发给客户用了多久"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-09"
+  },
+  {
+    "id": "changan-agent-permissions-20261109",
+    "source": "CCF · 长安汽车实践分享",
+    "avatar": "C",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "具名实践",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-08",
+    "time": "11 月 8 日报道 · 10 月 22 日分享",
+    "title": "长安汽车测 Agent，发现不少高风险问题来自原有系统漏洞",
+    "summary": "企业把 AI 接上内部系统后，最担心的事情是什么？在 CCF 新发布的论坛纪要里，长安汽车 AI 安全负责人贺剑介绍：业务团队主要担忧数据泄露，但抽样测试中发现的中高危问题，多来自传统安全缺陷，影响又被 Agent 的执行权限放大。\n\n他们据此同时检查数据能去哪里、工具能做什么。数据按敏感程度送到不同模型环境；工具和组件接入前要检查，上线前测试，发现问题后整改、再测。\n\n一个具体原则是：Agent 获得的权限，要同时符合用户原有权限、它的职责和当前任务。也就是说，用户能做某件事，并不意味着这次交给 Agent 的任务就需要那项权限。纪要没有披露具体漏洞案例和样本数量。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "CCF 论坛纪要",
+        "url": "https://www.ccf.org.cn/YOCSEF/News/2026-11-08/947243.shtml"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "影响又被 Agent 的执行权限放大",
+        "同时符合用户原有权限、它的职责和当前任务"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-09"
+  },
+  {
+    "id": "kinference-prefix-routing-20261109",
+    "source": "Buoyant · William Morgan",
+    "avatar": "B",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "推理与部署",
+    "tags": [
+      "推理与部署"
+    ],
+    "date": "2026-11-04",
+    "time": "11 月 4 日 · 补读",
+    "title": "同一段长材料反复问，先把请求送给已经读过它的 GPU",
+    "summary": "多人向模型询问同一份长文档时，每次请求的开头可能都一样。模型服务器会保存读过这些内容后的中间计算结果；但如果下一次请求被分到另一张 GPU，这些结果就用不上，还得重新计算。\n\nBuoyant 开源的 Kinference 在分配请求前，会查看哪台服务器已经存着可复用的结果，以及它排队忙不忙，再挑预计最早能开始回答的一台。\n\n团队用每组3张 L40S GPU、同一个 Qwen 模型比较两种分配方式。在共享1.6万 token 开头的测试中，开始输出前的等待时间中位数，从随机分配时的6.88秒降到0.31秒。没有共同开头的请求，中位数则基本不变。这组收益主要来自少算重复内容。",
+    "body": "每组运行3个 vLLM 0.31.0 实例，模型为 Qwen3.8-27B-FP8。上面的结果来自轻负载测试，每种条件重复3次；比较对象是 Kubernetes 随机分配，而非另一种会利用缓存的调度器。\n\n对于有共同开头的请求，完整回答耗时的中位数从20.5秒降至11.3秒。开始输出快了约95%，不等于整段回答也快了95%。",
+    "detailLabel": "模型配置与完整回答耗时",
+    "links": [
+      {
+        "label": "官方实测与数据",
+        "url": "https://www.buoyant.io/blog/distributed-inference-benchmarks-kinference-vs-plain-kubernetes"
+      },
+      {
+        "label": "项目介绍",
+        "url": "https://www.buoyant.io/blog/introducing-kinference"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-09/kinference.webp",
+        "alt": "三类请求在随机分配与Kinference分配下的首字等待时间",
+        "caption": "原文测试图：实色柱是等待时间中位数，斜纹柱是95%请求不超过的等待时间。中间一组为共享长开头的请求，单位为秒。",
+        "credit": "Buoyant · Kinference benchmarks",
+        "sourceUrl": "https://www.buoyant.io/blog/distributed-inference-benchmarks-kinference-vs-plain-kubernetes",
+        "originalUrl": "https://cdn.prod.website-files.com/679957f782f1eca8a9594edb/6aeb3c6af86e8f42c70d7f23_TTFT%20Chart%20Selection.webp",
+        "placement": "inline"
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "哪台服务器已经存着可复用的结果，以及它排队忙不忙",
+        "从随机分配时的6.88秒降到0.31秒"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-09"
+  },
+  {
+    "id": "arete-posttraining-values-20261109",
+    "source": "Nous Research",
+    "avatar": "N",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-07",
+    "time": "11 月 7 日 · 权重发布北京时间 · 补读",
+    "title": "Nous 用监督微调，调整了 Qwen 对政治议题的回答",
+    "summary": "Nous Research 以“强化西方价值观”为目标，基于 Qwen3.8-27B 制作了 Arete-27B。团队先列出七类议题，设计评测，再选择 Inkling 生成示范答案，用这些答案继续训练模型；这次没有使用强化学习。\n\n训练量约为5280万 token。团队在自建的803道题里，分别检查答案是否提到指定事实，以及是否采用他们定义的中国官方叙事。后一项占比从22%降到0.9%；在其通用能力测试 Hermes Bench 上，训练前后的成绩基本持平。\n\n他们同时公开了权重、训练数据和评分规则。这里能具体看到的是：一支团队怎样把想改变的回答方式写成数据和评测，再检查改动有没有影响其他任务。",
+    "body": "803道题覆盖表达自由、国家意识形态、市场、教育、隐私、民主和环境。每题从来源文章提取2至4个必要事实，Grok 4.7 按固定规则评分，并给被标记的叙事提供原文证据。训练数据先与评测题去重。\n\n正文比较采用关闭思考、温度0的设置。事实均分从2.32升到2.98（满分5）；Hermes Bench 从65.77%变为65.60%。模型与数据的价值取向是作者明确选择的，评分含义需按公开规则理解。",
+    "detailLabel": "这套评测具体怎样评分",
+    "links": [
+      {
+        "label": "团队方法与评测",
+        "url": "https://nousresearch.com/arete"
+      },
+      {
+        "label": "模型卡与权重",
+        "url": "https://huggingface.co/NousResearch/Arete-27B"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "分别检查答案是否提到指定事实",
+        "同时公开了权重、训练数据和评分规则"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-09"
+  },
+  {
     "id": "google-todo-detours-20261108",
     "source": "Google · 开发者工具团队",
     "avatar": "G",
@@ -2461,6 +2673,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-09",
+    "edition": 12,
+    "title": "让 AI 接着做之前，先把它上一步做了什么看清楚",
+    "intro": "今天看一位开发者怎样追问性能差别，设计团队怎样把人工改稿留给下一次使用，以及长安汽车如何限制 Agent 的执行权限。另补读两项部署与后训练实践；研究案例用客服分类说明，改一块权重究竟改变了什么。",
+    "coverage": "检查时段为北京时间11月8日09:25至11月9日09:14。昨晚更新仅改写文案，本次从上次实际采集结束处继续。新增阅读开发者记录、CCF论坛纪要，并补读11月4日至7日未收录的技术材料。小红书完成两组搜索及1篇正文、评论检查；未找到足够完整的新案例。X两次搜索均为空，Reddit读取失败，脉脉后台连接超时；未覆盖这些平台的新帖和评论。本期没有可摘入的增量评论。",
+    "question": "如果让 AI 每天重复做同一项工作，你会保留哪些人工修改，帮助它下一次少犯同样的错？",
+    "id": "2026-11-09",
+    "count": 5
+  },
+  {
     "date": "2026-11-08",
     "edition": 11,
     "title": "代码里的旧提醒，训练中的小误差，都可能让 AI 多走弯路",
@@ -2570,19 +2792,70 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-08T23:58:43+08:00",
+  "updatedAt": "2026-11-09T09:17:14+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-08",
-  "latestId": "2026-11-08"
+  "latestDate": "2026-11-09",
+  "latestId": "2026-11-09"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "specopd-branch-parallel",
-    "heterogeneous-lora-ranks"
+    "giga-one-matrix-classifier",
+    "specopd-branch-parallel"
   ],
   "entries": [
+    {
+      "id": "giga-one-matrix-classifier",
+      "cat": "ai",
+      "topic": "模型编辑",
+      "symbol": "↗",
+      "method": "Giga · 单矩阵权重编辑",
+      "year": "2026-11-06 · 技术文章",
+      "publishedOn": "2026-11-06",
+      "addedOn": "2026-11-09",
+      "time": 6,
+      "title": "客服分类答不准，Giga 只改了小模型最后一层的一块权重",
+      "desc": "先查看内部计算里是否已有分类线索，再修改把线索变成答案的过程。",
+      "scenario": "从客服对话中判断客户是要退货、查包裹，还是处理另一类问题。",
+      "bottleneck": "内部计算能分出不少类别，最终生成的名称却经常偏向少数几个选项。",
+      "lead": "客户说了一长段话，模型要从12个名称里选出对应的需求，例如“申请退货”或“查询物流”。Giga 用 Qwen3.5-0.8B 做这项客服分类，发现它经常选错。\n\n团队让 Claude Fable 5.1 检查小模型的内部计算。它把同一类别对话产生的数值取平均，再看新对话更接近哪一类，发现这种简单判断比模型直接回答更准。作者因此把修改重点放在最后一步：怎样把已有的分类线索变成正确名称。\n\n具体做法是，先计算每个训练例子的内部数值应该怎样调整，才能让正确名称的得分更高；再求出一块权重矩阵的改动，让它尽量同时完成这些调整。最后把改动写回模型。\n\n在保留到最后才测试的1200段合成对话上，模型自由生成完整名称的正确率从39.9%升到80.9%。普通英文文本的预测能力有所下降，团队接受了这个取舍，因为他们要做的是专用分类器。",
+      "insight": "先确认信息有没有在内部计算中出现，再判断该改知识本身，还是改生成答案的最后几步。",
+      "steps": [
+        [
+          "先分开拟合、选方案和最终测试",
+          "3600段合成对话覆盖五个行业。1800段用于计算权重改动，600段用于选择设置，1200段留到最后测试。"
+        ],
+        [
+          "为每个例子算出想要的变化",
+          "模型给各个候选名称打分。对分错或差距不够大的例子，计算怎样小幅调整最后的内部数值，才能让正确名称领先；已经满足条件的例子无需移动。"
+        ],
+        [
+          "用同一块矩阵实现这些变化",
+          "最后一层的一块矩阵决定把哪些计算结果加入输出。团队用岭回归求解——让预测改动尽量接近目标，同时限制它对普通文本的影响。最后采用的版本重复修正了三轮。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "为什么怀疑最后的名称选择出了问题",
+        "text": "航空业测试共有240段对话，12个类别各20段；原模型有184次回答集中在“航班被取消”或“改签”两个名称上。另一方面，用内部数值做简单分类，在验证集上可达到75%或79%，取决于读取哪一层。这些数值来自不同读出方式，不能混当成最终生成成绩。"
+      },
+      "evidence": "最终测试中，自由生成名称的正确率为80.9%；如果强制从列表按名称得分选择，按完整名称计算为82.2%。正文采用更接近实际使用的自由生成结果。\n\n这套方案由 Fable 选择计算方法和设置，再运行程序求出矩阵改动；没有逐个由语言模型直接写出全部权重数字。",
+      "limits": "材料是合成客服对话。普通英文困惑度从17.4升到19.6（越低越好）；文章没有给出与同数据、同预算的常规微调对照。",
+      "transfer": "这种案例适合进一步比较：直接用内部特征分类、常规微调和矩阵编辑，哪一种在相同数据与时间预算下更划算。",
+      "take": "改动一块矩阵能改善这项分类任务；值不值得替代微调，还需要同预算比较。",
+      "counter": {
+        "q": "没做梯度更新，就等于没用训练数据吗？",
+        "a": "这里仍用了带标签的数据来求权重改动，也用验证集选设置。区别在于如何计算改动：它求解线性方程，而不是反复沿梯度更新。"
+      },
+      "sources": [
+        [
+          "团队技术文章、数据划分与测试表",
+          "https://giga.ai/news/one-weight-matrix"
+        ]
+      ],
+      "images": []
+    },
     {
       "id": "specopd-branch-parallel",
       "cat": "ai",
