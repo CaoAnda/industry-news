@@ -156,6 +156,26 @@ function scrollToFeedStart(){
  window.scrollTo({top:Math.max(0,top),behavior:'instant'});
 }
 function reset(){state.learningCat='all';state.filter='all';state.topic='';state.query='';state.issue='all';state.limit=12;syncInputs();render()}
+function togglePostSection(button){
+ const {id,action}=button.dataset;
+ const panel=document.getElementById(button.getAttribute('aria-controls'));
+ if(!panel||!['expand','comments'].includes(action))return;
+ const selected=action==='comments'?state.comments:state.expanded;
+ const open=!selected.has(id);
+ if(open)selected.add(id);else selected.delete(id);
+ button.setAttribute('aria-expanded',String(open));
+ panel.hidden=!open;
+ if(action==='comments'){
+  button.querySelector('span:last-child').textContent=open?'收起 ↑':'展开 ↓';
+  button.closest('.comments-section').querySelector('.comment-teaser').hidden=open;
+ }else{
+  const research=cases.find(a=>'case-'+a.id===id);
+  const post=data.find(p=>p.id===id);
+  const label=research?(open?'收起案例':'看方法拆解与算例 · 约 '+research.time+' 分钟'):(open?'收起':post?.detailLabel||'更多细节');
+  button.innerHTML=icon(open?'up':'down')+`<span>${esc(label)}</span>`;
+ }
+ // Keep the article, images and focused button alive; only this section changes.
+}
 document.addEventListener('click',event=>{
  const accountLink=event.target.closest('[data-account]');if(accountLink){if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();if(accountLink.classList.contains('home-link')&&history.state?.fromStream==='all')history.back();else navigateAccount(accountLink.dataset.account);return;}
  const el=event.target.closest('button');if(!el)return;
@@ -171,7 +191,7 @@ document.addEventListener('click',event=>{
  else if(el.dataset.topic){navigateAccount('news');state.topic=el.dataset.topic;state.limit=12;state.filter='all';render();scrollToFeedStart();}
  else if(el.hasAttribute('data-clear-topic')){state.topic='';render()}
  else if(el.hasAttribute('data-reset')){reset();window.scrollTo({top:0})}
- else if(el.dataset.action){const {id,action}=el.dataset;if(action==='comments'){state.comments.has(id)?state.comments.delete(id):state.comments.add(id)}else if(action==='expand'){state.expanded.has(id)?state.expanded.delete(id):state.expanded.add(id)}else {return}render();document.querySelector(`[data-action="${action}"][data-id="${id}"]`)?.focus({preventScroll:true});}
+ else if(el.dataset.action){togglePostSection(el);}
  else if(el.dataset.jump){navigateAccount('all');reset();state.limit=data.length+cases.length;state.expanded.add(el.dataset.jump);render();document.querySelector(`#post-${el.dataset.jump}`).scrollIntoView({behavior:'smooth',block:'start'});}
 });
 const searchBox=document.querySelector('.search-box'),search=document.querySelector('#search'),searchToggle=document.querySelector('.search-toggle');
