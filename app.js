@@ -18,9 +18,32 @@ const learning=window.LEARNING_DATA;
 const cases=[...learning.entries].sort((a,b)=>Number(Boolean(a.classic))-Number(Boolean(b.classic))||(b.publishedOn||'').localeCompare(a.publishedOn||''));
 const issueKey=i=>i.id||i.date;
 const issueLabel=id=>{const i=issues.find(x=>issueKey(x)===id);return i?(i.label||i.date):id};
-const state = {stream:'all',learningCat:'all',filter:'all',topic:'',sort:'curated',query:'',expanded:new Set(),comments:new Set(),issue:issueKey(issues[0])};
+const state = {stream:'all',learningCat:'all',filter:'all',topic:'',sort:'curated',query:'',expanded:new Set(),comments:new Set(),issue:'all',limit:12};
 const feed = document.querySelector('#feed');
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const accounts={
+ news:{name:'业界消息',symbol:'业',handle:'industry',bio:'关注公司怎样做 AI、团队怎样工作，以及工具在真实任务里的表现。',count:data.length},
+ learning:{name:'研究案例',symbol:'研',handle:'research',bio:'从具体问题出发，读懂新方法怎么做、实验说明了什么。也保留值得回看的经典案例。',count:cases.length}
+};
+function accountHead(type,meta){const a=accounts[type];return `<a class="account-avatar avatar ${type==='learning'?'learning-avatar':'news-avatar'}" href="#/account/${type}" data-account="${type}" aria-label="进入${a.name}主页">${a.symbol}</a><div class="account-byline"><a class="source-name account-name" href="#/account/${type}" data-account="${type}">${a.name}</a><div class="source-meta">${esc(meta)}</div></div>`}
+const routeStream=()=>location.hash==='#/account/news'?'news':location.hash==='#/account/learning'?'learning':'all';
+let routeId=0,nextRouteId=0;
+const routeSnapshots=new Map();
+history.scrollRestoration='manual';
+history.replaceState({feedRouteId:routeId},'',location.href);
+state.stream=routeStream();
+function rememberRoute(){routeSnapshots.set(routeId,{state:{...state,expanded:new Set(state.expanded),comments:new Set(state.comments)},y:scrollY,filters:document.querySelector('.controls').classList.contains('filters-open'),searchOpen:!document.querySelector('.search-box').hidden})}
+function syncInputs(){document.querySelector('#issue-select').value=state.issue;document.querySelector('#search').value=state.query}
+function navigateAccount(type){
+ if(type===state.stream)return;
+ rememberRoute();routeId=++nextRouteId;history.pushState({feedRouteId:routeId,fromStream:state.stream},'',type==='all'?'#/':'#/account/'+type);
+ Object.assign(state,{stream:type,learningCat:'all',filter:'all',topic:'',sort:'curated',query:'',issue:'all',limit:12});
+ syncInputs();document.querySelector('.controls').classList.remove('filters-open');document.querySelector('.search-box').hidden=true;render();window.scrollTo({top:0,behavior:'instant'});document.querySelector('#view-title').focus({preventScroll:true});
+}
+window.addEventListener('popstate',()=>{
+ rememberRoute();routeId=history.state?.feedRouteId??++nextRouteId;const snap=routeSnapshots.get(routeId);
+ Object.assign(state,snap?.state||{stream:routeStream(),learningCat:'all',filter:'all',topic:'',sort:'curated',query:'',issue:'all',limit:12});syncInputs();document.querySelector('.controls').classList.toggle('filters-open',Boolean(snap?.filters));document.querySelector('.search-box').hidden=!snap?.searchOpen;render();requestAnimationFrame(()=>window.scrollTo({top:snap?.y||0,behavior:'instant'}));
+});
 function emphasize(text,phrases=[]){
  const value=String(text||'');
  const spans=phrases.map(phrase=>({phrase,start:value.indexOf(phrase)})).filter(x=>x.start>=0&&x.phrase.length).sort((a,b)=>a.start-b.start);
@@ -42,7 +65,8 @@ function postHTML(p){
  const open=state.expanded.has(p.id);
  const hasDetails=Boolean(p.body||(p.images||[]).some(pic=>pic.placement==='details'));
  return `<article class="post" id="post-${p.id}" aria-labelledby="title-${p.id}">
-  <div class="post-head"><div class="avatar ${p.avatarClass}" aria-hidden="true">${esc(p.avatar)}</div><div><div class="source-name">${esc(p.source)}</div><div class="source-meta">${esc(p.time)} · ${esc(p.topic)}</div></div><span class="evidence"><i class="dot ${p.kind}"></i>${esc(p.evidence)}</span></div>
+  <div class="post-head">${accountHead('news',p.issueDate.slice(0,10)+' · 整理发布')}<span class="evidence"><i class="dot ${p.kind}"></i>${esc(p.evidence)}</span></div>
+  <div class="original-byline">来源：${esc(p.source)} · ${esc(p.time)}</div>
   <h2 id="title-${p.id}">${esc(p.title)}</h2><div class="post-story">${paragraphs(p.summary,p.highlights?.summary)}</div>
   ${mediaHTML(p)}
   ${hasDetails?`<button class="story-more" data-action="expand" data-id="${p.id}" aria-expanded="${open}" aria-controls="detail-${p.id}">${icon(open?'up':'down')}<span>${open?'收起':esc(p.detailLabel||'更多细节')}</span></button><div class="detail" id="detail-${p.id}" ${open?'':'hidden'}>${paragraphs(p.body,p.highlights?.body)}${mediaHTML(p,'details')}</div>`:''}
@@ -54,7 +78,8 @@ function postHTML(p){
 function caseHTML(a){
  const open=state.expanded.has('case-'+a.id);
  return `<article class="post learning-post" id="case-${esc(a.id)}" aria-labelledby="case-title-${esc(a.id)}">
- <div class="post-head"><div class="avatar learning-avatar" aria-hidden="true">${esc(a.symbol)}</div><div><div class="source-name">拾知 · ${a.cat==='merge'?'模型合并':'AI 拓展'}</div><div class="source-meta">${esc(a.method)} · ${esc(a.year)}</div></div><span class="evidence">${a.classic?'经典回看':'研究案例'}</span></div>
+ <div class="post-head">${accountHead('learning',a.addedOn?a.addedOn+' · 整理发布':(a.classic?'经典案例 · 收录':'研究案例 · 收录'))}<span class="evidence">${a.classic?'经典回看':a.cat==='merge'?'模型合并':'AI 拓展'}</span></div>
+ <div class="original-byline">${esc(a.method)} · ${esc(a.year)}</div>
  <h2 id="case-title-${esc(a.id)}">${esc(a.title)}</h2><div class="post-story">${paragraphs(a.lead)}<p><strong class="key-point">${esc(a.insight)}</strong></p></div>
  ${mediaHTML({...a,id:'case-'+a.id})}
  <button class="story-more" data-action="expand" data-id="case-${esc(a.id)}" aria-expanded="${open}" aria-controls="case-detail-${esc(a.id)}">${icon(open?'up':'down')}<span>${open?'收起案例':'看方法拆解与算例 · 约 '+a.time+' 分钟'}</span></button>
@@ -74,12 +99,34 @@ function render(){
  let selectedCases=cases.filter(a=>state.learningCat==='all'||a.cat===state.learningCat);
  if(state.query.trim()){const q=state.query.trim().toLocaleLowerCase();selectedCases=selectedCases.filter(a=>JSON.stringify(a).toLocaleLowerCase().includes(q))}
  if(state.stream==='news'||state.filter!=='all'||state.topic)selectedCases=[];
- else if(state.stream==='all'&&!state.query.trim())selectedCases=selectedCases.filter(a=>learning.featured.includes(a.id));
+ else if(state.stream==='all'){selectedCases=selectedCases.filter(a=>!a.classic);if(state.issue!=='all')selectedCases=selectedCases.filter(a=>(a.addedOn||'')===state.issue.slice(0,10));}
  if(state.stream==='learning')visible=[];
- const newsHTML=visible.map((p,i)=>(state.sort==='curated'&&state.issue==='all'&&(i===0||visible[i-1].issueDate!==p.issueDate)?`<div class="date-divider"><span>${esc(issueLabel(p.issueDate))}</span></div>`:'')+postHTML(p));
- let cards=[...newsHTML];
- selectedCases.forEach((a,i)=>cards.splice(Math.min(2+i*3,cards.length),0,caseHTML(a)));
- feed.innerHTML=cards.length?cards.join(''):`<div class="empty">${icon('inbox')}<h2>暂时没有匹配的内容。</h2><p>试试其他关键词，或者清除筛选。</p><button data-reset>回到全部内容 →</button></div>`;
+ let items=[];
+ if(state.stream==='learning')items=selectedCases.map(a=>({type:'learning',item:a}));
+ else {
+  const days=[...new Set([...visible.map(p=>p.issueDate.slice(0,10)),...selectedCases.map(a=>a.addedOn||'')])].sort().reverse();
+  for(const day of days){const posts=visible.filter(p=>p.issueDate.slice(0,10)===day).map(p=>({type:'news',item:p}));const research=selectedCases.filter(a=>(a.addedOn||'')===day);research.forEach((a,i)=>posts.splice(Math.min(2+i*3,posts.length),0,{type:'learning',item:a}));items.push(...posts)}
+  if(state.sort==='latest')items.sort((a,b)=>(b.item.publishedOn||b.item.date||'').localeCompare(a.item.publishedOn||a.item.date||''));
+ }
+ const cards=items.slice(0,state.limit).map(x=>x.type==='news'?postHTML(x.item):caseHTML(x.item));
+ feed.innerHTML=cards.length?cards.join(''):`<div class="empty">${icon('inbox')}<h2>暂时没有匹配的内容。</h2><p>试试其他关键词，或者清除筛选。</p><button data-reset>清除筛选 →</button></div>`;
+ document.querySelector('#load-more').hidden=items.length<=state.limit;
+ document.querySelector('#load-more').textContent=`继续往下看 · 还有 ${Math.max(0,items.length-state.limit)} 条`;
+ const account=accounts[state.stream];
+ document.querySelector('#account-profile').hidden=!account;
+ document.querySelector('#account-profile').innerHTML=account?`<div class="profile-cover ${state.stream}"></div><div class="profile-content"><span class="profile-avatar account-mini ${state.stream}">${account.symbol}</span><h2>${account.name}</h2><span class="account-handle">@${account.handle} · 沿线观察</span><p>${account.bio}</p><div class="profile-stat"><b>${account.count}</b> 条内容</div></div>`:'';
+ document.querySelector('.editor-note').hidden=Boolean(account);
+ document.querySelector('#account-directory').hidden=Boolean(account);
+ document.querySelector('#view-title').textContent=account?account.name:'沿线观察';
+ document.querySelector('#view-title').tabIndex=-1;
+ document.title=account?account.name+' · 沿线观察':'沿线观察 · AI 业界与研究';
+ document.querySelector('.home-link').hidden=!account;
+ document.querySelector('#stream-label').textContent=account?'全部帖子':'最新动态';
+ document.querySelectorAll('.rail-account').forEach(el=>{if(el.dataset.account===state.stream)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current')});
+ const home=document.querySelector('[data-home]');home.classList.toggle('active',!account);if(account)home.removeAttribute('aria-current');else home.setAttribute('aria-current','page');
+ const filterButton=document.querySelector('.preview-filter');if(filterButton){const open=document.querySelector('.controls').classList.contains('filters-open');filterButton.setAttribute('aria-expanded',String(open));filterButton.textContent=open?'收起筛选':'筛选与搜索'}
+ document.querySelector('.search-toggle').setAttribute('aria-expanded',String(!document.querySelector('.search-box').hidden));
+
  if(document.querySelector('#lab-result'))updateLab();
  feed.querySelectorAll('.post-media img').forEach(img=>img.addEventListener('error',()=>{const button=img.closest('button');button.disabled=true;button.classList.add('image-failed');button.innerHTML='<span>图片暂时无法显示，请从图源查看</span>'}));
  document.querySelector('.result-count').textContent=`${visible.length+selectedCases.length} 条内容`;
@@ -87,13 +134,13 @@ function render(){
  document.querySelector('.editor-note h2').textContent=state.stream==='learning'?'最近的研究，值得细看。':current.title;
  document.querySelector('.editor-note p').textContent=state.stream==='learning'?'近期论文与实践排在前面，讲清问题、做法和结果。经典案例保留在后面，随时可以回看。':current.intro;
  document.querySelector('.edition').textContent='VOL. '+String(current.edition).padStart(3,'0');
- document.querySelector('.note-meta').innerHTML=state.stream==='learning'?`<span>${cases.length} 篇案例 · AI 拓展 ${cases.filter(a=>a.cat==='ai').length} / 模型合并 ${cases.filter(a=>a.cat==='merge').length}</span><span>研究与工程案例 · 标注原始日期</span>`:`<span>${esc(current.label||current.date)}</span><span>${current.count} 条消息${state.stream==='all'?' + '+learning.featured.length+' 篇案例':''}</span>`;
+ document.querySelector('.note-meta').innerHTML=state.stream==='learning'?`<span>${cases.length} 篇案例 · AI 拓展 ${cases.filter(a=>a.cat==='ai').length} / 模型合并 ${cases.filter(a=>a.cat==='merge').length}</span><span>研究与工程案例 · 标注原始日期</span>`:`<span>${esc(current.label||current.date)}</span><span>${current.count} 条消息${state.stream==='all'?' + '+cases.filter(a=>a.addedOn===current.date).length+' 篇案例':''}</span>`;
  document.querySelectorAll('[data-filter]').forEach(el=>{el.classList.toggle('active',el.dataset.filter===state.filter);el.setAttribute('aria-pressed',el.dataset.filter===state.filter)});
  document.querySelectorAll('[data-sort]').forEach(el=>{el.classList.toggle('active',el.dataset.sort===state.sort);el.setAttribute('aria-pressed',el.dataset.sort===state.sort)});
  const topic=document.querySelector('#topic-filter');topic.hidden=!state.topic;topic.innerHTML=`正在看：${esc(state.topic)}<button data-clear-topic aria-label="清除话题筛选">× 清除</button>`;
- document.querySelector('.feed-footer').hidden=!cards.length;
+ document.querySelector('.feed-footer').hidden=!cards.length||items.length>state.limit;
  document.querySelector('#browse-cases').hidden=state.stream==='learning';
- document.querySelector('#end-copy').textContent=state.stream==='learning'?'案例库，就先逛到这里。':'今天，就看到这里。';
+ document.querySelector('#end-copy').textContent=state.stream==='learning'?'案例库，就先逛到这里。':'已经看到全部动态了。';
  document.querySelector('.feed-footer small').textContent=state.stream==='learning'?'信息不必很多，值得知道就好。':(current.question||'信息不必很多，值得知道就好。');
  document.querySelector('.issue-picker').hidden=state.stream==='learning';
  document.querySelector('.filter-row').hidden=state.stream==='learning';
@@ -108,26 +155,28 @@ function scrollToFeedStart(){
  const top=window.scrollY+feed.getBoundingClientRect().top-controls.getBoundingClientRect().height-(parseFloat(getComputedStyle(controls).top)||0);
  window.scrollTo({top:Math.max(0,top),behavior:'instant'});
 }
-function reset(){state.stream='all';state.learningCat='all';state.filter='all';state.topic='';state.query='';state.issue='all';document.querySelector('#issue-select').value='all';document.querySelector('#search').value='';render()}
+function reset(){state.learningCat='all';state.filter='all';state.topic='';state.query='';state.issue='all';state.limit=12;syncInputs();render()}
 document.addEventListener('click',event=>{
+ const accountLink=event.target.closest('[data-account]');if(accountLink){if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();if(accountLink.classList.contains('home-link')&&history.state?.fromStream==='all')history.back();else navigateAccount(accountLink.dataset.account);return;}
  const el=event.target.closest('button');if(!el)return;
  if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture)||cases.find(p=>'case-'+p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
- else if(el.hasAttribute('data-home')){state.stream='all';state.learningCat='all';state.issue=issueKey(issues[0]);document.querySelector('#issue-select').value=state.issue;state.filter='all';state.topic='';state.query='';document.querySelector('#search').value='';render();window.scrollTo({top:0});}
- else if(el.dataset.stream){state.stream=el.dataset.stream;state.filter='all';state.topic='';state.learningCat='all';render();scrollToFeedStart();}
- else if(el.dataset.learningCat){state.learningCat=el.dataset.learningCat;render();scrollToFeedStart();}
+ else if(el.hasAttribute('data-home')){navigateAccount('all');window.scrollTo({top:0});}
+ else if(el.dataset.stream){navigateAccount(el.dataset.stream);}
+ else if(el.id==='load-more'){const y=scrollY;state.limit+=12;render();window.scrollTo({top:y,behavior:'instant'});}
+ else if(el.dataset.learningCat){state.learningCat=el.dataset.learningCat;state.limit=12;render();scrollToFeedStart();}
  else if(el.dataset.mode){labMode=el.dataset.mode;updateLab();}
  else if(el.dataset.q){labQ=Number(el.dataset.q);updateLab();}
- else if(el.dataset.filter){state.filter=el.dataset.filter;render();scrollToFeedStart();}
- else if(el.dataset.sort){state.sort=el.dataset.sort;render();scrollToFeedStart();}
- else if(el.dataset.topic){state.stream='news';state.topic=el.dataset.topic;state.filter='all';render();scrollToFeedStart();}
+ else if(el.dataset.filter){state.filter=el.dataset.filter;state.limit=12;render();scrollToFeedStart();}
+ else if(el.dataset.sort){state.sort=el.dataset.sort;state.limit=12;render();scrollToFeedStart();}
+ else if(el.dataset.topic){navigateAccount('news');state.topic=el.dataset.topic;state.limit=12;state.filter='all';render();scrollToFeedStart();}
  else if(el.hasAttribute('data-clear-topic')){state.topic='';render()}
  else if(el.hasAttribute('data-reset')){reset();window.scrollTo({top:0})}
  else if(el.dataset.action){const {id,action}=el.dataset;if(action==='comments'){state.comments.has(id)?state.comments.delete(id):state.comments.add(id)}else if(action==='expand'){state.expanded.has(id)?state.expanded.delete(id):state.expanded.add(id)}else {return}render();document.querySelector(`[data-action="${action}"][data-id="${id}"]`)?.focus({preventScroll:true});}
- else if(el.dataset.jump){reset();state.expanded.add(el.dataset.jump);render();document.querySelector(`#post-${el.dataset.jump}`).scrollIntoView({behavior:'smooth',block:'start'});}
+ else if(el.dataset.jump){navigateAccount('all');reset();state.limit=data.length+cases.length;state.expanded.add(el.dataset.jump);render();document.querySelector(`#post-${el.dataset.jump}`).scrollIntoView({behavior:'smooth',block:'start'});}
 });
 const searchBox=document.querySelector('.search-box'),search=document.querySelector('#search'),searchToggle=document.querySelector('.search-toggle');
 searchToggle.addEventListener('click',()=>{searchBox.hidden=!searchBox.hidden;searchToggle.setAttribute('aria-expanded',!searchBox.hidden);if(!searchBox.hidden)search.focus();else{search.value='';state.query='';render()}});
-search.addEventListener('input',()=>{state.query=search.value;render()});
+search.addEventListener('input',()=>{state.query=search.value;state.limit=12;render()});
 document.addEventListener('keydown',event=>{if(event.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)&&!document.querySelector('dialog[open]')){event.preventDefault();searchBox.hidden=false;searchToggle.setAttribute('aria-expanded','true');search.focus()}if(event.key==='Escape'&&document.activeElement===search){search.value='';state.query='';searchBox.hidden=true;searchToggle.setAttribute('aria-expanded','false');searchToggle.focus();render()}});
 const dialog=document.querySelector('#coverage-dialog');
 document.querySelector('#coverage').onclick=()=>dialog.showModal();document.querySelector('#about-mobile').onclick=()=>dialog.showModal();document.querySelector('#coverage-dialog .dialog-close').onclick=()=>dialog.close();
@@ -149,7 +198,7 @@ document.querySelector('#learning-count').textContent=cases.length;
 document.querySelector('#updated-label').textContent='更新于 '+window.FEED_META.updatedAt.slice(5,16).replace('T',' ')+'（北京）';
 document.querySelector('#issue-select').innerHTML='<option value="all">全部期数</option>'+issues.map(i=>`<option value="${esc(issueKey(i))}">${esc(i.label||i.date)} · ${i.count} 条</option>`).join('');
 document.querySelector('#issue-select').value=state.issue;
-document.querySelector('#issue-select').onchange=e=>{state.issue=e.target.value;render();scrollToFeedStart()};
+document.querySelector('#issue-select').onchange=e=>{state.issue=e.target.value;state.limit=12;render();scrollToFeedStart()};
 document.querySelector('#coverage-copy').innerHTML=issues.map(i=>`<h3>${esc(i.label||i.date)}</h3><p>${esc(i.coverage)}</p>`).join('');
 document.querySelector('#trends').innerHTML=data.filter(p=>p.issueDate===issueKey(latest)&&((p.comments||[]).length||(p.images||[]).length)).slice(0,3).map((p,i)=>`<button class="trend" data-jump="${esc(p.id)}"><em>0${i+1}</em><div>${esc(p.title)}<small>${esc(p.source)}${p.comments.length?' · 有评论补充':' · 有原文配图'}</small></div></button>`).join('');
 const imageDialog=document.querySelector('#image-dialog');
