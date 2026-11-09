@@ -54,7 +54,7 @@ function emphasize(text,phrases=[]){
 function paragraphs(text,phrases=[]){return String(text||'').split(/\n\s*\n/).filter(Boolean).map(t=>`<p>${emphasize(t,phrases)}</p>`).join('')}
 function mediaHTML(p,placement='inline'){
  const pictures=(p.images||[]).map((pic,index)=>({pic,index})).filter(({pic})=>(pic.placement||'inline')===placement);
- return pictures.length?`<div class="post-media">${pictures.map(({pic,index})=>`<figure><button class="image-button" data-picture="${esc(p.id)}" data-index="${index}" aria-label="查看大图：${esc(pic.alt)}"><img src="${esc(pic.src)}" alt="${esc(pic.alt)}" loading="lazy" decoding="async"><span class="zoom-hint">查看大图 ↗</span></button><figcaption>${esc(pic.caption)} <a href="${esc(pic.sourceUrl)}" target="_blank" rel="noopener noreferrer">图源：${esc(pic.credit)} ↗</a></figcaption></figure>`).join('')}</div>`:'';
+ return pictures.length?`<div class="post-media">${pictures.map(({pic,index})=>`<figure><button class="image-button" data-picture="${esc(p.id)}" data-index="${index}" aria-label="查看大图：${esc(pic.alt)}"><img src="${esc(pic.src)}" alt="${esc(pic.alt)}" ${pic.width&&pic.height?`width="${pic.width}" height="${pic.height}"`:""} loading="lazy" decoding="async"><span class="zoom-hint">查看大图 ↗</span></button><figcaption>${esc(pic.caption)} <a href="${esc(pic.sourceUrl)}" target="_blank" rel="noopener noreferrer">图源：${esc(pic.credit)} ↗</a></figcaption></figure>`).join('')}</div>`:'';
 }
 function commentsHTML(p){
  if(!(p.comments||[]).length)return '';

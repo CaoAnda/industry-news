@@ -71,7 +71,9 @@ window.FEED_DATA = [
         "credit": "Giga · Racer",
         "sourceUrl": "https://giga.ai/news/how-we-rebuilt-gamma-in-two-days",
         "originalUrl": "https://giga.ai/_next/image?url=%2Fassets%2Fimages%2Fnews%2Fracer%2Fcover-v6.jpg&w=3840&q=75&dpl=dpl_2ySaujBzy3GXi6J2RTstnXFbtfL5",
-        "placement": "inline"
+        "placement": "inline",
+        "width": 3200,
+        "height": 2000
       }
     ],
     "comments": [],
@@ -157,7 +159,9 @@ window.FEED_DATA = [
         "credit": "Buoyant · Kinference benchmarks",
         "sourceUrl": "https://www.buoyant.io/blog/distributed-inference-benchmarks-kinference-vs-plain-kubernetes",
         "originalUrl": "https://cdn.prod.website-files.com/679957f782f1eca8a9594edb/6aeb3c6af86e8f42c70d7f23_TTFT%20Chart%20Selection.webp",
-        "placement": "inline"
+        "placement": "inline",
+        "width": 2400,
+        "height": 1276
       }
     ],
     "comments": [],
@@ -243,7 +247,9 @@ window.FEED_DATA = [
         "credit": "Google for Developers",
         "sourceUrl": "https://developers.googleblog.com/agent-distraction/",
         "originalUrl": "https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/image7_TPQlISo.original.png",
-        "placement": "inline"
+        "placement": "inline",
+        "width": 1999,
+        "height": 930
       }
     ],
     "comments": [],
@@ -289,7 +295,9 @@ window.FEED_DATA = [
         "credit": "vLLM Blog · REINFORCE Zero Figure 1",
         "sourceUrl": "https://vllm-project.github.io/2026/11/06/zero-mismatch-async-rl.html",
         "originalUrl": "https://vllm-project.github.io/assets/figures/2026-11-06-zero-mismatch-async-rl/figure1.png",
-        "placement": "details"
+        "placement": "details",
+        "width": 3840,
+        "height": 1770
       }
     ],
     "comments": [],
@@ -447,7 +455,9 @@ window.FEED_DATA = [
         "credit": "Anthropic · Figure 14",
         "sourceUrl": "https://www.anthropic.com/research/components-of-agent-memory",
         "originalUrl": "https://www-cdn.anthropic.com/images/4zrzovbb/website/592f604d38e90537553ab7127d1d3115924fda92-3840x1822.png",
-        "placement": "inline"
+        "placement": "inline",
+        "width": 3840,
+        "height": 1822
       }
     ],
     "comments": [],
@@ -565,7 +575,9 @@ window.FEED_DATA = [
         "credit": "GitHub Next · PDD Kit",
         "sourceUrl": "https://githubnext.com/projects/pdd-kit/",
         "originalUrl": "https://githubnext.com/assets/projects/pdd-kit/gh-ui-decision-both-ways.png",
-        "placement": "details"
+        "placement": "details",
+        "width": 1354,
+        "height": 2326
       }
     ],
     "comments": [],
@@ -611,7 +623,9 @@ window.FEED_DATA = [
         "credit": "World Labs · 演示视频封面",
         "sourceUrl": "https://www.worldlabs.ai/blog/atlas-realtime",
         "originalUrl": "https://www.worldlabs.ai/images/blog/atlas-realtime/viewfinder-story-poster.webp",
-        "placement": "inline"
+        "placement": "inline",
+        "width": 1920,
+        "height": 1080
       }
     ],
     "comments": [],
@@ -657,7 +671,9 @@ window.FEED_DATA = [
         "credit": "OpenAI · Figure 6",
         "sourceUrl": "https://alignment.openai.com/misalignment-reports/covert-underperformance-on-safety-research-tasks/",
         "originalUrl": "https://alignment.openai.com/assets/reports/covert-underperformance-on-safety-research-tasks/figure-6-task-completeness-after-sft-subtraction.png",
-        "placement": "details"
+        "placement": "details",
+        "width": 2048,
+        "height": 1365
       }
     ],
     "comments": [],
@@ -703,7 +719,9 @@ window.FEED_DATA = [
         "credit": "METR · AECI 趋势图",
         "sourceUrl": "https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/",
         "originalUrl": "https://metr.org/assets/images/ai-rd-acceleration-assessment/aeci-main.png",
-        "placement": "details"
+        "placement": "details",
+        "width": 1400,
+        "height": 1162
       }
     ],
     "comments": [],
@@ -861,7 +879,9 @@ window.FEED_DATA = [
         "credit": "Together AI · 原文 Figure 1",
         "sourceUrl": "https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference",
         "originalUrl": "https://cdn.prod.website-files.com/69654e88dce9154b5f12070c/6aeaef19bddbf4ee964def1a_02-compiler-loop%402x.png",
-        "placement": "details"
+        "placement": "details",
+        "width": 3460,
+        "height": 1600
       }
     ],
     "comments": [],
@@ -1062,7 +1082,9 @@ window.FEED_DATA = [
         "credit": "Sergio Paniego · Hugging Face 原文",
         "sourceUrl": "https://huggingface.co/blog/sergiopaniego/mopd-trl",
         "originalUrl": "https://cdn-uploads.huggingface.co/production/uploads/61929226ded356549e20c5da/xbYmQp1qSwjVv0p1uAMXV.png",
-        "placement": "inline"
+        "placement": "inline",
+        "width": 1577,
+        "height": 1212
       }
     ],
     "comments": [],
@@ -1112,7 +1134,9 @@ window.FEED_DATA = [
         "credit": "Harry Peng / Afterlight · 作者配图",
         "sourceUrl": "https://x.com/MerkleAnders/status/2117503938648047843",
         "originalUrl": "https://pbs.twimg.com/media/HWLilKRbwAAvy70.jpg",
-        "placement": "inline"
+        "placement": "inline",
+        "width": 960,
+        "height": 1200
       }
     ],
     "comments": [
@@ -1470,7 +1494,9 @@ window.FEED_DATA = [
         "credit": "crusaderky · 原始量化报告",
         "sourceUrl": "https://github.com/crusaderky/pixi-llm-recipes/blob/main/perplexity/LFM3-1.7B/README.md",
         "originalUrl": "https://raw.githubusercontent.com/crusaderky/pixi-llm-recipes/main/perplexity/LFM3-1.7B/report.same-sampled.png",
-        "placement": "details"
+        "placement": "details",
+        "width": 2344,
+        "height": 1454
       }
     ],
     "comments": [],
@@ -1519,7 +1545,9 @@ window.FEED_DATA = [
         "caption": "作者展示的 Godot 导入结果：角色、道具与建筑已成为可选取的 3D 素材。",
         "credit": "CCORE · Hugging Face 模型页",
         "sourceUrl": "https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder",
-        "originalUrl": "https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder/resolve/main/images/godot-scene.png"
+        "originalUrl": "https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder/resolve/main/images/godot-scene.png",
+        "width": 1600,
+        "height": 739
       }
     ],
     "comments": [
@@ -1589,7 +1617,9 @@ window.FEED_DATA = [
         "credit": "HearMeOut-13 · Reddit",
         "sourceUrl": "https://www.reddit.com/r/LocalLLaMA/comments/1xljdnj/sorry_sam_my_quite_terrible_home_dram_is_at_100/",
         "originalUrl": "https://i.redd.it/dwgmz70zi3zh1.png",
-        "placement": "details"
+        "placement": "details",
+        "width": 1375,
+        "height": 247
       }
     ],
     "comments": [],
@@ -1845,7 +1875,9 @@ window.FEED_DATA = [
         "credit": "Anthropic Alignment Science",
         "sourceUrl": "https://alignment.anthropic.com/2026/automated-em-search/",
         "originalUrl": "https://alignment.anthropic.com/2026/automated-em-search/fig1.png",
-        "placement": "details"
+        "placement": "details",
+        "width": 1999,
+        "height": 875
       }
     ],
     "comments": [],
@@ -1953,7 +1985,9 @@ window.FEED_DATA = [
         "caption": "原文协作示意：工程、产品、设计在同一会话接力；图中的定价修改是演示案例。",
         "credit": "Manus",
         "sourceUrl": "https://manus.im/blog/rebuilding-manus-with-manus",
-        "originalUrl": "https://files.manuscdn.com/assets/dashboard/materials/2026/10/30/555809c7e478f1452de193557b3e53d840e1dba6804d42452b258d0fa94ba160.webp"
+        "originalUrl": "https://files.manuscdn.com/assets/dashboard/materials/2026/10/30/555809c7e478f1452de193557b3e53d840e1dba6804d42452b258d0fa94ba160.webp",
+        "width": 3840,
+        "height": 2160
       }
     ],
     "comments": [],
@@ -2113,7 +2147,9 @@ window.FEED_DATA = [
         "credit": "Meta Engineering",
         "sourceUrl": "https://engineering.fb.com/2026/10/19/ml-applications/thin-orchestrator-ai-agent-architecture/",
         "originalUrl": "https://engineering.fb.com/wp-content/uploads/2026/10/Meta-Thin-Orchestrator-workflow.jpg",
-        "placement": "details"
+        "placement": "details",
+        "width": 1200,
+        "height": 896
       }
     ],
     "comments": [],
@@ -2792,7 +2828,7 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-09T09:17:14+08:00",
+  "updatedAt": "2026-11-09T16:27:05+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
   "latestDate": "2026-11-09",
   "latestId": "2026-11-09"
@@ -2921,7 +2957,9 @@ window.LEARNING_DATA = {
           "credit": "SpecOPD · Figure 2",
           "sourceUrl": "https://arxiv.org/html/2611.02846v1",
           "originalUrl": "https://arxiv.org/html/2611.02846v1/fig02-proposal-tree.png",
-          "placement": "details"
+          "placement": "details",
+          "width": 1768,
+          "height": 528
         }
       ],
       "revisedOn": "2026-11-08"
@@ -3183,7 +3221,9 @@ window.LEARNING_DATA = {
           "credit": "Dylan Johnston、Robert P Smith · CC BY 4.0",
           "sourceUrl": "https://approximate-science.github.io/ridgefill/",
           "originalUrl": "https://approximate-science.github.io/ridgefill/assets/fig/fig_fill_vs_kva.png",
-          "placement": "details"
+          "placement": "details",
+          "width": 2134,
+          "height": 641
         }
       ],
       "sources": [
@@ -3307,7 +3347,9 @@ window.LEARNING_DATA = {
           "credit": "Zou 等，Hybrid Reasoning Agents · CC BY 4.0",
           "sourceUrl": "https://arxiv.org/html/2610.18861v1#S5.F6",
           "originalUrl": "https://arxiv.org/html/2610.18861v1/token_effeciency.png",
-          "placement": "details"
+          "placement": "details",
+          "width": 727,
+          "height": 210
         }
       ],
       "sources": [
