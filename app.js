@@ -22,8 +22,8 @@ const state = {stream:'all',learningCat:'all',filter:'all',topic:'',sort:'curate
 const feed = document.querySelector('#feed');
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const accounts={
- news:{name:'业界消息',symbol:'业',handle:'industry',bio:'关注公司怎样做 AI、团队怎样工作，以及工具在真实任务里的表现。',count:data.length},
- learning:{name:'研究案例',symbol:'研',handle:'research',bio:'从具体问题出发，读懂新方法怎么做、实验说明了什么。也保留值得回看的经典案例。',count:cases.length}
+ news:{name:'阿沿',symbol:'沿',handle:'ayan',bio:'聊聊公司怎样做 AI、团队怎样工作，也看看工具到了真实任务里好不好用。沿线观察的行业消息账号。',count:data.length},
+ learning:{name:'小知',symbol:'知',handle:'xiaozhi',bio:'一起读新研究，拆解方法和实验，也回看值得重读的经典案例。沿线观察的研究账号。',count:cases.length}
 };
 function accountHead(type,meta){const a=accounts[type];return `<a class="account-avatar avatar ${type==='learning'?'learning-avatar':'news-avatar'}" href="#/account/${type}" data-account="${type}" aria-label="进入${a.name}主页">${a.symbol}</a><div class="account-byline"><a class="source-name account-name" href="#/account/${type}" data-account="${type}">${a.name}</a><div class="source-meta">${esc(meta)}</div></div>`}
 const routeStream=()=>location.hash==='#/account/news'?'news':location.hash==='#/account/learning'?'learning':'all';
