@@ -76,6 +76,7 @@ html[data-layout=live]{--preview-height:0px}
 .brand-icon,[data-look=feed] .brand-icon,[data-look=night] .brand-icon{width:44px;height:44px;background:none;border-radius:10px;transform:none}.brand-icon img{display:block;width:44px;height:44px}
 
 /* Two editorial accounts share one continuous home feed. */
+#load-more,.feed-footer{overflow-anchor:none}
 .account-mini{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:17px;font-weight:700;flex-shrink:0}
 .account-mini.news,.news-avatar{background:#e6f0fb;color:#3069a7}.account-mini.learning{background:#eae2f7;color:#7856a3}
 .rail-account{display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:10px;font-size:14px;color:var(--body-copy);min-height:48px}.rail-account[aria-current=page]{background:#edf2fa;font-weight:650}.rail-account+.rail-label{margin-top:25px}

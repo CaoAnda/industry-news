@@ -92,6 +92,36 @@ function caseHTML(a){
  <details class="case-evidence"><summary>${esc(a.counter.q)}</summary>${paragraphs(a.counter.a)}</details>
  </div><div class="story-sources"><span>${esc(a.topic)}</span>${a.sources.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`).join('')}</div></article>`;
 }
+let currentFeedItems=[];
+const feedItemHTML=x=>x.type==='news'?postHTML(x.item):caseHTML(x.item);
+function bindImageFallbacks(container){
+ container.querySelectorAll('.post-media img').forEach(img=>img.addEventListener('error',()=>{const button=img.closest('button');button.disabled=true;button.classList.add('image-failed');button.innerHTML='<span>图片暂时无法显示，请从图源查看</span>'},{once:true}));
+}
+function updatePagination(){
+ const remaining=Math.max(0,currentFeedItems.length-state.limit);
+ document.querySelector('#load-more').hidden=remaining===0;
+ document.querySelector('#load-more').textContent=`继续往下看 · 还有 ${remaining} 条`;
+ document.querySelector('.feed-footer').hidden=!currentFeedItems.length||remaining>0;
+}
+function appendFeedPage(){
+ const shown=feed.querySelectorAll(':scope > article').length;
+ const next=currentFeedItems.slice(shown,shown+12);
+ if(!next.length)return;
+ const y=scrollY;
+ const template=document.createElement('template');
+ template.innerHTML=next.map(feedItemHTML).join('');
+ const first=template.content.firstElementChild;
+ const hasNewLab=Boolean(template.content.querySelector('#lab-result'));
+ bindImageFallbacks(template.content);
+ feed.append(template.content);
+ state.limit=shown+next.length;
+ // Move keyboard focus off the button that is about to move below the new posts.
+ first.tabIndex=-1;
+ first.focus({preventScroll:true});
+ updatePagination();
+ if(hasNewLab)updateLab();
+ window.scrollTo({top:y,behavior:'instant'});
+}
 function render(){
  let visible=data.filter(p=>(state.filter==='all'||state.filter===p.channel)&&(state.issue==='all'||p.issueDate===state.issue)&&(!state.topic||state.topic===p.topic));
  if(state.query.trim()){const query=state.query.trim().toLocaleLowerCase();visible=visible.filter(p=>[p.title,p.source,p.summary,p.body,p.detailLabel,...p.tags,...(p.comments||[]).map(c=>c.text+' '+c.author)].join(' ').toLocaleLowerCase().includes(query))}
@@ -108,10 +138,10 @@ function render(){
   for(const day of days){const posts=visible.filter(p=>p.issueDate.slice(0,10)===day).map(p=>({type:'news',item:p}));const research=selectedCases.filter(a=>(a.addedOn||'')===day);research.forEach((a,i)=>posts.splice(Math.min(2+i*3,posts.length),0,{type:'learning',item:a}));items.push(...posts)}
   if(state.sort==='latest')items.sort((a,b)=>(b.item.publishedOn||b.item.date||'').localeCompare(a.item.publishedOn||a.item.date||''));
  }
- const cards=items.slice(0,state.limit).map(x=>x.type==='news'?postHTML(x.item):caseHTML(x.item));
+ currentFeedItems=items;
+ const cards=items.slice(0,state.limit).map(feedItemHTML);
  feed.innerHTML=cards.length?cards.join(''):`<div class="empty">${icon('inbox')}<h2>暂时没有匹配的内容。</h2><p>试试其他关键词，或者清除筛选。</p><button data-reset>清除筛选 →</button></div>`;
- document.querySelector('#load-more').hidden=items.length<=state.limit;
- document.querySelector('#load-more').textContent=`继续往下看 · 还有 ${Math.max(0,items.length-state.limit)} 条`;
+ updatePagination();
  const account=accounts[state.stream];
  document.querySelector('#account-profile').hidden=!account;
  document.querySelector('#account-profile').innerHTML=account?`<div class="profile-cover ${state.stream}"></div><div class="profile-content"><span class="profile-avatar account-mini ${state.stream}">${account.symbol}</span><h2>${account.name}</h2><span class="account-handle">@${account.handle} · 沿线观察</span><p>${account.bio}</p><div class="profile-stat"><b>${account.count}</b> 条内容</div></div>`:'';
@@ -128,7 +158,7 @@ function render(){
  document.querySelector('.search-toggle').setAttribute('aria-expanded',String(!document.querySelector('.search-box').hidden));
 
  if(document.querySelector('#lab-result'))updateLab();
- feed.querySelectorAll('.post-media img').forEach(img=>img.addEventListener('error',()=>{const button=img.closest('button');button.disabled=true;button.classList.add('image-failed');button.innerHTML='<span>图片暂时无法显示，请从图源查看</span>'}));
+ bindImageFallbacks(feed);
  document.querySelector('.result-count').textContent=`${visible.length+selectedCases.length} 条内容`;
  const current=issues.find(i=>issueKey(i)===state.issue)||issues[0];
  document.querySelector('.editor-note h2').textContent=state.stream==='learning'?'最近的研究，值得细看。':current.title;
@@ -182,7 +212,7 @@ document.addEventListener('click',event=>{
  if(el.dataset.picture){const p=data.find(p=>p.id===el.dataset.picture)||cases.find(p=>'case-'+p.id===el.dataset.picture),pic=p.images[Number(el.dataset.index)];document.querySelector('#large-image').src=pic.src;document.querySelector('#large-image').alt=pic.alt;document.querySelector('#large-caption').textContent=pic.caption+' 图源：'+pic.credit;document.querySelector('#large-source').href=pic.sourceUrl;document.querySelector('#image-dialog').showModal();}
  else if(el.hasAttribute('data-home')){navigateAccount('all');window.scrollTo({top:0});}
  else if(el.dataset.stream){navigateAccount(el.dataset.stream);}
- else if(el.id==='load-more'){const y=scrollY;state.limit+=12;render();window.scrollTo({top:y,behavior:'instant'});}
+ else if(el.id==='load-more'){appendFeedPage();}
  else if(el.dataset.learningCat){state.learningCat=el.dataset.learningCat;state.limit=12;render();scrollToFeedStart();}
  else if(el.dataset.mode){labMode=el.dataset.mode;updateLab();}
  else if(el.dataset.q){labQ=Number(el.dataset.q);updateLab();}
