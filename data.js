@@ -1,5 +1,210 @@
 window.FEED_DATA = [
   {
+    "id": "hostinger-agent-real-build-20261110",
+    "source": "Hostinger · Laurynas Bičkauskas",
+    "avatar": "H",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-09",
+    "time": "11 月 9 日 · 原文日期",
+    "title": "自动测试全过，Hostinger 的 AI 验收员却把页面点崩了",
+    "summary": "Hostinger 想修好套餐和价格加载太慢时的页面表现。AI 写完修改，单元测试和自动检查都通过了；另一个负责验收的 AI 打开测试版网站，故意让这些数据晚到15秒，套餐降级页面却每次都崩溃。\n\n原因是页面要先知道用户选了哪个套餐，才能计算价格；修改后的代码还没准备好套餐，就开始读取它。写代码的 AI 调整了这些操作的先后顺序，并补上防止同类错误再出现的测试，页面才正常显示。\n\n团队把这种验收放进日常流程：写代码和检查的 AI 分开，检查者要在实际运行的网站上重做用户操作，再把修改前后的证据交给人看。最终是否合并代码，仍由人决定。",
+    "body": "验收者先核对网站运行的是本次修改，再用独立账号比较前后版本，避免旧数据干扰。这个流程叫 hforge。图中紫色是 AI，绿色是人：人先定范围，AI 协调和写代码，独立验收后再交人审查。任务结束还会回看哪些反复出现的问题可以修进工具里。",
+    "detailLabel": "他们怎样分工、留下验收证据",
+    "links": [
+      {
+        "label": "团队实践",
+        "url": "https://www.hostinger.com/blog/hforge-coding-agents-feedback-loops/"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-10/hostinger-flow.png",
+        "alt": "hforge 中人员、写代码的 AI 与独立验收 AI 的分工",
+        "caption": "独立验收者在测试版网站检查修改；任务结束后的复盘建议由人挑选，再用于下一项工作。",
+        "credit": "Hostinger · hforge",
+        "sourceUrl": "https://www.hostinger.com/blog/hforge-coding-agents-feedback-loops/",
+        "originalUrl": "https://imagedelivery.net/LqiWLm-3MGbYHtFuUbcBtA/wp-content/uploads/sites/4/2026/11/hforge-flow.png/public",
+        "placement": "details",
+        "width": 1366,
+        "height": 654
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "故意让这些数据晚到15秒",
+        "在实际运行的网站上重做用户操作"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-10"
+  },
+  {
+    "id": "sentry-agent-traces-20261110",
+    "source": "Sentry · Scott Cooper",
+    "avatar": "S",
+    "avatarClass": "reddit",
+    "channel": "interview",
+    "evidence": "具名实践",
+    "kind": "opinion",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-03",
+    "time": "11 月 3 日 · 补读",
+    "title": "Sentry 让 AI 顺着线上耗时记录找代码，只改动真正拖慢系统的地方",
+    "summary": "Sentry 工程师 Scott Cooper 给 Claude 接入了线上请求的运行记录。AI 能看到一次请求经过哪些步骤、各花了多久，再按出现次数和耗时找值得优化的地方；Scott 从中选题，让它继续读代码和历史修改记录。\n\n其中一个问题是查询某条故障的最新状态变更。旧程序把几种状态的历史记录一起读出、排序，再取最新一条。对于反复关闭又重新出现的故障，历史记录很多，这一步就很慢。\n\nAI 改成先用数据库已有的索引，分别找出每种状态的最新记录，再比较这几个时间。作者在只读数据库副本上测试：一个有13万条历史记录的例子，数据已在缓存中时，旧查询约274毫秒，新查询约0.4毫秒。这次改善来自少读、少排序，而不是更换数据库。",
+    "body": "原修改于10月16日合并，11月3日的文章汇总了上线观察，本期补读。作者报告，这项查询在两个地区主库上的磁盘读取量降到接近零。普通故障原本就查得快，因此正文选出的13万条历史记录是较重的案例。\n\n博客把935毫秒写在热缓存比较中，但原始修改记录明确区分：旧查询冷缓存约935毫秒、热缓存约274毫秒。这里采用原记录的同为热缓存比较。",
+    "detailLabel": "上线结果与计时口径",
+    "links": [
+      {
+        "label": "工程师复盘",
+        "url": "https://blog.sentry.io/performance-wins-traces-coding-agent/"
+      },
+      {
+        "label": "原始修改与测试条件",
+        "url": "https://github.com/getsentry/sentry/pull/127496"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "按出现次数和耗时找值得优化的地方",
+        "先用数据库已有的索引，分别找出每种状态的最新记录"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-10"
+  },
+  {
+    "id": "claude-electronics-assembly-20261110",
+    "source": "Anthropic · Diode",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "研究与产品",
+    "tags": [
+      "研究与产品"
+    ],
+    "date": "2026-11-09",
+    "time": "11 月 9 日 · 原文日期",
+    "title": "Claude 设计通话设备，连电路板怎样装进外壳也一起检查",
+    "summary": "Anthropic 与硬件团队 Diode 让 Claude Fable 5.2 设计一款桌面通话设备：要有麦克风、扬声器、USB-C 和蓝牙。模型负责选零件、画电路板、设计外壳和编写设备程序，Diode 的工程师按文件制造、组装并测试。\n\n一个具体问题出在装配上。电路板放平后能装进外壳，但如果直接从上方往下放，静音开关会先撞到壳壁。Claude 找到的办法是先把板倾斜约25度放进去，再转平，并把这一步写进装配说明。\n\n团队最终做出了这款设备，以及语音助手底座和电子宠物三种可工作的原型。它们还需要电气验证、天线调校、散热测试和认证，才谈得上走向正式产品。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "设计与实物记录",
+        "url": "https://www.anthropic.com/research/claude-electronics-design"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-10/claude-assembly.png",
+        "alt": "电路板垂直放入时开关撞墙，倾斜后可以进入外壳",
+        "caption": "右上红色标出开关与壳壁相碰的位置；右下是先倾斜约25度、再转平的装入方法。",
+        "credit": "Anthropic / Diode",
+        "sourceUrl": "https://www.anthropic.com/research/claude-electronics-design",
+        "originalUrl": "https://www-cdn.anthropic.com/images/4zrzovbb/website/64a2aade621d8d6a50c57f9f3d0ac050ea778423-2048x949.png",
+        "placement": "inline",
+        "width": 2048,
+        "height": 949
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "先把板倾斜约25度放进去，再转平"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-10"
+  },
+  {
+    "id": "fable52-cost-per-task-20261110",
+    "source": "Anthropic",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "模型与产品",
+    "tags": [
+      "模型与产品"
+    ],
+    "date": "2026-11-09",
+    "time": "11 月 9 日 · 原文日期",
+    "title": "Fable 5.2 发布：一次编程任务的花费，比单个 token 的价格更值得看",
+    "summary": "Anthropic 发布 Fable 5.2 和 Mythos 5.2。两者使用同一个底层模型；Fable 加上较强的网络安全与生物安全限制，面向普通用户开放，Mythos 则需要机构申请验证。\n\n这次发布有一组值得单独看的比较：FrontierCode 2.0 测试模型修改开源代码的能力。在官方测试中，Fable 5.2 用 High 思考档位得到45.3%，与 Opus 5.5 用 Max 档位的45.5%接近，每项任务的费用却约为一半。两者思考档位不同，这组结果回答的是“达到相近成绩要花多少钱”。\n\n使用模型时，每百万 token 的报价只是一部分。还要看它为了完成任务实际用了多少输入、输出和思考内容；更贵的单价，也可能对应更低的整项任务费用。",
+    "body": "标准 API 价格为每百万输入 token 8美元、输出 token 40美元。另有生成速度最高可达2.5倍的快速模式，价格分别为16美元和80美元。这是另一项速度与费用选择，不能把它的速度数字直接套进正文的成绩比较。",
+    "detailLabel": "标准价格与快速模式",
+    "links": [
+      {
+        "label": "官方发布与费用比较",
+        "url": "https://www.anthropic.com/claude-fable-and-mythos-5-2"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "每项任务的费用却约为一半"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-10"
+  },
+  {
+    "id": "simon-pr-human-opener-20261110",
+    "source": "Simon Willison",
+    "avatar": "S",
+    "avatarClass": "reddit",
+    "channel": "interview",
+    "evidence": "具名实践",
+    "kind": "opinion",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-09",
+    "time": "11 月 9 日 · 原文日期",
+    "title": "AI 写的代码说明太长，他先挑出读者最需要的一段",
+    "summary": "Simon Willison 发现，AI 写的代码修改说明往往准确、完整，却让人一眼就不想读：背景、实现和测试挤在一起，读者得自己找重点。\n\n他现在先挑一小段放在最前面，告诉读者这次修改解决了什么。比如，一张有46列的数据表横着铺开，用户要一直向右滚动；这次改动把一条记录的各个字段竖着排列，再附一张截图。读者先知道变化，才决定要不要细看。\n\n完整的 AI 说明仍然保留，放进可展开的区域，并标明生成它的模型。开头也可以采用 AI 写好的句子，但由他判断哪一段最值得先让人看到。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "作者的做法与实际例子",
+        "url": "https://simonwillison.net/2026/Nov/9/details-summary/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "先挑一小段放在最前面，告诉读者这次修改解决了什么"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-10"
+  },
+  {
     "id": "sqlite-agent-measurement-20261109",
     "source": "Simon Willison",
     "avatar": "S",
@@ -2709,6 +2914,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-10",
+    "edition": 13,
+    "title": "把 AI 的工作放回实际场景里检查",
+    "intro": "今天有两段具体实践：Hostinger 让另一个 AI 打开网站验收，Sentry 让 AI 沿着线上耗时记录找值得改的代码。再看 Claude 的硬件设计与任务费用，以及一位开发者怎样让 AI 写的说明更好读。",
+    "coverage": "检查时段为北京时间11月9日09:14至11月10日09:38。入选4条11月9日材料，补读1条11月3日的工程复盘；另收录10月27日首发的研究。实际读取企业技术文章、开发者博客、GitHub原始修改与评审记录、论文全文。小红书完成搜索并读取1篇正文和3条评论，因缺少引擎名称及可核对的配置未选入；X两次搜索为空，Reddit返回格式错误，脉脉后台连接超时。本期未收录有增量的评论，国内一线材料覆盖不足。",
+    "question": "如果 AI 说任务已经完成，你最想看到哪一项实际结果，才愿意把工作交出去？",
+    "id": "2026-11-10",
+    "count": 5
+  },
+  {
     "date": "2026-11-09",
     "edition": 12,
     "title": "让 AI 接着做之前，先把它上一步做了什么看清楚",
@@ -2828,19 +3043,70 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-09T16:27:05+08:00",
+  "updatedAt": "2026-11-10T09:40:05+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-09",
-  "latestId": "2026-11-09"
+  "latestDate": "2026-11-10",
+  "latestId": "2026-11-10"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "giga-one-matrix-classifier",
-    "specopd-branch-parallel"
+    "infradev-hidden-requirements",
+    "giga-one-matrix-classifier"
   ],
   "entries": [
+    {
+      "id": "infradev-hidden-requirements",
+      "cat": "ai",
+      "topic": "训练与推理工程",
+      "symbol": "⌁",
+      "method": "InfraDev · 工程任务评测",
+      "year": "2026-10-27 首发 · 预印本",
+      "publishedOn": "2026-10-27",
+      "addedOn": "2026-11-10",
+      "time": 5,
+      "title": "AI 改训练和推理代码，原项目测试全过，仍有三成改动没达到要求",
+      "desc": "检查输出正确之外，也检查承诺的显存、时间和通信开销。",
+      "scenario": "让 AI 实现训练、推理和强化学习框架里的真实修改。",
+      "bottleneck": "原有测试没有覆盖任务的全部要求。",
+      "lead": "给训练或推理框架改代码，程序能运行、输出正确，还可能没有完成任务：如果需求是省显存，就得实际少用显存。InfraDev 从 Megatron-LM、vLLM 和 verl 三个项目选出36项真实修改，检查 AI 能否把这些工作做完。\n\n研究者补充了原项目没有覆盖的检查，并把要满足的要求写进任务说明。在六种模型提交的216份改动中，102份通过原项目全部测试；补做检查后，其中33份又被判为不合格，约占三成。\n\n一种具体问题出现在 CUDA Graphs 模式。它会把 GPU 的一串操作录下来，之后直接重放，以减少重复安排计算的开销。AI 有时把每次调用都要更新的逻辑留在外面的 Python 代码中；重放时这段代码不再执行，程序在普通模式下能跑，切换模式后就出错。",
+      "insight": "检查有没有完成任务，要覆盖真正需要使用的运行方式和资源要求。",
+      "steps": [
+        [
+          "补测任务承诺",
+          "除了计算结果，还测显存、运行时间、通信量，以及特殊运行模式。"
+        ],
+        [
+          "把要求同时讲清",
+          "任务说明列出检查会用到的接口和条件，避免用没告诉模型的要求评分。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "通过测试与完成任务，分母不同",
+        "text": "102份改动通过原测试，补测后剩69份；33÷102约为32%。这不是所有216份改动的32%。"
+      },
+      "evidence": "每项任务限时2.5小时，使用独占的8张 H800 或 H20 GPU 节点。六种模型中，最高完成14项，即36项的38.9%。",
+      "limits": "任务来自三个框架，不含完整产品交付流程。",
+      "transfer": "给自己的工程任务验收时，把“更快、少用显存”等目标也变成实测项目。",
+      "take": "测试通过要能对应任务本身。",
+      "counter": {
+        "q": "这些补充测试会不会自己写错？",
+        "a": "作者要求原项目的正确改动能反复通过，并用故意违反需求的改动检查它是否真能抓错。"
+      },
+      "sources": [
+        [
+          "原论文与首次公开日期",
+          "https://arxiv.org/abs/2610.36589"
+        ],
+        [
+          "实验与失败分析",
+          "https://arxiv.org/html/2610.36589v1"
+        ]
+      ],
+      "images": []
+    },
     {
       "id": "giga-one-matrix-classifier",
       "cat": "ai",
