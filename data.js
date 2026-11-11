@@ -1,5 +1,283 @@
 window.FEED_DATA = [
   {
+    "id": "salesforce-autornd-20261112",
+    "source": "Salesforce AI Research",
+    "avatar": "S",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-11",
+    "time": "11 月 11 日 · 原文日期",
+    "title": "Salesforce 让 AI 自己提出训练改法，先做小实验再扩大投入",
+    "summary": "企业里的 AI 回答问题前，常常要从大量文档中找资料。负责检索的模型找错了，后面的回答也很难做好。Salesforce 11月11日介绍了 SFR-AutoR&D：研究人员给它一个待改进的模型、目标和计算预算，由 AI 提出训练办法、写代码、运行实验，再根据结果决定下一步。\n\n其中负责训练的 TrainForge 会先用 LoRA 做小规模试验——只训练少量附加参数，降低试错成本。看起来有希望的想法，再进入短时间的全参数训练，最后才做完整训练。系统同时检查代码是否真的实现了原定方法，评测数据与训练数据分开。\n\n一个具体结果是改进 EmbeddingGemma 2 检索模型：给定一个问题，训练后的模型既学习哪些文档相关，也学习教师模型怎样给候选文档排序。在10项公开检索任务上，准备供产品使用的版本，把前10条结果的相关性得分，从51.07提高到55.76；这个指标越高，表示相关资料越靠前。\n\n公司称质量改进这一轮用了约80小时。模型进入产品前还要通过生产审查，目前披露的是研究结果与部署准备。",
+    "body": "项目页区分了两个版本。研究版把输出向量扩到2,048维，公开检索得分57.21；面向生产使用的数据版本保留768维，得分55.76。前者需要保存更长的文档向量，所以两个分数不能脱离存储开销比较。这里的结果来自完整训练方案，未单独分离教师排序、数据和向量维度各自的贡献。",
+    "detailLabel": "两个检索版本有什么区别",
+    "links": [
+      {
+        "label": "官方介绍",
+        "url": "https://www.salesforce.com/news/stories/agents-that-improve-ai-models/"
+      },
+      {
+        "label": "训练实验流程",
+        "url": "https://sfr-autornd.github.io/trainforge/"
+      },
+      {
+        "label": "模型方案与分项结果",
+        "url": "https://sfr-autornd.github.io/engineer/embeddings/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "先用 LoRA 做小规模试验",
+        "再根据结果决定下一步"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-12"
+  },
+  {
+    "id": "cursor-shared-projects-20261112",
+    "source": "Cursor · Aryaman Khandelwal",
+    "avatar": "C",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-10",
+    "time": "11 月 10 日 · 补读",
+    "title": "Cursor 把项目资料和正在做的任务，交给团队共同维护",
+    "summary": "同一个团队里，每个人都让自己的 AI 写代码，却可能各自保存一份需求和进度。别人改了设计、调整了接口，自己的 AI 不一定知道。Cursor 新版 Projects 为团队增加了一层共享资料：需求文档、技术方案、决定和任务板都放在同一个项目中，每个人仍保留与自己 AI 的单独对话。\n\n团队给了一个内部使用的例子：工程师接替同事值班时，接班人的 AI 先与人确认，再接着处理项目。它已经能看到哪些工作没做完、哪些事故需要交接，以及要关注哪些消息频道和任务列表；正在做的任务也可以直接交接。\n\n不同同事的 AI 还可以互相协调。例如一人给商品页加评论，另一人重新设计页面，双方可以提前发现重叠，商量怎样一起改。共享任务板把任务和对应的代码改动请求放在一起，方便团队检查进度。\n\n官方博客日期为11月10日，这次升级正以测试版向所有用户逐步开放。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "产品说明与团队例子",
+        "url": "https://cursor.com/blog/projects-multiplayer"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-12/cursor-team.png",
+        "alt": "团队成员各自管理 AI，同时共用项目资料和任务状态",
+        "caption": "官方示意图：每位成员有自己的协调 Agent；不同协调 Agent 可以交流，下方是全项目共享的文档、决定和任务状态。",
+        "credit": "Cursor · 原文示意图",
+        "sourceUrl": "https://cursor.com/blog/projects-multiplayer",
+        "originalUrl": "https://ptht05hbb1ssoooe.public.blob.vercel-storage.com/assets/uploads/agents-diag-10AK4bawhOGVpwL5vQoUx6OSgsdFjC.png",
+        "placement": "inline",
+        "width": 3158,
+        "height": 1844
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "每个人仍保留与自己 AI 的单独对话",
+        "正在做的任务也可以直接交接"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-12"
+  },
+  {
+    "id": "mnn-pocket-device-budget-20261112",
+    "source": "淘宝 MNN 团队",
+    "avatar": "淘",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "推理与部署",
+    "tags": [
+      "推理与部署"
+    ],
+    "date": "2026-11-09",
+    "time": "11 月 9 日 · 补读",
+    "title": "淘宝先定手机上的内存和速度预算，再决定模型做多大",
+    "summary": "手机应用想在本地完成提取信息、简单问答等任务，模型不能占掉太多内存，回答也不能让人等太久。淘宝 MNN 团队在11月9日提交的技术报告里，讲了 MNN-Pocket-0.3B 怎样围绕这两个要求做取舍。\n\n团队先把约5,000万到13亿参数的候选模型放到同一台 iPad Pro M5 上测试，要求模型占用的峰值内存低于300MB、生成速度超过每秒200个 token。token 是模型处理文字的小单位。在当时的低精度、输入输出各256个 token 的测试设置下，约3亿参数是同时达标的最大候选规模。\n\n接下来，他们固定总参数量，再比较不同层数。28层和36层的平均评测成绩相同，但36层生成更慢，因此选了28层。训练完成后，还让压缩到低精度的版本学习原模型的输出，弥补压缩带来的损失。\n\n最后的 MNN 部署包为173MB，已开放权重。团队把它定位为中英文的轻量任务模型。",
+    "body": "最终部署测试与前面的架构筛选设置不同：在 iPad Pro M5、MNN 3.6.2、Metal 后端、INT4 权重、512 token 配置下，报告给出每秒466个 token 的生成速度。加载及推理期间的 Metal 驻留内存峰值，比加载前增加228MB；它不是整个应用的总内存。速度在预热后测5次取中位数，处理输入与生成输出分别计时。",
+    "detailLabel": "最终部署速度怎样测",
+    "links": [
+      {
+        "label": "技术报告",
+        "url": "https://arxiv.org/html/2611.12311v1"
+      },
+      {
+        "label": "模型与部署文件",
+        "url": "https://huggingface.co/taobao-mnn/MNN-Pocket-0.3B"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-12/mnn-overview.png",
+        "alt": "MNN-Pocket 与其他小模型的评测及 iPad 推理速度对比",
+        "caption": "原论文图1。右侧两组柱状图分别是处理输入和生成输出的速度，测试设备是 iPad Pro M5；两种速度不能混为一个数字。",
+        "credit": "MNN 团队 · 技术报告 Figure 1",
+        "sourceUrl": "https://arxiv.org/html/2611.12311v1",
+        "originalUrl": "https://arxiv.org/html/2611.12311v1/teaser-0918.png",
+        "placement": "details",
+        "width": 2038,
+        "height": 646
+      }
+    ],
+    "comments": [
+      {
+        "author": "zhaode",
+        "role": "模型发布组织成员 · MNN 团队",
+        "date": "11 月 9—10 日（UTC）",
+        "text": "面对用户的俄语试测，团队回复说：词表和训练数据专门围绕中英文优化，当前没有具体的多语言计划。",
+        "url": "https://huggingface.co/taobao-mnn/MNN-Pocket-0.3B/discussions/2",
+        "linkLabel": "讨论入口",
+        "evidence": "团队回复",
+        "mode": "翻译摘编",
+        "context": "用户用官方 GGUF 测了5个俄语短问题，反馈算术、指令遵循和拼写纠错出错；这里摘编团队在同一讨论中的两次回复。"
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "先把约5,000万到13亿参数的候选模型放到同一台 iPad Pro M5 上测试",
+        "固定总参数量，再比较不同层数"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-12"
+  },
+  {
+    "id": "google-tools-and-skills-20261112",
+    "source": "Google · Kurtis Van Gent",
+    "avatar": "G",
+    "avatarClass": "anthropic",
+    "channel": "interview",
+    "evidence": "具名访谈",
+    "kind": "interview",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-11",
+    "time": "11 月 11 日 · 原文日期",
+    "title": "给 AI 接上数据库后，Google 还把操作步骤随工具一起交付",
+    "summary": "AI 能调用数据库工具，并不等于知道完成一件事该按什么顺序做。Google 数据库团队的 Kurtis Van Gent 在11月11日的访谈里，介绍了他们怎样把可调用的工具和操作说明放进同一个插件。\n\n例如开发者要为 Cloud SQL 的 PostgreSQL 数据库配置身份认证。插件一边通过 MCP 提供数据库操作接口——让 AI 知道有哪些动作可以执行；另一边提供 Skill，也就是针对这项任务写好的步骤和脚本，让 AI 知道如何组合这些动作。\n\n工具越来越多以后，把所有说明一开始都塞给模型，会挤占它处理当前任务的空间。团队采用按需读取：启动时只给技能名称和简短介绍，真正需要配置数据库时，再读完整步骤和相关文件。Van Gent 自己也把反复解释的仓库结构、提交说明格式写成技能，下次直接复用。",
+    "body": "访谈链接的10月28日复盘还披露了技能维护方式：改动指令后要重新评测，报告必须对应最新代码。评测要求一次只检查一件事；如果把地区设置、生命周期规则和访问开关捆成一项，AI 只做对其中一部分时，评分会不稳定。固定顺序的命令放进脚本，留给文字说明的是需要判断的部分。",
+    "detailLabel": "这些操作说明怎样测试和维护",
+    "links": [
+      {
+        "label": "具名工程师访谈",
+        "url": "https://opensource.googleblog.com/2026/11/scaling-ai-agents-open-standards-mcp-aaif.html"
+      },
+      {
+        "label": "技能维护复盘 · 10月28日",
+        "url": "https://cloud.google.com/blog/topics/developers-practitioners/behind-the-scenes-two-months-later-how-we-ship-google-agent-skills-like-products"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-12/google-tools.png",
+        "alt": "MCP Toolbox 将不同 Agent 连接到多个数据库",
+        "caption": "原文架构图：中间的 Toolbox 提供统一的数据库工具入口。本文提到的 Skill 则负责讲清具体任务的操作步骤。",
+        "credit": "Google Open Source · 原文配图",
+        "sourceUrl": "https://opensource.googleblog.com/2026/11/scaling-ai-agents-open-standards-mcp-aaif.html",
+        "originalUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLCywvRZwLvoKa7EobHGksI6daxbSsoZQWZp5fW7_9JkLfQLBmGnt75sV-uZV8S-7Anm7ofOlAjHJcTi5XlYBlk4V2Ujgg-ptSyE7hnVLNN5Fx2KU5uLOL_sYCn2sCFI9YWONOtb5pEYM1-VvzFzsQo5oDdgBV59XvjQIQ9ssRamjNlx0rljgHrZzH90A/s1600/image.png",
+        "placement": "details",
+        "width": 1248,
+        "height": 1056
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把可调用的工具和操作说明放进同一个插件",
+        "真正需要配置数据库时，再读完整步骤和相关文件"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-12"
+  },
+  {
+    "id": "near-inference-incident-20261112",
+    "source": "NEAR AI 团队",
+    "avatar": "N",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "部署复盘",
+    "tags": [
+      "部署复盘"
+    ],
+    "date": "2026-11-09",
+    "time": "11 月 9 日 · 补读",
+    "title": "NEAR AI 事故复盘：隔离环境里的推理软件，也成了入侵入口",
+    "summary": "NEAR AI 在11月9日的事故报告中披露，攻击者利用推理引擎 SGLang 的漏洞，在一台推理服务器里执行了代码，并进一步进入其他内部系统。公司确认约100名用户的账户资料和18个旧版 Agent 的聊天历史、设置与日志遭到访问；这些旧版 Agent 没有运行在其机密计算环境中。\n\n另一个问题出在正在处理的请求。机密计算本来要防止宿主机和运维方直接读取其中的数据，但这次漏洞发生在隔离环境内部运行的软件里。公司说，攻击者在11月8日可能看到该服务器正在处理的请求，包括机密模式请求。\n\n团队已修复全部推理服务器、撤销并更换相关凭证、下线旧版 Private Chat，并将漏洞报告给 SGLang。后续安全审查会同时检查隔离环境内的推理软件，以及外围服务。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "官方事故报告",
+        "url": "https://near.ai/blog/security-incident-report-sglang-vulnerability"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "漏洞发生在隔离环境内部运行的软件里"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-12"
+  },
+  {
+    "id": "genie-priority-inbox-20261112",
+    "source": "Databricks",
+    "avatar": "D",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-11",
+    "time": "11 月 11 日 · 原文日期",
+    "title": "新版 Genie 准备把需要人决定的事，放进专门的收件箱",
+    "summary": "让 AI 长期跟进客户或项目，人不应该每天翻整段聊天才能知道哪里卡住。Databricks 11月11日介绍的新一代 Genie，会在后台跟踪任务，把需要人处理的事项放进优先收件箱，并通过邮件提醒。\n\n官方举的使用场景是持续观察客户的产品使用情况：出现明显变化时，提醒负责该客户的团队。同一事项的后续更新留在同一封邮件的讨论串中，避免每次进展都新发一封。系统还需要知道公司认可的指标定义、负责人和权限，才能把提醒送到合适的人。\n\n这次介绍的后台常驻模式、Genie Search 和管理界面，仍在准备进入预览或测试。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "发布说明与开放阶段",
+        "url": "https://www.databricks.com/company/newsroom/press-releases/databricks-launches-new-always-genie-autonomous-ai-complex"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把需要人处理的事项放进优先收件箱"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-12"
+  },
+  {
     "id": "revenuecat-editor-jsx-20261111",
     "source": "RevenueCat · Azat Valiev",
     "avatar": "R",
@@ -3114,6 +3392,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-12",
+    "edition": 15,
+    "title": "把 AI 接进团队工作之后",
+    "intro": "今天看几种具体的工作变化：让 AI 自己做小规模训练实验，让同事的 AI 共享项目进度，以及先按手机预算决定模型怎么做。近期研究则讨论：模型从自己的经历里总结经验时，怎样减少错误经验对后续训练的影响。",
+    "coverage": "北京时间：重点检索11月11日09:32至本次更新的新内容，补读此前未收录的 Cursor、MNN 技术报告和 NEAR AI 复盘。实际阅读了企业技术文章、原论文、小红书笔记及 Hugging Face 讨论。X 搜索为空；Reddit 工具返回格式错误，公开网页检索未找到合适的新帖；脉脉浏览器读取超时，未覆盖职言及评论。",
+    "question": "团队把更多工作交给 AI 后，应该在哪些步骤留下可检查的记录，才方便同事接手？",
+    "id": "2026-11-12",
+    "count": 6
+  },
+  {
     "date": "2026-11-11",
     "edition": 14,
     "title": "让 AI 更好地工作，从它操作的工具和流程改起",
@@ -3253,19 +3541,90 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-11T09:33:47+08:00",
+  "updatedAt": "2026-11-12T07:15:29+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-11",
-  "latestId": "2026-11-11"
+  "latestDate": "2026-11-12",
+  "latestId": "2026-11-12"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "gs3r-continual-restoration",
-    "infradev-hidden-requirements"
+    "ecos-feedback-self-distillation",
+    "gs3r-continual-restoration"
   ],
   "entries": [
+    {
+      "id": "ecos-feedback-self-distillation",
+      "cat": "ai",
+      "topic": "Agent 自我学习",
+      "symbol": "↻",
+      "method": "ECOS",
+      "year": "2026-11-09 首发 · 预印本",
+      "publishedOn": "2026-11-09",
+      "addedOn": "2026-11-12",
+      "time": 7,
+      "title": "让 AI 从自己的操作中学习，先检查它总结的经验有没有用",
+      "desc": "ECOS 用实际操作结果，调整模型自己写出的经验在训练中所占的比重。",
+      "scenario": "训练一个能操作网页、连续完成任务的模型，希望它能从自己的成功和失败中学习。",
+      "bottleneck": "模型写出的复盘也可能有错，直接拿来教自己，会把错误带进下一轮训练。",
+      "lead": "训练一个购物助手时，可以让模型多试几次，再总结哪些做法有用。ECOS 论文给了一个实际训练例子：在 WebShop 模拟购物网站里，任务是买一条符合材质要求、红色、大码且低于40美元的裙子。有一次尝试只找到候选商品，没有确认条件；成功的尝试则打开商品页、选择大码和红色，再购买。模型据此写下了“先核对商品属性，再选颜色和尺码”的经验。\n\n但模型写的经验也可能误导自己。研究者让同一个模型分别扮演两种角色：执行任务时，只看当前任务和操作历史；提供训练指导时，额外看到刚总结的经验。后者会更倾向某些操作，训练程序再利用实际尝试的结果，检查这些倾向是否有助于完成任务。\n\n具体做法是比较相似页面状态下执行过的不同操作，再看后续结果。与较好结果一致的指导，在训练中获得更大比重；相反的指导被减弱。总结经验的部分也根据它有没有帮助模型选对操作，接受训练。\n\n在 ALFWorld 这个用文字模拟家务操作的环境里，研究者测试了134个未用于训练的任务。3B 模型的六类任务平均成功率从对照方案的74.8%升到85.8%。两组使用相同的任务采样、尝试次数和评测设置；ECOS 训练时额外生成经验并计算指导信号。测试时不再附加这些经验，也不在线复盘，只运行训练后的模型。",
+      "insight": "模型总结的经验是否值得学，要看它把操作引向了什么结果。",
+      "steps": [
+        [
+          "先学习怎样复盘",
+          "模型先用外部模型标注的操作复盘与经验做监督训练，学会描述成功、失败和可复用的做法。"
+        ],
+        [
+          "执行任务，再给同一段操作补上经验",
+          "每个训练任务采样8次操作过程。模型为每次过程写复盘，再合成一份经验。额外看到经验的同一模型，重新给执行者已经生成的内容计算概率。"
+        ],
+        [
+          "用操作结果调整指导强度",
+          "把观察内容相近、允许动作相同的状态归到一起，利用已经发生的转移和最终奖励，估计各个操作的价值。经验带来的偏好若与较好结果一致就加强，否则减弱，不直接把偏好反向。"
+        ],
+        [
+          "只直接模仿操作指令",
+          "经验指导的模仿损失只作用于能执行的命令。模型完整回答中的思考过程，仍通过任务奖励接受强化学习训练。这样避免直接要求执行者模仿一段依赖额外经验的思考。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "把思考过程也纳入模仿后，购物成功率反而下降",
+        "text": "论文用3B模型单独比较了模仿范围。两组都进行150次在线更新，在相同的128项 WebShop 任务上，每项最多15步、尝试一次。只模仿可执行指令时成功率为75.00%；把完整回答也纳入模仿后为52.34%。作者解释，提供指导的一方看过额外经验，它的思考可能依赖执行者看不到的信息。这个解释与实验相符，但实验本身没有直接证明内部推理机制。"
+      },
+      "evidence": "主文结果取自 Table 2：Qwen2.5-3B-Instruct、ALFWorld 全部134项 unseen 测试任务，先按六类任务计算成功率再等权平均，3个评测种子取均值。对照 GRPO 使用相同初始化、采样预算、优化设置及150次在线更新。购物消融取自 Table 3 和附录 C.5，不能与主表的多种子结果混写。",
+      "limits": "额外生成复盘、经验和指导概率增加了训练成本；论文没有给出相同总计算成本下的优势比较。研究覆盖两个文字交互环境，状态归类不准确也会影响操作价值估计。",
+      "transfer": "研究自我改进时，可以分别检查经验改变了哪些操作偏好，以及这些偏好对应的实际结果；这比只看复盘文字是否像样更直接。",
+      "take": "从自己的经历里学习，需要同时检查做事过程和总结出来的教训。",
+      "counter": {
+        "q": "测试时是不是多给了模型一份答案或额外经验？",
+        "a": "不是。这里的 ECOS 测试只提供正常任务与操作历史，不附加训练中生成的经验，也不在线复盘；额外工作发生在训练阶段。"
+      },
+      "sources": [
+        [
+          "原论文 · 方法与实验",
+          "https://arxiv.org/html/2611.12232v1"
+        ],
+        [
+          "首次公开日期",
+          "https://arxiv.org/abs/2611.12232"
+        ]
+      ],
+      "images": [
+        {
+          "src": "assets/2026-11-12/ecos-feedback.png",
+          "alt": "ECOS 用任务结果检查模型自己生成的经验",
+          "caption": "原论文图1：左边直接复用自己写的建议，右边依据实际结果调整建议的影响。图示说明训练设计，不是单独的效果测量。",
+          "credit": "ECOS 作者 · Figure 1",
+          "sourceUrl": "https://arxiv.org/html/2611.12232v1",
+          "originalUrl": "https://arxiv.org/html/2611.12232v1/figure1_environment_feedback.png",
+          "placement": "details",
+          "width": 2000,
+          "height": 1034
+        }
+      ]
+    },
     {
       "id": "gs3r-continual-restoration",
       "cat": "merge",
