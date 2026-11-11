@@ -1,5 +1,205 @@
 window.FEED_DATA = [
   {
+    "id": "revenuecat-editor-jsx-20261111",
+    "source": "RevenueCat · Azat Valiev",
+    "avatar": "R",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-10",
+    "time": "11 月 10 日 · 原文日期",
+    "title": "AI 把页面做得很难看，RevenueCat 改了它编辑页面的方式",
+    "summary": "用户让 AI 做一个订阅购买页面，按钮和价格都有了，布局却挤在一起。RevenueCat 的团队换过模型、改过提示词，也让 AI 看截图检查，仍然不满意。产品经理拿同一个要求交给 Claude Code，做出的页面明显更好看。\n\n他们怀疑问题出在操作方式。旧工具要求 AI 按公司自定义的 JSON 格式，一项项修改组件；团队认为，模型得临时学会这套规则，再把设计意图翻译成工具调用。新工具先把页面转成模型更熟悉的 JSX 界面代码，让它直接编辑文件。编译器负责检查错误，成功后再转回产品原有的数据格式，并返回截图供 AI 继续修改。\n\n团队抽取数百条真实请求比较新旧结果：自动评审检查功能有没有退步，真人盲评比较哪个页面更好看。原型两天就有起色，正式上线花了几周；新流程需要更多轮修改，生成也更慢。\n\n这篇11月10日发布的复盘回顾的是9月已上线的改造。团队报告，在约4.6万次请求的比较中，相对上线前两周，好评率提高83%，差评率下降40%。收益主要出现在新建页面和大幅改版，简单改文案的变化不大。",
+    "body": "组件说明也改成按需读取的文件，不再一开始就塞进175KB的格式定义。团队因此删掉了一半以上系统提示词。上线时还换了模型服务，并补强重试、备用服务和计算资源；反馈改善对应的是这整套改造。",
+    "detailLabel": "组件说明和上线配套怎样调整",
+    "links": [
+      {
+        "label": "团队复盘",
+        "url": "https://www.revenuecat.com/blog/engineering/lessons-paywalls-ai-editor"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-11/revenuecat-before.png",
+        "alt": "旧编辑器与 Claude Code 生成的订阅页面对比",
+        "caption": "促使团队重做编辑器的对比：左边是旧工具，右边是同一要求交给 Claude Code 的结果。这张图不是新旧编辑器的受控实验。",
+        "credit": "RevenueCat · 原文公开截图",
+        "sourceUrl": "https://www.revenuecat.com/blog/engineering/lessons-paywalls-ai-editor",
+        "originalUrl": "https://cdn.sanity.io/images/c3qnx9b0/production/de86c32ce4802cec8db16c18b802ae36796186d3-1080x1000.png",
+        "placement": "inline",
+        "width": 1080,
+        "height": 1000
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "让它直接编辑文件",
+        "自动评审检查功能有没有退步，真人盲评比较哪个页面更好看"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-11"
+  },
+  {
+    "id": "longcat25-long-agent-training-20261111",
+    "source": "美团 LongCat",
+    "avatar": "美",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-10",
+    "time": "11 月 10 日 · 原文日期",
+    "title": "LongCat-2.5 开源，训练中把 Agent 的失败过程变成可重做的任务",
+    "summary": "让 AI 完成一个代码项目，常常要连续读文件、改代码、运行工具，走很多步才能知道做得对不对。美团11月10日开放 LongCat-2.5 权重时，披露了怎样为这种长任务准备训练。模型此前已发布，这次新增的是开源权重与部署入口，采用 MIT 许可。\n\n团队把真实 Agent 失败的操作过程，整理成可以重新运行、检查结果的训练任务。对于一轮采样时间内还没完成的长任务，先保存进度，之后接着跑；如果任务跨过了模型更新，就修正旧模型产生的数据在训练中的影响。这样，一个很长的任务可以分几轮完成。\n\n另一个重点是让得分来自完成工作。训练环境会断网，并清理 git 历史和文件缓存，减少模型利用残留信息取巧的机会；训练还会约束重复思考和重复调用工具。开源说明列出了这些做法，但没有分别测出每项改动带来多少提升。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "开源说明",
+        "url": "https://tech.meituan.com/2026/11/10/Meituan-LongCat-2.5-Open-Source.html"
+      },
+      {
+        "label": "模型与部署说明",
+        "url": "https://huggingface.co/meituan-longcat/LongCat-2.5"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把真实 Agent 失败的操作过程，整理成可以重新运行、检查结果的训练任务",
+        "先保存进度，之后接着跑"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-11"
+  },
+  {
+    "id": "claude-data-certified-queries-20261111",
+    "source": "Anthropic · Claude",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-10",
+    "time": "11 月 10 日 · 原文日期",
+    "title": "Claude 让数据团队确认过的指标查询，直接供同事复用",
+    "summary": "同事各自让 AI 做数据看板，可能给同一个指标用了不同的计算方法，最后得出不同数字。Claude 新推出的“认证查询”功能，让数据团队先确认该用哪条查询，其他人做图表时复用它；图表会显示认证标记。\n\n这项功能属于11月10日正式推出的 Claude Data，由原来的 Claude Dashboards 更名而来。它还支持分享持续更新的看板：同事打开链接就能看到获准查询的结果，无需自己连接数据库，也不能借用分享者的权限随意运行其他查询。认证查询和这种实时分享目前仍在测试阶段。\n\n同一天推出的白板和表格，则让团队与 Claude 直接编辑同一份工作材料。例如复盘时大家先写便签，Claude 按主题归类，再整理负责人和待办事项。白板与表格仍是测试版，面向付费计划；企业账号需要管理员开启。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "产品说明",
+        "url": "https://claude.com/resources/articles/sheets-whiteboards-data"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "让数据团队先确认该用哪条查询",
+        "团队与 Claude 直接编辑同一份工作材料"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-11"
+  },
+  {
+    "id": "openai-control-room-20261111",
+    "source": "OpenAI · 研究工程",
+    "avatar": "O",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-09",
+    "time": "11 月 9 日 · 补读",
+    "title": "OpenAI 把研究任务的停止检查，放进统一的推理引擎",
+    "summary": "研究团队会同时运行训练采样、评测和数据处理。发现某个任务有问题时，怎么让它真正停下来？OpenAI 公布的 Control Room 把停止检查放在生成模型输出的推理引擎里。实验脚本写法各异、经常改动，而推理引擎的入口更少，适合统一执行检查。\n\n每个研究任务先领取一个编号，向模型请求输出时带上它。引擎检查这个任务是否仍获准运行；一旦人或监控系统叫停，后续授权就会被拒绝。即使实验脚本还活着、仍在发送请求，也拿不到新的模型输出；同一个引擎上的其他获准任务可以继续。\n\nOpenAI 报告，从系统收到停止指令到阻断后续进展，最长需要35秒，延迟来自授权缓存。这套机制已用于研究基础设施；如果 Control Room 自身故障，推理请求也会被拒绝，这项故障处理已覆盖前沿模型研究，其他研究任务仍在铺开。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "工程说明",
+        "url": "https://openai.com/index/introducing-control-room/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把停止检查放在生成模型输出的推理引擎里",
+        "也拿不到新的模型输出"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-11"
+  },
+  {
+    "id": "upwork-ai-project-scope-20261111",
+    "source": "OpenAI × Upwork",
+    "avatar": "O",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "产品与商业",
+    "tags": [
+      "产品与商业"
+    ],
+    "date": "2026-11-10",
+    "time": "11 月 10 日 · 原文日期",
+    "title": "AI 外包项目预算更高，但时薪报价差别很小",
+    "summary": "客户找自由职业者做 AI 视频，有时还会把剪辑和动态图形一起交给同一个人。OpenAI 与 Upwork 的新报告关注的就是这种变化：客户怎样把不同工作组合成一个需要交付的项目。\n\n在截至2026年4月的数据中，研究者比较同一工作类别、同一月份发布的需求：AI 相关项目的固定报价预算高约52%，按小时计价的报价却只高约1.5%。在已雇到人且记录了工时的按时合同里，AI 相关项目的前90天工时还多约41%。\n\n这些数字对应不同计价方式，合起来提示了一种可能：较大的项目预算，部分来自客户买了更多工作和更完整的交付，而非每小时的工作突然更贵。对想做 AI 应用的人，这条线索值得留意——客户提出的需求可能同时包含生成内容、修改加工和接进现有业务。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "报告介绍",
+        "url": "https://openai.com/index/ai-effect-on-freelance-work/"
+      },
+      {
+        "label": "原始研究报告",
+        "url": "https://cdn.openai.com/pdf/openai-upwork-full-report.pdf"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "固定报价预算高约52%",
+        "客户买了更多工作和更完整的交付"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-11"
+  },
+  {
     "id": "hostinger-agent-real-build-20261110",
     "source": "Hostinger · Laurynas Bičkauskas",
     "avatar": "H",
@@ -2914,6 +3114,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-11",
+    "edition": 14,
+    "title": "让 AI 更好地工作，从它操作的工具和流程改起",
+    "intro": "RevenueCat 把页面编辑交给 AI 熟悉的代码格式；美团把 Agent 的失败过程重新做成训练任务。再看团队怎样统一指标、停止研究任务，以及 AI 外包项目的钱主要花在哪里。",
+    "coverage": "检查时段为北京时间11月10日09:38至11月11日09:32。入选4条11月10日发布的材料，补读1条11月9日工程说明；研究首发于11月7日。实际读取企业技术文章、模型卡、公开讨论与论文全文。小红书搜索后读取1篇新帖，内容较笼统，未选入；X搜索为空，Reddit返回格式错误，脉脉后台访问不支持保持隐藏，本次未读取帖子。LongCat模型讨论中已读回复没有实质补充，本期不收录评论。",
+    "question": "AI 做出的东西不够好时，你会先检查模型能力，还是它拿到的材料、操作工具和验收方式？",
+    "id": "2026-11-11",
+    "count": 5
+  },
+  {
     "date": "2026-11-10",
     "edition": 13,
     "title": "把 AI 的工作放回实际场景里检查",
@@ -3043,19 +3253,86 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-10T09:40:05+08:00",
+  "updatedAt": "2026-11-11T09:33:47+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-10",
-  "latestId": "2026-11-10"
+  "latestDate": "2026-11-11",
+  "latestId": "2026-11-11"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "infradev-hidden-requirements",
-    "giga-one-matrix-classifier"
+    "gs3r-continual-restoration",
+    "infradev-hidden-requirements"
   ],
   "entries": [
+    {
+      "id": "gs3r-continual-restoration",
+      "cat": "merge",
+      "topic": "连续模型合并",
+      "symbol": "↻",
+      "method": "GS3R",
+      "year": "2026 · 近期研究",
+      "publishedOn": "2026-11-07",
+      "addedOn": "2026-11-11",
+      "time": 6,
+      "title": "模型一个接一个合并，给下一次合并留下恢复旧任务的线索",
+      "desc": "GS3R 除了保存合并后的权重，还保存一小份用于下一轮恢复的矩阵。",
+      "scenario": "不同任务的微调模型先后交付，旧模型和旧训练数据不能全部留存。",
+      "bottleneck": "旧任务已经混在一起，下一次合并难以分别给它们留出空间。",
+      "lead": "一个团队陆续拿到同一基础模型的多个微调版本：有的擅长情感判断，有的擅长判断两句话是否表达同一意思。希望每来一个版本就合进去，又不长期保存所有旧模型。这样做时，早先任务的信息已混在合并后的权重里；下次再合，很难分别照顾它们。\n\n11月7日公开的 GS3R 为每次合并多留了一份恢复记录。新模型到来后，先恢复之前保留下来的参数变化方向，再根据这些方向的关系辨认不同任务，为新旧任务分别分配保留名额，最后重新合成一个模型。它恢复的是已保留的部分，并非找回过去丢弃的全部权重。\n\n在 Flan-T5-Base 的8项语言任务实验里，采用较小保留数量的 GS3R，平均任务分数为83.7；不做额外优化的对照方法 OPCM 为80.6，需要优化步骤的 NUFILT 为84.0。GS3R 这一配置额外保存的记录约占模型大小的0.4%，推理时仍只用一个合并模型。",
+      "insight": "为下一次合并保留可恢复的任务信息，让旧任务有机会重新参与分配。",
+      "steps": [
+        [
+          "先保留重要的参数变化方向",
+          "各任务相对基础模型的权重变化，可以分解成一组方向及其强度，称为奇异值分解（SVD）。方法只保留其中一部分，控制存储量。"
+        ],
+        [
+          "记录合并时改变了什么",
+          "为减少任务间的干扰，算法会把这些方向调整为相互垂直。它同时保存两份变换矩阵，下次先恢复调整前的已保留方向，再按方向之间的关系重新分组。"
+        ],
+        [
+          "新旧任务一起分配名额",
+          "把保留总数大致平均分给各任务，每个任务留下强度最大的方向；余下名额再比较各任务的下一个方向。完成后重新合并，并保存下一轮要用的记录。"
+        ]
+      ],
+      "example": {
+        "label": "教学算例",
+        "title": "合并两个旧任务和一个新任务",
+        "text": "假设共能保留15个方向，现在已有两个旧任务，又来了第三个。算法先恢复旧任务的已保留方向，再给三个任务各留5个。这样不会把两个旧任务混成一个整体去争名额。数字只用于说明分配规则。"
+      },
+      "evidence": "论文 Table 2：Flan-T5-Base、8项 GLUE 任务、10种任务顺序取平均；GS3R 的保留数量 r=64。83.7 是论文的平均任务分数，存储为合并模型的1.004倍。",
+      "limits": "实验使用结构对齐的微调模型。论文还测试了视觉和多模态任务，但没有验证不同架构模型能否用同样方式合并。",
+      "transfer": "如果研究的是持续接纳新模型，可以把“是否保留恢复记录”单独作为对照，观察早期任务怎样变化。",
+      "take": "连续合并除了决定当前权重，还要决定给下一轮留下什么。",
+      "counter": {
+        "q": "恢复记录能找回所有旧任务信息吗？",
+        "a": "只能恢复此前保留下来的方向。超出保留名额而丢弃的部分不会凭空回来。"
+      },
+      "sources": [
+        [
+          "论文 · 方法 §4、语言实验 Table 2",
+          "https://arxiv.org/html/2611.10881v1"
+        ],
+        [
+          "首次公开日期",
+          "https://arxiv.org/abs/2611.10881"
+        ]
+      ],
+      "images": [
+        {
+          "src": "assets/2026-11-11/gs3r-tradeoff.png",
+          "alt": "保留方向数量与视觉、语言任务分数的关系",
+          "caption": "原论文图2：横轴是保留方向数量。蓝色语言任务读右轴，红色视觉任务读左轴，不能直接比较两条线的高低；语言任务在64附近最好，并非保留越多越好。",
+          "credit": "GS3R · 原论文 Figure 2",
+          "sourceUrl": "https://arxiv.org/html/2611.10881v1",
+          "originalUrl": "https://arxiv.org/html/2611.10881v1/fig4_revised.png",
+          "placement": "details",
+          "width": 874,
+          "height": 432
+        }
+      ]
+    },
     {
       "id": "infradev-hidden-requirements",
       "cat": "ai",
