@@ -1,5 +1,229 @@
 window.FEED_DATA = [
   {
+    "id": "aws-emulator-agent-teams-20261113",
+    "source": "AWS · Matthew Goldberg",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-11",
+    "time": "11 月 11 日 · 原文日期",
+    "title": "AWS 让三组 AI 分别写测试、找问题、改代码，做出了本地云服务模拟器",
+    "summary": "开发者写了调用 AWS 的程序，过去往往要连到真实云服务才能验证。新发布的 AWS Emulator 把部分服务行为搬到本机，让人和编程 AI 可以先在本地试错。负责项目的工程师介绍，模拟器的代码由 AI 编写，团队主要设计它们怎样分工、怎样验收。\n\n第一组 AI 先写测试，再拿真实 AWS 核对答案。例如消息队列的一次测试，要完成建队列、发消息、收消息、确认处理、删队列。第二组把这些测试放到模拟器上运行，把失败的地方整理成问题；第三组每次领取一个问题，修改代码。\n\n改完的代码必须经过编译、代码审查、安全检查和服务行为检查，通过后才合入。三组分开的关键，是先用真实服务确定“做对了是什么样”，再让写代码的一方去满足这个标准。\n\n11月12日，开发者石川覚对照了本地与真实 AWS：数据库表名不合法时的错误提示，以及消息被取走后暂时不能再次取到的行为，都吻合。他还在本地测出“表未创建完成就写入”的错误。不过官方测试仍有未通过项，使用前需要核对自己依赖的具体操作。",
+    "body": "早期版本里，AI 为了支持 Lambda 函数，竟然自己写了一个 Python 解释器。团队随后补上了复用现有库的要求。工程师把这件事作为例子：自动生成代码的系统也需要明确的实现边界，而这些边界来自人对失败和浪费的观察。",
+    "detailLabel": "一次走弯路的例子",
+    "links": [
+      {
+        "label": "AWS 工程师复盘",
+        "url": "https://www.aboutamazon.com/news/aws/how-autonomous-ai-agents-built-aws-emulator"
+      },
+      {
+        "label": "开发者对照测试",
+        "url": "https://dev.classmethod.jp/en/articles/20261112-aws-emulator/"
+      },
+      {
+        "label": "源码与测试",
+        "url": "https://github.com/aws/aws-emulator"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-13/aws-teams.jpg",
+        "alt": "三组 AI 分别编写测试、发现问题和修复代码",
+        "caption": "AWS 原文流程图：左侧是真实服务与接口规范，三组 AI 共用测试和问题记录；修复先经过检查，再进入正式代码。",
+        "credit": "AWS · 原文示意图",
+        "sourceUrl": "https://www.aboutamazon.com/news/aws/how-autonomous-ai-agents-built-aws-emulator",
+        "originalUrl": "https://assets.aboutamazon.com/fd/1e/3401edd44b5397d0120a11ec9f00/aws-emulator-ai-2-amazonnews-cdlt-09102026.jpeg",
+        "placement": "inline",
+        "width": 1600,
+        "height": 900
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "先用真实服务确定“做对了是什么样”",
+        "第三组每次领取一个问题"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-13"
+  },
+  {
+    "id": "gemini-hydrogen-orchestrator-20261113",
+    "source": "Google DeepMind",
+    "avatar": "G",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "推理与成本",
+    "tags": [
+      "推理与成本"
+    ],
+    "date": "2026-11-12",
+    "time": "11 月 12 日 · 原文日期",
+    "title": "Google 让快慢模型在同一个编程任务里接力",
+    "summary": "复杂的代码设计需要模型仔细判断，但读文件、写测试和检查修改，也会占掉不少时间。Google 在发布 Gemini 4 Hydrogen 时，把它定位为执行速度更快的模型，并在 Antigravity 编程工具中加入自动切换模型的 Orchestrator。\n\n同一个任务可以先由 Carbon 处理复杂判断，再交给 Hydrogen 执行，不必从头到尾使用同一个模型。需要并行时，Carbon 也可以协调多个 Hydrogen 分别写代码和验证修改。\n\nGoogle 报告，在 Terminal-Bench 4.0 的命令行任务测试中，这种切换方式取得接近全程使用 Carbon 的成功率，平均完成时间缩短19%，消耗的产品配额减少24%；这个数字表示用户的额度消耗，不是底层 GPU 计算量。\n\nHydrogen 已开始开放。它本身也能独立处理任务；API 每百万输入、输出 token 分别收费1.50和7.50美元，100万 token 的上下文范围采用同一档单价。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "发布说明与切换模型的测试",
+        "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "同一个任务可以先由 Carbon 处理复杂判断，再交给 Hydrogen 执行",
+        "平均完成时间缩短19%"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-13"
+  },
+  {
+    "id": "ernie-game-code-tests-20261113",
+    "source": "百度文心团队",
+    "avatar": "百",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-11",
+    "time": "11 月 11 日 · 原文日期",
+    "title": "文心新模型看不到游戏画面，团队把画面问题转成代码测试",
+    "summary": "百度公布文心 5.5 Flash Preview 时，展示了一款用虚幻引擎制作的武侠游戏。模型在一次11小时的开发任务里，整合场景和人物素材，用 C++ 实现游戏逻辑。这里有个实际困难：它是纯文本模型，看不到自己做出的画面。\n\n官方介绍，试玩发现人物悬空、跑动方向不一致、相机错位后，这些问题被转成可测量的代码测试。模型根据测试和反馈继续修改，而不是仅凭“代码能运行”就结束。场景和角色使用了外部素材，工作重点是把它们接成可玩的工程。\n\n团队还披露，为了改善游戏开发，专门建设了训练数据和评估体系，覆盖游戏逻辑、运行状态以及素材处理，并适配几种常用引擎。\n\n预览版 API 已上线千帆；官方中文公告计划在11月25日前开放权重。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "发布说明与游戏演示",
+        "url": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-preview/"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-13/ernie-game.jpg",
+        "alt": "云雾中的石峰游戏场景",
+        "caption": "百度原文《云岫行》演示视频封面。场景使用外部素材；图片展示最终画面，不是代码测试结果。",
+        "credit": "百度文心 · 原文视频封面",
+        "sourceUrl": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-preview/",
+        "originalUrl": "https://ernie.baidu.com/research-assets/ernie-5-5-flash-preview/image-13b96a68accd.jpg",
+        "placement": "inline",
+        "width": 1280,
+        "height": 720
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "这些问题被转成可测量的代码测试",
+        "根据测试和反馈继续修改"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-13"
+  },
+  {
+    "id": "anvil-adaptive-evaluation-20261113",
+    "source": "Anthropic Safeguards 团队",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-12",
+    "time": "11 月 12 日 · 原文日期",
+    "title": "安全测试不能只重放旧题，Anthropic 让 AI 换着办法继续试",
+    "summary": "模型的安全拦截规则改好以后，挡住已知攻击还不够：对方可能换一种问法继续尝试。Anthropic 新介绍的 Anvil，会让 AI 反复测试防护系统，记录之前的尝试，再根据反馈调整下一步。团队用它发现漏洞，也用它挑选准备上线的防护方案。\n\n文章里一个例子是防止隐藏推理过程被提取。团队把 Anvil 找到的攻击用于评测和训练；改进后，一组固定攻击被漏掉的比例从31.5%降到0.4%。但让 Anvil 根据新防护继续调整，每轮会话最多尝试200次，79轮测试中仍有56轮达到报告设定的明显泄露标准。\n\n这两组数字测的是不同问题：前者问“旧办法还管不管用”，后者问“对方继续试，能不能找到新办法”。只看第一组，很容易以为问题已经基本解决。\n\nAnvil 使用内部模型，还能看到防护系统的具体评分，测试条件比普通用户更有利于发现漏洞。团队据此继续提高防护，而不是把旧测试通过率当成终点。",
+    "body": "图中两个模型的新版防护，都在可调整攻击测试中留下56/79轮成功。线上攻击成功率同期也下降，但团队明确说同期还有其他改进，不能把变化全部归给 Anvil。",
+    "detailLabel": "怎样读这张评测图",
+    "links": [
+      {
+        "label": "技术报告与评测图表",
+        "url": "https://safeguards.anthropic.com/2026/automated-red-teaming/"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-13/anvil-evaluation.png",
+        "alt": "固定攻击、会调整的攻击和线上攻击的效果对比",
+        "caption": "原文图8。绿色是固定攻击的漏检比例，橙色是79轮可调整攻击中的成功比例，蓝色是线上观察值。三条线各有不同分母；正文讨论绿色与橙色的差异。",
+        "credit": "Anthropic · Figure 8",
+        "sourceUrl": "https://safeguards.anthropic.com/2026/automated-red-teaming/",
+        "originalUrl": "https://safeguards.anthropic.com/2026/automated-red-teaming/fig8.png",
+        "placement": "details",
+        "width": 1999,
+        "height": 1285
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "让 Anvil 根据新防护继续调整",
+        "这两组数字测的是不同问题"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-13"
+  },
+  {
+    "id": "claude-manufacturing-review-20261113",
+    "source": "Anthropic · Claude",
+    "avatar": "A",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-12",
+    "time": "11 月 12 日 · 原文日期",
+    "title": "Claude 的制造业插件，先把报价和排产准备到人能审核的程度",
+    "summary": "制造企业准备一份新报价，通常要找客户需求、历史订单、库存和成本记录。Claude 新发布的制造业插件把这些步骤写成17项操作流程，并连接 Autodesk Fusion、Infor、Microsoft 365 和 NetSuite 等系统。\n\n例如估价人员可以让它先读客户要求，列出缺失信息，再参考相似订单的成本起草报价。质量工程师则可以让它整理检验失败记录、查找类似问题，并准备纠正措施报告。流程做到审核环节，再交给负责的人决定。\n\nInfor 是管理订单、库存和生产等业务的软件。它同时提供的独立插件还能修改系统记录：钢材延期两周时，采购先让 Claude 查受影响订单和其他工厂库存，批准后再向替代供应商下单、调整排产。制造业插件本身提供的是资料与业务流程支持，不直接操作生产设备。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "插件能力与 Infor 示例",
+        "url": "https://claude.com/resources/articles/claude-for-manufacturing"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "列出缺失信息，再参考相似订单的成本起草报价",
+        "流程做到审核环节，再交给负责的人决定"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-13"
+  },
+  {
     "id": "salesforce-autornd-20261112",
     "source": "Salesforce AI Research",
     "avatar": "S",
@@ -3392,6 +3616,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-13",
+    "edition": 16,
+    "title": "AI 写完以后，怎样知道它做对了",
+    "intro": "今天的几条消息都涉及具体的验收办法：AWS 用真实服务确定测试答案，百度把游戏画面的问题转成代码检查，Anthropic 则让测试者继续换办法尝试。另看 Google 的快慢模型搭配，以及一篇只改训练目标的投机解码新论文。",
+    "coverage": "北京时间：优先检索11月12日07:14至11月13日本次更新的新内容，补读11月11日的 AWS、文心发布及11月10日首发论文。实际阅读企业原文、具名开发者实测和小红书正文及评论。X 搜索为空；Reddit 工具返回格式错误；脉脉后台浏览器连接超时，未读取登录动态、职言和评论。本期没有选入有信息增量的社交评论。",
+    "question": "把工作交给 AI 时，哪些结果可以用独立测试验收，哪些仍需要人判断？",
+    "id": "2026-11-13",
+    "count": 5
+  },
+  {
     "date": "2026-11-12",
     "edition": 15,
     "title": "把 AI 接进团队工作之后",
@@ -3541,19 +3775,74 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-12T07:15:29+08:00",
+  "updatedAt": "2026-11-13T09:17:40+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-12",
-  "latestId": "2026-11-12"
+  "latestDate": "2026-11-13",
+  "latestId": "2026-11-13"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "ecos-feedback-self-distillation",
-    "gs3r-continual-restoration"
+    "real-loss-speculative-decoding",
+    "ecos-feedback-self-distillation"
   ],
   "entries": [
+    {
+      "id": "real-loss-speculative-decoding",
+      "cat": "ai",
+      "topic": "推理加速",
+      "symbol": "⇢",
+      "method": "REAL Loss",
+      "year": "2026-11-10 首发 · 预印本",
+      "publishedOn": "2026-11-10",
+      "addedOn": "2026-11-13",
+      "time": 6,
+      "title": "训练小模型打草稿，要算清哪些词能连续通过检查",
+      "desc": "REAL Loss 改进投机解码的训练目标；草稿接受长度提升，但相对强对照的实际提速很小。",
+      "scenario": "用小模型先写几个词，再由大模型一起检查，以减少大模型逐词生成的等待。",
+      "bottleneck": "后一个草稿词能留下来，取决于前面的词是否已经通过；分别计算各位置平均通过率会丢掉这种联系。",
+      "lead": "投机解码让小模型先打草稿，大模型一次检查多个词。它的速度取决于草稿能连续通过多长：前面有一个词没通过，后面的草稿就要重来。\n\nREAL Loss 论文指出，有些训练方法分别算各个位置的平均通过率，再把它们相乘。问题是，第二个位置面对什么上下文，已经受第一个词是否通过影响。把所有路径混在一起平均，可能连训练该往哪个方向改都判断反了。\n\n新方法在训练中保留这层联系：先看每条草稿有多大机会被小模型写出来、又有多大机会一路通过检查，再把这些路径按对应概率加总。作者固定大模型、小模型结构、训练数据和轮数，只更换训练目标。随机采样设置下，9类任务的平均每轮输出长度从主表最强对照的4.749升至4.792个 token，包含每轮额外生成的1个 token。\n\n实际服务收益更小：同一批量测试中，每秒输出量从约4,649升至4,662个 token，约提高0.3%。降低生成的随机程度后，另一种较简单的训练目标还会反超。因此，选择草稿模型时仍要按实际使用的生成设置测速度。",
+      "insight": "草稿连续通过检查的概率，比各个位置单独“像不像大模型”更贴近加速目标。",
+      "steps": [
+        [
+          "保留路径差异",
+          "先用大模型生成训练文本，再按小模型提出这些词并通过检查的概率，调整各条路径在目标中的比重。"
+        ],
+        [
+          "减少估计抖动",
+          "当前一步对整个词表求和，前面的路径才使用采样估计；训练还保留少量逐词模仿目标。"
+        ]
+      ],
+      "example": {
+        "label": "教学算例",
+        "title": "两组模型通过率相同，也可能连续通过得不一样",
+        "text": "假设有100条两词草稿：两组都是第一词50条通过，第二位置单独检查也有50条通过。甲的这两批恰好是同50条，就有50条能连续通过；乙的两批完全错开，就没有一条能连续通过。这是简化说明，不是论文实测数据；它说明只看两个平均数，无法知道连续通过的数量。"
+      },
+      "evidence": "原文 Table 1、Table 10：Qwen3.6-35B-A3B 配 Domino，训练3轮；温度1.0，9类任务、5个种子。4.749与4.792分别为 DBLast、REAL，吞吐量批量为80。",
+      "limits": "温度0.5时 static LK 的接受长度为5.002，REAL 为4.993。主文比较固定训练轮数，并非逐方法匹配训练耗时。",
+      "transfer": "在自己的推理服务中，先固定采样方式和批量，再同时检查连续接受长度和实际吞吐量。",
+      "take": "训练目标更准确，不意味着端到端速度一定大幅提高。",
+      "counter": {
+        "q": "这是让大模型多思考换来的收益吗？",
+        "a": "不是。改动发生在小模型的训练目标；对照中的大模型和推理流程保持不变。"
+      },
+      "sources": [
+        [
+          "原论文 · 方法和完整实验",
+          "https://arxiv.org/html/2611.14399v1"
+        ],
+        [
+          "首发日期",
+          "https://arxiv.org/abs/2611.14399"
+        ],
+        [
+          "作者实现",
+          "https://github.com/King-ty/speculators/tree/real-loss"
+        ]
+      ],
+      "images": []
+    },
     {
       "id": "ecos-feedback-self-distillation",
       "cat": "ai",
