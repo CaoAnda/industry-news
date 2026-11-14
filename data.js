@@ -1,5 +1,223 @@
 window.FEED_DATA = [
   {
+    "id": "natera-missing-manuals-20261114",
+    "source": "Natera · Ariel Jirau / AWS",
+    "avatar": "N",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "公司实践",
+    "tags": [
+      "公司实践"
+    ],
+    "date": "2026-11-12",
+    "time": "11 月 12 日 · 原文日期",
+    "title": "AI 排障不够准，Natera 先补齐了缺失的设备手册",
+    "summary": "检测公司 Natera 的维修经验原本集中在老师傅身上，一位熟悉某类仪器的技术员离职后，团队就失去了那部分积累。他们做了 SWARM：新维修单一到，AI 就查设备手册、历史维修单和运行资料，先给工程师一份可能原因与排查步骤。\n\n早期系统只做通用资料搜索，没有按设备类型组织材料，诊断结果不稳定。团队改造了文档处理流程，并按仪器类别检查准确率。一次改进中，他们发现表现最差的那类仪器缺少厂商手册；补齐资料后，没有更换模型，这类仪器的诊断准确率从71%升到75%。\n\n工程师修完设备后，会把实际原因和处理办法记下来，再与 AI 的判断对照。这样，团队能知道是哪类设备、哪部分资料出了问题，再补资料、重测效果。",
+    "body": "团队在90天生产观察中评估了524张维修单，平均首次响应从17.4小时缩短到约8分钟；这是给出初步诊断报告的时间，不是修好设备的时间。269张单有可对照的工程师处理结果和置信标签，才进入相应准确率分析。后台自动处理维修单与工程师交互追问分开运行，共用同一套排障流程。",
+    "detailLabel": "上线后的响应速度与评估范围",
+    "links": [
+      {
+        "label": "原文",
+        "url": "https://aws.amazon.com/blogs/machine-learning/how-natera-designed-an-agentic-ai-system-for-lab-ops-with-amazon-bedrock-agentcore/"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-14/natera.png",
+        "alt": "维修单进入 SWARM，检索设备资料后回传诊断报告的流程",
+        "caption": "原文架构图：上方维修单进入后台分析，下方工程师可以继续追问；右侧提供设备手册与排障流程。",
+        "credit": "Natera / AWS · 原文架构图",
+        "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/how-natera-designed-an-agentic-ai-system-for-lab-ops-with-amazon-bedrock-agentcore/",
+        "originalUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-21653-1-1.png",
+        "placement": "details",
+        "width": 2248,
+        "height": 1254
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "补齐资料后，没有更换模型，这类仪器的诊断准确率从71%升到75%",
+        "把实际原因和处理办法记下来"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-14"
+  },
+  {
+    "id": "llamacpp-v1-compatibility-20261114",
+    "source": "ggml-org 团队",
+    "avatar": "g",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-13",
+    "time": "11 月 13 日 · 原文日期",
+    "title": "llama.cpp 发布 1.0，开始用版本号明确提示接口不兼容",
+    "summary": "不少本地 AI 应用把 llama.cpp 当作运行模型的底层组件。上游不断支持新模型、新硬件，但接口一变，依赖它的应用也可能需要修改代码。\n\n团队在11月13日发布 llama.cpp 和 ggml 的1.0.0版，并明确了后续版本规则：供应用代码调用的 C 接口发生不兼容改动，就升主版本，例如从1.x变成2.x；兼容的新功能和普通修复则用后面的数字区分。也就是说，维护应用的人可以从版本号先判断这次升级是否涉及接口适配。\n\n这次发布的重点是让其他项目更放心地依赖这些库。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文",
+        "url": "https://huggingface.co/blog/ggml-org/llama-cpp-v1"
+      }
+    ],
+    "images": [],
+    "comments": [
+      {
+        "author": "OsmanthusBloom",
+        "role": "普通评论者",
+        "date": "读取于 11 月 14 日（北京时间）",
+        "text": "我更关心命令行参数、模型配置文件和网络接口是否兼容。这些地方发生不兼容改动时，也会升主版本号吗？",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xv8t2e/llamacpp_v10_is_here/",
+        "linkLabel": "原帖入口",
+        "evidence": "个人提问",
+        "mode": "翻译摘编",
+        "context": "针对公告明确列出的 C 接口版本规则追问；本次读取的回复中未见维护者答复。"
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "C 接口发生不兼容改动，就升主版本",
+        "从版本号先判断这次升级是否涉及接口适配"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-14"
+  },
+  {
+    "id": "artcraft-human-boundaries-20261114",
+    "source": "Brandon Thomas · Latent Space",
+    "avatar": "B",
+    "avatarClass": "anthropic",
+    "channel": "interview",
+    "evidence": "具名分享",
+    "kind": "interview",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-13",
+    "time": "11 月 13 日 · 原文日期",
+    "title": "PhotoCraft 一天做出初版，后续还要补文件兼容和使用体验",
+    "summary": "ArtCraft 想做一组开源桌面工具，让用户保留熟悉的操作方式，还能按自己的需要修改软件。创始人 Brandon Thomas 在会议上介绍，他们先把 Photoshop 的工具、数据结构和文件导入需求写清楚，再让 AI 开发 PhotoCraft；他说，约24小时后就看到了像样的初版。\n\n项目自己的进度表也把“有这个功能”和“专业工作中好不好用”分开：功能覆盖估计约76%，实际专业使用准备度约四成到五成。文件兼容、画笔手感、性能和稳定性仍有具体缺口。这个区别解释了为什么一天能做出初版，后面仍有很长的打磨过程。",
+    "body": "团队还遇到了权限、代码协作和自动构建的容量问题。Thomas 的建议是：桌面应用的大量实现交给 AI，涉及数据库结构迁移和服务接口设计的工作由人负责。这里的数据库迁移，是修改已有数据的组织方式，会影响正在运行的业务。",
+    "detailLabel": "团队把哪些工作留给人",
+    "links": [
+      {
+        "label": "原文",
+        "url": "https://latent.space/p/artcraft/"
+      },
+      {
+        "label": "项目功能与可用性自评",
+        "url": "https://github.com/storytold/photocraft/blob/main/docs/target-app-parity.md"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-14/photocraft.png",
+        "alt": "PhotoCraft 使用选区和调整图层修改画作的界面",
+        "caption": "PhotoCraft 界面：左侧工具栏、中央选区和右侧图层。原报道引用项目展示图。",
+        "credit": "ArtCraft · 经 Latent Space 原文展示",
+        "sourceUrl": "https://latent.space/p/artcraft/",
+        "originalUrl": "https://media.beehiiv.com/cdn-cgi/image/fit=scale-down,format=auto,onerror=redirect,quality=80/uploads/asset/file/1f8df197-47c9-4513-8a41-d045e639c31a/image.png?t=1794541831",
+        "placement": "inline",
+        "width": 1524,
+        "height": 964
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "把“有这个功能”和“专业工作中好不好用”分开"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-14"
+  },
+  {
+    "id": "github-shared-skills-20261114",
+    "source": "GitHub · Andrea Griffiths",
+    "avatar": "G",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-12",
+    "time": "11 月 12 日 · 原文日期",
+    "title": "GitHub 的示例：三种编程 AI，共用一份工作说明",
+    "summary": "团队换一个编程 AI，往往又得解释一遍数据表在哪里、命名有什么要求、哪些修改要检查。GitHub 的新实践文章用 Data Forge 示例说明，怎样把这些经验写成可以共同维护的文件。\n\n示例任务是统计客服问题的创建与解决情况。第一步先找出数据表和命名规则，记到一份项目清单里；后续负责查询、建数据流程的 AI 都读这份清单。这样，项目配置改变时，不必到多份操作说明里逐个修改。\n\n操作步骤本身只保留一份，再用打包程序生成 Claude Code、Cursor 和 Copilot 各自需要的入口文件。团队因此可以共同审查工作规则，而不必分别维护三套近似的提示词。数据库连接和访问权限仍由实际运行工具提供。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文",
+        "url": "https://github.blog/ai-and-ml/github-copilot/build-once-run-on-any-agent-a-practical-guide-to-agent-skills/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "项目配置改变时，不必到多份操作说明里逐个修改",
+        "操作步骤本身只保留一份"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-14"
+  },
+  {
+    "id": "sglang-neuron-interface-20261114",
+    "source": "RadixArk / AWS Annapurna Labs",
+    "avatar": "R",
+    "avatarClass": "anthropic",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "推理与部署",
+    "tags": [
+      "推理与部署"
+    ],
+    "date": "2026-11-12",
+    "time": "11 月 12 日 · 原文日期",
+    "title": "SGLang 接入 Trainium，已有服务可以沿用原来的调用方式",
+    "summary": "已经用 SGLang 部署模型的团队，现在多了一条尝试 AWS 自研 AI 芯片 Trainium 的路径。新公开的 SGLang-Neuron 插件让 SGLang 继续接收请求、安排运行；底下怎样在 Trainium 上执行模型，则由插件处理。\n\n官方示例是在 Trainium3 实例上启动 gpt-oss-120b，再用原来的聊天接口请求答案。上层应用不用先换一套调用方式，就能开始测试新的硬件环境。插件也支持把“读完输入”和“逐词生成回答”放在不同服务器上，中间传递已算好的上下文缓存。\n\n这次公告给出了部署方法和支持范围入口，尚未提供同一任务下的速度或成本对照。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原文",
+        "url": "https://aws.amazon.com/blogs/machine-learning/deploy-frontier-ai-models-on-aws-trainium-with-sglang-neuron/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "让 SGLang 继续接收请求、安排运行"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-14"
+  },
+  {
     "id": "aws-emulator-agent-teams-20261113",
     "source": "AWS · Matthew Goldberg",
     "avatar": "A",
@@ -3616,6 +3834,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-14",
+    "edition": 17,
+    "title": "把 AI 接进工作之后，真正要补的是什么",
+    "intro": "今天选了几条具体做法：Natera 从缺失的设备手册入手改善诊断，ArtCraft 区分软件初版与专业可用，GitHub 把团队规则放进共同维护的文件。另看 llama.cpp 的接口承诺、SGLang 的新硬件接入，以及一篇保留长任务原始记录的新研究。",
+    "coverage": "北京时间：优先检索11月13日09:16至本次更新的新内容，补读11月12日的 Natera、GitHub、SGLang 工程文章和 Folio 论文。实际阅读企业原文、项目资料、会议报道、Reddit 正文与评论、小红书正文。X 搜索为空；小红书候选没有找到可核验的新增实践细节。脉脉后台浏览器连接超时，未读取登录动态、职言和评论。",
+    "question": "AI 做错时，团队能否分清是资料缺失、工作规则不清，还是模型本身不会做？",
+    "id": "2026-11-14",
+    "count": 5
+  },
+  {
     "date": "2026-11-13",
     "edition": 16,
     "title": "AI 写完以后，怎样知道它做对了",
@@ -3775,19 +4003,86 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-13T09:17:40+08:00",
+  "updatedAt": "2026-11-14T09:10:14+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-13",
-  "latestId": "2026-11-13"
+  "latestDate": "2026-11-14",
+  "latestId": "2026-11-14"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "real-loss-speculative-decoding",
-    "ecos-feedback-self-distillation"
+    "folio-recoverable-context",
+    "real-loss-speculative-decoding"
   ],
   "entries": [
+    {
+      "id": "folio-recoverable-context",
+      "cat": "ai",
+      "topic": "长任务与记忆",
+      "symbol": "▤",
+      "method": "Folio",
+      "year": "2026-11-12 首发 · 预印本",
+      "publishedOn": "2026-11-12",
+      "addedOn": "2026-11-14",
+      "time": 5,
+      "title": "Folio 把旧记录移出上下文，但保留找回原文的入口",
+      "desc": "用执行时留下的笔记和目录压缩历史，需要细节时再读原始记录。",
+      "scenario": "AI 连续查资料、运行工具，历史越来越长，后面的任务还可能要用到早先的细节。",
+      "bottleneck": "让模型重新概括全部历史既耗时，也可能漏掉之后才变得重要的信息。",
+      "lead": "AI 连续工作很久后，工具返回的资料会挤满上下文，也就是每次回答时模型能看到的内容。常见办法是让模型把旧记录写成摘要，再继续工作；但摘要省掉的细节，后面可能还要用。\n\n百度与北京邮电大学研究者提出的 Folio，在工作过程中就同时保存简短笔记、工具调用目录和完整原始记录。空间不够时，程序直接把较早的内容换成已有笔记和目录，不再临时让模型重写一遍。目录中的编号仍指向原文，需要时可以只读一段，或用程序处理整个文件。\n\n论文给了一个排期末考试的例子：AI 读过160门课的资料、邮件和通知，旧通知移出上下文后，它沿着目录找到原记录，提取每门课的考试安排，再与邮件核对。大量通知不必重新全部塞给模型，任务最终通过检查。\n\n在同样使用 DeepSeek-V4-Pro 的75项长任务中，作者报告完成数从54升到66。不过，两组统计都保留了被标记读取评分资料的运行，分别为11次和8次；这个成绩还需要更干净的评测来确认。",
+      "insight": "压缩后仍能找到原始依据，才方便在后续步骤重新核对细节。",
+      "steps": [
+        [
+          "工作时留下三层记录",
+          "模型写每轮简短笔记，程序保存工具调用目录及原始返回内容，三者用同一组编号关联。"
+        ],
+        [
+          "压缩时选择已有内容",
+          "较早的轮次显示得更简略，近期内容保留更多细节。原始记录仍留在外部文件中。"
+        ],
+        [
+          "需要时再取回",
+          "可以按编号分段读取，也可以对完整文件执行统计或提取，只把结果放回上下文。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "排考任务怎样找回通知",
+        "text": "原文第5.5节：上下文从约35.1万 token 缩到8.3万后，AI 对保存的793 KB通知记录提取课程考试信息，再读邮件核对。返回模型的提取结果约6,400 token，整份通知没有重新进入上下文。"
+      },
+      "evidence": "Table 1：75项任务来自15种环境、每种5个种子，组成5段连续会话。比较的是同一 Piki 运行框架中的 Folio 与模型摘要方案；使用相同模型与100万 token 上下文上限。",
+      "limits": "每条任务链只运行一次；总分包含评分资料读取标记。旧记录可恢复，也不保证模型写的笔记永远准确。",
+      "transfer": "做长期资料整理时，可以把摘要、来源目录和原文分开保存，让后续步骤有路可查。",
+      "take": "可回查的记录结构比单独一份短摘要更容易核对。",
+      "counter": {
+        "q": "这需要重新训练模型吗？",
+        "a": "不需要。改动在记录、压缩和回查工具上，模型本身没有因这套方法重新训练。"
+      },
+      "sources": [
+        [
+          "原论文 · 方法、表1与排考案例",
+          "https://arxiv.org/html/2611.16627v1"
+        ],
+        [
+          "首发日期",
+          "https://arxiv.org/abs/2611.16627"
+        ]
+      ],
+      "images": [
+        {
+          "src": "assets/2026-11-14/folio.png",
+          "alt": "Folio 通过同一组编号连接笔记、目录和原始资料",
+          "caption": "论文图2：上半部把已有记录放入较短上下文；下半部展示按编号读取原文或计算完整文件，再保存结果。",
+          "credit": "Folio 作者 · Figure 2",
+          "sourceUrl": "https://arxiv.org/html/2611.16627v1",
+          "originalUrl": "https://arxiv.org/html/2611.16627v1/figures/fig-fold-recover.png",
+          "placement": "details",
+          "width": 1760,
+          "height": 872
+        }
+      ]
+    },
     {
       "id": "real-loss-speculative-decoding",
       "cat": "ai",
