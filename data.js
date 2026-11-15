@@ -1,5 +1,240 @@
 window.FEED_DATA = [
   {
+    "id": "dspy-wsp-weight-edits-20261115",
+    "source": "Cmpnd · dspy-wsp",
+    "avatar": "C",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "训练与评测",
+    "tags": [
+      "训练与评测"
+    ],
+    "date": "2026-11-13",
+    "time": "11 月 13 日 · 原文日期",
+    "title": "dspy-wsp 让大模型写代码，直接修改小模型的参数",
+    "summary": "一个小模型负责给客服工单分类：是否需要当天回复，应该交给账单、技术还是账号团队。如果分类经常出错，开发者可能会收集更多样例，继续训练这个模型。Cmpnd 新发布的 dspy-wsp 提供了另一种实验办法：让一个能力更强的大模型读取小模型的参数，写 Python 修改其中的数值，再用样例检查改得对不对。这个工单流程是项目给出的接入示例。\n\n工具会把任务要求、评分办法和练习样例交给大模型。大模型查看错误、提出修改、调用小模型验证，最后留下一个参数补丁。正式测试题始终不让它看到，选好修改后才统一测试原版和修改版。\n\n作者在400条保留测试样例上报告：一个6亿参数决策模型的准确率从50.9%升到66.9%。但这个实验允许大模型在 Python 中反复计算小模型最后负责打分的部分。另一轮实验禁止在 Python 里额外重算打分部分，所有检查都要经过最多调用25次的模型运行工具；这时准确率只升到53.7%。因此，这组结果里，允许怎样试改参数，是理解收益的关键条件。",
+    "body": "上面的两组实验都用 GPT-6 Astra 提议修改。宽松设置用了78分钟、7.63美元的大模型调用费；严格设置用了73分钟、9.25美元，费用不包含本机计算。严格设置下，作者记录了对12个打分神经元的修改，让它们更多利用付款期限、约束违反和安全相关线索。\n\n项目还提供 ReAnchor：参数不动，只调整模型分数怎样变成最终选项。对同一个模型，这种办法单独就达到60.2%；与宽松的参数修改叠加为69.1%，与严格修改叠加仍为60.2%。所以，想在自己的分类任务上尝试时，值得先比较“改参数”和“改判定门槛”各自贡献了多少。\n\ndspy-wsp 目前是独立于 DSPy 主库的早期版本。补丁保存改过的参数和校验信息，便于重新加载；完整的尝试过程、运行预算和最终测试也会记录下来。",
+    "detailLabel": "改参数与改判定门槛，分别带来多少提升",
+    "links": [
+      {
+        "label": "项目说明",
+        "url": "https://github.com/cmpnd-ai/dspy-wsp"
+      },
+      {
+        "label": "原始实验表与运行记录",
+        "url": "https://github.com/cmpnd-ai/dspy-wsp/blob/main/results/2026-11-07-typed-decisions-astra/README.md"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-15/wsp.png",
+        "alt": "五个决策模型在原版、改判定门槛、改参数以及两者结合后的测试准确率",
+        "caption": "项目原图：灰色为原版，蓝色为只调整判定门槛，绿色为修改参数及组合方案。这张图采用允许在 Python 中重算打分部分的设置；正文另列了收紧预算规则后的结果。",
+        "credit": "Cmpnd · Typed Decisions 实验",
+        "sourceUrl": "https://github.com/cmpnd-ai/dspy-wsp",
+        "originalUrl": "https://raw.githubusercontent.com/cmpnd-ai/dspy-wsp/main/assets/typed-decisions.png",
+        "placement": "details",
+        "width": 2400,
+        "height": 2191
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "最后留下一个参数补丁",
+        "允许怎样试改参数，是理解收益的关键条件"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-15"
+  },
+  {
+    "id": "deepseek-app-tools-api-20261115",
+    "source": "DeepSeek",
+    "avatar": "D",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-13",
+    "time": "11 月 13 日 · 原文日期",
+    "title": "DeepSeek 把搜索、读网页和读文件接进了对话接口",
+    "summary": "开发者想做一个能上网、能读文件的聊天助手，光接入模型还不够：通常还要自己安排搜索、抓取网页，把读到的内容送回模型。DeepSeek 这次开放了应用中的这些能力，开发者可以在现有对话接口里启用，由服务端完成工具调用和资料整理。\n\n同一个搜索工具有两种用法。关闭思考时，它搜索网页或图片，再带着引用回答；开启思考时，模型可以在推理过程中多次搜索、继续读取链接。用户发来网址或 PDF、Office 文件，也有对应的读取和解析入口。\n\n这些能力接在现有的 deepseek-flash 模型上，另外提供可自行组合的搜索、抓取、文字识别和语音接口。团队同时公开了聊天前端示例，方便开发者看完整流程。工具使用费与模型的文字输入、输出费用分开计收。做应用时，除了模型本身的用量，还要计入搜索、读取等工具的开销。",
+    "body": "公开面向用户的应用需要启用官方提供的安全检查；服务会检查输入和输出，并在触发时返回拒绝标记。官方示例支持导入 DeepSeek 对话记录。示例展示的是如何接入这些功能，不是搜索质量或完整应用成本的对照测试。",
+    "detailLabel": "接入示例与使用条件",
+    "links": [
+      {
+        "label": "官方发布",
+        "url": "https://api-docs.deepseek.com/news/news261113/"
+      },
+      {
+        "label": "搜索和读取规则",
+        "url": "https://api-docs.deepseek.com/guides/web_tools"
+      },
+      {
+        "label": "官方前端示例",
+        "url": "https://github.com/deepseek-ai/chat-demo"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "由服务端完成工具调用和资料整理",
+        "工具使用费与模型的文字输入、输出费用分开计收"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-15"
+  },
+  {
+    "id": "agweb-background-browser-20261115",
+    "source": "paul-nameless · agweb",
+    "avatar": "p",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "作者发布",
+    "kind": "opinion",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-14",
+    "time": "11 月 14 日 · 原文日期",
+    "title": "agweb 把多个 AI 的浏览窗口放在一起，尽量不打断人操作电脑",
+    "summary": "开发者 paul-nameless 同时运行几个编程助手时，遇到一个很具体的烦恼：它们打开的 Chrome 窗口会突然抢到前台，让自己正在输入的内容失去焦点。改用完全隐藏的浏览器后，又不容易看出任务卡在哪里。他因此做了 agweb，一个基于 Safari 所用 WebKit 引擎的 macOS 浏览器。\n\nAI 通过命令操作各自的工作区，窗口留在后台；人想查看时，可以在一个面板里看到各个任务的网页和最近操作。每次点击后，工具会返回页面增加了什么、是否开始下载等变化，让 AI 不必每一步都重新读取整个页面。\n\n它还允许几个任务共用一份登录状态。需要人处理登录或验证码时，可以把页面交还给人。项目刚公开，目前要求 macOS 26 或更高版本；它使用的不是 Chrome 引擎，因此现有 Chrome 扩展和 Playwright 不能直接接上去。",
+    "body": "作者在自己的 Mac 上比较了五个空闲页面：agweb 占用590 MB，隐藏运行的 Chrome 为730 MB，Playwright 启动的 Chrome 为1.6 GB。这个比较针对空闲页面；正文配图展示的是六个页面、其中包含视频的另一种状态，不是这组内存测试的截图。\n\n项目默认阻止部分广告和追踪请求，做网站统计测试时可以按工作区关闭。当前还没有覆盖所有 Chrome 功能。",
+    "detailLabel": "空闲页面测试和兼容范围",
+    "links": [
+      {
+        "label": "作者项目说明",
+        "url": "https://github.com/paul-nameless/agweb"
+      },
+      {
+        "label": "作者发布与讨论",
+        "url": "https://news.ycombinator.com/item?id=50497147"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-15/agweb.png",
+        "alt": "agweb 面板同时展示六个网页及所属工作区",
+        "caption": "作者界面截图：网页按任务归组，在同一个面板里查看。图中包含运行中的视频，不对应五个空闲页面的内存测试。",
+        "credit": "paul-nameless · 项目 README",
+        "sourceUrl": "https://github.com/paul-nameless/agweb",
+        "originalUrl": "https://raw.githubusercontent.com/paul-nameless/agweb/master/docs/images/dashboard.png",
+        "placement": "inline",
+        "width": 1600,
+        "height": 1071
+      }
+    ],
+    "comments": [
+      {
+        "author": "agline_in",
+        "role": "普通评论者",
+        "date": "11月14日 22:48（北京时间）",
+        "text": "共用登录状态时，一个任务退出账号、切换账号或触发网站限流，其他任务也可能受到影响。他询问能否复制一份独立或只读的登录状态。",
+        "url": "https://news.ycombinator.com/item?id=50497457",
+        "linkLabel": "评论原文",
+        "evidence": "使用边界提问",
+        "mode": "翻译摘编",
+        "context": "针对共用登录状态提出隔离问题。另一位评论者建议手动保存、加载状态；已读回复中没有项目作者对完整隔离方案的确认。"
+      }
+    ],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "窗口留在后台",
+        "看到各个任务的网页和最近操作"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-15"
+  },
+  {
+    "id": "baseten-kv-transfer-20261115",
+    "source": "Baseten · DeepSeek Ultrafast",
+    "avatar": "B",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "推理与部署",
+    "tags": [
+      "推理与部署"
+    ],
+    "date": "2026-11-13",
+    "time": "11 月 13 日 · 原文日期",
+    "title": "Baseten 的新推理引擎，让对话换一台服务器也能接着用缓存",
+    "summary": "聊天进行到第二轮时，模型通常可以复用上一轮已经算过的内容。这些中间计算结果叫 KV 缓存。服务部署在多台机器上后，如果下一条消息分到另一台机器，而缓存还在原来的机器上，就可能要重新计算之前的对话。\n\nBaseten 为 DeepSeek-V4.1-Flash 开源的新推理引擎，把最近对话的缓存留在服务器内存里，用 Redis 记录每份缓存在哪台机器。新请求到了另一台服务器，它先找到旧缓存，再通过支持直接内存传输的网络取过来，继续生成回答。这样，分配请求时不必总把同一段对话绑在原来的机器上。\n\n项目还公开了生成俄罗斯方块网页代码的速度测试：8张 B300 上约每秒2,060个 token。生成时先拟出一小段候选文字，再让模型统一检查哪些可以采用，因此一次计算能接受多个 token。这个数字对应指定代码生成提示词，不是多用户并发时的总吞吐量。",
+    "body": "代码生成测试关闭思考。8张 B300 的每步耗时约2.71毫秒；另一组4张 GB300 的生成速度约每秒1,740个 token，每步约3.30毫秒。两组卡型不同。README 另列了读取100万 token 输入的时间，8张 B300 为11.7秒，那是处理输入的测试，不能和生成速度当成同一指标。\n\n当前引擎面向 Blackwell GPU，最低要求相应的4卡配置。缓存位置由 Redis 协调，跨服务器传输要求支持 RDMA 的网络。缓存共享的设计说明与代码已公开，但这次没有给出它相对固定路由的多用户成本对照。",
+    "detailLabel": "速度测试条件与部署要求",
+    "links": [
+      {
+        "label": "源码、缓存设计与复现步骤",
+        "url": "https://github.com/basetenlabs/deepseek-ultrafast"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "先找到旧缓存，再通过支持直接内存传输的网络取过来",
+        "一次计算能接受多个 token"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-15"
+  },
+  {
+    "id": "vercel-ui-behaviors-20261115",
+    "source": "Vercel Labs · UI SDK",
+    "avatar": "V",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-13",
+    "time": "11 月 13 日 · 测试版发布日期",
+    "title": "Vercel 把键盘、焦点和弹窗行为做成组件，供 AI 拼装界面",
+    "summary": "AI 能很快画出一个搜索框，但让它真正好用，还要处理不少细节：点击清空后还能不能继续输入，用键盘能不能选中结果，弹窗关闭后焦点回到哪里。Vercel Labs 新公开的 UI SDK，把这些交互行为拆成可以组合的模块，供编程助手使用。\n\n项目给出的搜索框示例，会在有文字时显示清空按钮；清空后，这个按钮消失，焦点恢复模块把输入位置送回搜索框，人可以接着打字。开发者不用为了这个细节，在每一种界面框架里各写一遍处理逻辑。同一套行为可以接到 React、Vue、Svelte 等界面上。\n\n这套工具还附带给编程助手读取的使用说明。目前处于测试阶段，接口可能变化；它提供的是交互行为，不会替团队决定页面长什么样。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "项目与搜索框示例",
+        "url": "https://github.com/vercel-labs/ui"
+      },
+      {
+        "label": "测试版发布记录",
+        "url": "https://github.com/vercel-labs/ui/releases"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "清空后，这个按钮消失，焦点恢复模块把输入位置送回搜索框"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-15"
+  },
+  {
     "id": "natera-missing-manuals-20261114",
     "source": "Natera · Ariel Jirau / AWS",
     "avatar": "N",
@@ -3834,6 +4069,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-15",
+    "edition": 18,
+    "title": "让 AI 更好用，改的不只是模型",
+    "intro": "今天看几个具体改法：让大模型直接改小模型参数，把搜索接进对话接口，以及让 AI 操作浏览器时少打断人。另看推理缓存如何跨服务器复用、界面交互如何拆成模块，再补一篇11月首发的模型合并研究。",
+    "coverage": "北京时间：优先检索11月14日09:09至本次更新的新内容，并补读11月12—13日尚未收录的开源与接口发布。已阅读官方文档、项目说明、原始实验表、论文全文，以及 Reddit 和 Hacker News 讨论。小红书读到的近期候选为课程推广，未收录；X 搜索为空。脉脉后台浏览器连接超时，未读取登录动态及评论。",
+    "question": "同一个 AI 系统变好了，收益究竟来自模型参数、给它的工具，还是周围程序的处理方式？",
+    "id": "2026-11-15",
+    "count": 5
+  },
+  {
     "date": "2026-11-14",
     "edition": 17,
     "title": "把 AI 接进工作之后，真正要补的是什么",
@@ -4003,19 +4248,74 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-14T09:10:14+08:00",
+  "updatedAt": "2026-11-15T08:30:40+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-14",
-  "latestId": "2026-11-14"
+  "latestDate": "2026-11-15",
+  "latestId": "2026-11-15"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "folio-recoverable-context",
-    "real-loss-speculative-decoding"
+    "cusd-common-unique-merging",
+    "folio-recoverable-context"
   ],
   "entries": [
+    {
+      "id": "cusd-common-unique-merging",
+      "cat": "merge",
+      "topic": "模型合并",
+      "symbol": "⊕",
+      "method": "CUSD",
+      "year": "2026-11-03 首发 · 预印本",
+      "publishedOn": "2026-11-03",
+      "addedOn": "2026-11-15",
+      "time": 6,
+      "title": "CUSD 合并模型前，先拆开共同变化和各自偏重的变化",
+      "desc": "相同底座微调出的模型，先比较参数变化的方向，再分别合并和保留。",
+      "scenario": "把同一个底座上训练的代码、数学和多语言模型合成一个模型。",
+      "bottleneck": "直接对所有参数变化使用同一套规则，可能压掉某个任务特别依赖的部分。",
+      "lead": "假设同一个底座分别微调成了擅长代码、数学和多语言的三个模型，想把它们合成一个。常见做法是先看每个模型相对底座改了哪些参数，再把这些改动相加、筛选或缩放。但不同任务的改动并不一样，用同一套规则处理全部改动，可能保住了一项能力，却损失另一项。\n\nCUSD 先把一层参数里的成组变化，放到同一组方向上比较。有些方向，各个任务的改动强度接近；另一些方向，主要是某一个或少数任务在改。它把各任务改动接近的部分交给已有合并方法处理；对少数任务特别突出的部分，先单独留下，调节保留强度后再加回来。这里分组依据是参数变化的强弱，不是已经辨认出了“数学知识”或“代码知识”。\n\n论文在 Llama-3.2-3B-Instruct 的代码、数学和多语言微调模型上做了实际比较：普通参数相加的综合分为73.5，加上 CUSD 后为75.8。这个分数先把各任务专用模型设为100，再计算合并模型保留了多少表现，并非答题准确率。增加主要来自代码任务；数学任务的相对分数反而从64.2降到62.4。\n\n这项工作提供了一种在合并前整理参数改动的办法，结果仍有取舍。拆分和合并本身只读模型权重，但单独保留多少特殊变化，需要选择系数，可能仍要用验证数据。",
+      "insight": "先看各任务沿同一方向改得是否接近，再决定共同处理还是单独保留。",
+      "steps": [
+        [
+          "计算每个模型的变化",
+          "同一层的微调权重减去底座权重，得到各任务的改动矩阵。方法要求这些模型来自相同底座和架构。"
+        ],
+        [
+          "用共同方向比较强弱",
+          "为每层构造一组共同的正交方向，计算各任务沿每个方向的变化强度，再按任务之间的差异分组。论文为编码器和生成模型使用不同的强度评分方式。"
+        ],
+        [
+          "两部分分开处理",
+          "共同部分使用 Task Arithmetic、TIES 等已有合并方法；各任务偏重的剩余部分先相加，再统一乘以系数 β。最后把两部分与底座相加，得到一个模型。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "综合分上涨，但数学任务略降",
+        "text": "论文表15：Llama-3.2-3B-Instruct 配合 Task Arithmetic，六项任务的平均相对分数从73.5到75.8。两个代码测试 Humaneval+、MBPP+ 分别从55.5到61.3、46.5到54.0；GSM8k 从64.2到62.4。每一列都以对应任务专用模型的表现为100，不能直接当作原始准确率。"
+      },
+      "evidence": "论文覆盖11个底座、4类模型和4种算术合并方法，44组组合中42组提升、1组持平、1组小幅下降。已有合并方法的参数在前后对照中保持一致；CUSD 另外加入拆分与残差系数。",
+      "limits": "只评估相同架构的稠密模型；选择 β 可能使用验证数据。部分已有子空间方法在部分设置下仍更强，平均提升不表示每个任务都提升。",
+      "transfer": "迁移到自己的模型对时，可先检查新增的拆分是否改善了能力取舍，并把 β 的选择放在验证集；特定推理模型对的效果还需要另测。",
+      "take": "“只读权重就能合并”与“不需要数据选参数”是两件事。",
+      "counter": {
+        "q": "它是在每个输入到来时选择模型吗？",
+        "a": "不是。它在生成合并权重时完成拆分和组合，部署时仍是一个固定参数的模型。"
+      },
+      "sources": [
+        [
+          "原论文 · 方法与表15",
+          "https://arxiv.org/html/2611.04108v1"
+        ],
+        [
+          "首次公开日期",
+          "https://arxiv.org/abs/2611.04108"
+        ]
+      ],
+      "images": []
+    },
     {
       "id": "folio-recoverable-context",
       "cat": "ai",
