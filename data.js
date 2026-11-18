@@ -1,5 +1,200 @@
 window.FEED_DATA = [
   {
+    "id": "eve-store-session-deltas-20261118",
+    "source": "Vercel",
+    "avatar": "V",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "公司部署实践",
+    "tags": [
+      "公司部署实践"
+    ],
+    "date": "2026-11-17",
+    "time": "11 月 17 日 · 原文日期",
+    "title": "对话越长，重复保存越贵：eve 改成只存新变化",
+    "summary": "一个 AI 助手连续工作几十轮，后台不仅要调用模型，还要保存进度，方便中断后接着做。Vercel 在 eve 1.0 的发布复盘里指出，旧流程会把越来越长的对话反复复制进不同步骤，存储和传输的工作也随之增加。\n\n这次它改成只保存本轮新增或改变的数据，旧内容通过引用取回；不需要历史记录的步骤，干脆不传历史。工具返回图片时，进度记录里保存文件地址，不再反复复制整张图。这样，同一份内容就不用随着每一步重新写一遍。\n\n团队用一段50轮的 Evo Docs 会话估算：按每轮约两次模型步骤、记录保留30天计算，Vercel Workflows 这部分费用从5.4美分降到1.3美分，约少76%。这笔估算只算保存进度、运行各步骤等后台服务费用，不含模型调用账单。\n\n做长任务助手时，这个经验值得先查：费用增加究竟来自模型思考，还是后台在重复搬运已经有的数据？",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "eve 1.0 · 成本与存储改动",
+        "url": "https://vercel.com/blog/eve-is-now-generally-available"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "只保存本轮新增或改变的数据",
+        "不含模型调用账单"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-18"
+  },
+  {
+    "id": "cerebras-prefill-decode-20261118",
+    "source": "Cerebras",
+    "avatar": "C",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "推理成本与延迟",
+    "tags": [
+      "推理成本与延迟"
+    ],
+    "date": "2026-11-17",
+    "time": "11 月 17 日 · 原文日期",
+    "title": "Cerebras 让 GPU 读输入，自己专门生成回答",
+    "summary": "模型回答问题前，要先处理用户输入；随后才逐个生成回答里的词。这两段工作的特点不同：读输入时可以并行处理很多内容，生成时却要等上一个词出来，才能继续下一个。\n\nCerebras 把这两段分给了不同硬件。在已经运行的服务中，AMD Instinct GPU 负责处理输入，再把中间状态交给 CS-3 系统；CS-3 利用片上高速存储，专门完成后续生成。此前由 CS-3 同时做的两份工作，现在分开承担。\n\n公司公布了11月14日同一个 GPT-OSS-120B 服务启用这一方案前后的记录：在同样功率下，所有请求合计每秒生成的内容达到原来的5倍，单个回答的生成速度保持不变。这里增加的是同一功率下的总体服务能力，不是每个人都能快5倍拿到回答。\n\n团队计划继续向自营和合作伙伴的服务推广。对部署团队来说，它展示了一种具体取舍：把硬件分工做细，用数据传递的额外工作，换取更高的整体容量。",
+    "body": "处理输入的阶段通常叫 prefill，逐个生成输出的阶段叫 decode。两端通过 KV Portal 传递模型继续生成所需的键值缓存。原文的5倍结果来自共享服务启用前后的生产记录，按原先 CS-3 单独服务的每兆瓦吞吐量归一化；文章没有给出两段流量完全相同的受控负载测试。",
+    "detailLabel": "两段计算怎样衔接，以及5倍的比较范围",
+    "links": [
+      {
+        "label": "官方部署说明与生产曲线",
+        "url": "https://www.cerebras.ai/blog/cerebras-launches-disaggregated-inference"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "GPU 负责处理输入",
+        "单个回答的生成速度保持不变"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-18"
+  },
+  {
+    "id": "devin-bots-human-decisions-20261118",
+    "source": "Cognition",
+    "avatar": "C",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-18",
+    "time": "11 月 18 日 01:03 · 北京时间发布",
+    "title": "Devin Bots 把多个编程任务交给一组助手，只把待决定的事交回人",
+    "summary": "改造支付接口，往往不只改一处代码：客户端要更新，回调处理要迁移，结账测试也要重写。Cognition 新发布的 Devin Bots，用这个例子展示了一个变化：用户给出整体目标，由 Bot 拆分任务，再协调多个 Devin 分别工作。\n\n每个执行助手有自己的云端电脑。Bot 跟进代码、测试和待合并的修改；需要人介入时，集中放进“Needs you”列表。演示里列了三种很具体的情况：缺少支付服务的密钥、要决定是否保留旧接口、需要批准正式部署。\n\n它也支持按时间或外部事件启动，例如每天检查测试是否正常，或看到客服频道里的故障后开始排查。目前这些是产品页面展示的工作流程；它想减少的是人来回追问各个助手进度的工作。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "产品流程演示",
+        "url": "https://devin.ai/bots"
+      },
+      {
+        "label": "Cognition 发布帖 · 北京时间11月18日",
+        "url": "https://x.com/cognition/status/2122737511684587551"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "由 Bot 拆分任务",
+        "集中放进“Needs you”列表"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-18"
+  },
+  {
+    "id": "qwen4-cam-simulation-20261118",
+    "source": "阿里云 · Qwen",
+    "avatar": "阿",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "研究怎样变成产品",
+    "tags": [
+      "研究怎样变成产品"
+    ],
+    "date": "2026-11-17",
+    "time": "11 月 17 日 · 原文日期",
+    "title": "千问4的制造演示：先模拟刀具怎么走，再检查哪里会切坏",
+    "summary": "给数控机床安排加工路径，不能只让程序“看起来能运行”：刀具太大、走位不对，都可能把零件切坏。阿里云在千问4的企业应用介绍中，展示了模型生成加工路径后，再用仿真检查的过程。\n\n其中一个预设异常是刀具直径过大。演示画面标出了局部过切的位置，也就是刀具会切掉本该保留的材料。问题在模拟加工时暴露出来，实际金属还没有被切削。\n\n公司报告，这个展示案例里，每个零件需要人工动手编写加工程序的时间从约475分钟降到24分钟。这里统计的是人工编程时间，不是零件从设计到加工完成的全部时间；数字来自这次官方演示。\n\n这个例子比单纯展示“模型能生成代码”多走了一步：把生成的结果送进能检查后果的专业工具，先找出会造成什么问题。企业接入仍需按所在地区与阿里云确认。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "企业应用介绍 · 制造演示",
+        "url": "https://www.alibabacloud.com/blog/alibaba-cloud-brings-qwen4-max-to-the-enterprise-an-ai-colleague-that-plans-builds-and-delivers-finished-work_603786"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-18/qwen-cam.jpg",
+        "alt": "千问4官方演示中，过大的刀具导致局部过切，仿真画面标出异常位置",
+        "caption": "官方预设异常演示：刀具直径过大，会切掉零件局部本应保留的材料。画面来自模拟检查，不是实物加工现场。",
+        "credit": "阿里云 · Qwen4-Max",
+        "sourceUrl": "https://www.alibabacloud.com/blog/alibaba-cloud-brings-qwen4-max-to-the-enterprise-an-ai-colleague-that-plans-builds-and-delivers-finished-work_603786",
+        "originalUrl": "https://yqintl.alicdn.com/0d960a593300e73602e5fd700f2025d9a7fdb0bd.jpeg",
+        "placement": "inline",
+        "width": 1440,
+        "height": 810
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "再用仿真检查",
+        "人工编程时间"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-18"
+  },
+  {
+    "id": "developer-design-before-agent-20261118",
+    "source": "Reddit · PrawncakeZA（评论者）",
+    "avatar": "R",
+    "avatarClass": "openai",
+    "channel": "reddit",
+    "evidence": "个人经历 · 评论摘编",
+    "kind": "opinion",
+    "topic": "开发者实际经验",
+    "tags": [
+      "开发者实际经验"
+    ],
+    "date": "2026-11-18",
+    "time": "11 月 18 日读取 · 原始评论时间未返回",
+    "title": "重写内部工具前，他先花一周把设计里的矛盾说清楚",
+    "summary": "在一则讨论编程助手实际效果的帖子里，评论者 PrawncakeZA 分享了自己重写内部工具的过程。他自述有十年开发经验，正在美国一家大型科技公司工作；旧工具问题太多，决定从头重写。\n\n他先用约一周和助手讨论架构，澄清文档中的含糊与矛盾，再整理成分阶段实施计划，让自己能一块一块地测试。写评论时，正式实现刚做两天，进度接近一半，主要等待环节变成了人工测试。\n\n这项重写还没有完成。这个阶段最具体的经验，是先把设计整理到能分块验收，再让助手往下写。对这位开发者而言，设计和验证占了更多注意力。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "原帖入口 · PrawncakeZA 的回复",
+        "url": "https://www.reddit.com/r/DevelEire/comments/1xygt4m/any_people_with_good_experiences_of_coding_agents/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "正文根据普通评论者 PrawncakeZA 的英文回复摘编；已读原帖与可见回复。工具未返回该回复直达链接，来源进入原帖。",
+    "highlights": {
+      "summary": [
+        "能一块一块地测试"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-18"
+  },
+  {
     "id": "scientists-check-ai-output-20261117",
     "source": "OpenAI",
     "avatar": "O",
@@ -4471,6 +4666,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-18",
+    "edition": 21,
+    "title": "把重复的工作减掉，把需要人判断的事留下",
+    "intro": "今天看两种具体的降本办法：eve 减少反复保存对话，Cerebras 重新分配读输入和生成回答的工作。另看编程助手怎样交回决策、制造任务怎样先做仿真；研究部分读一篇刚公开的推荐系统论文，检查每句话的推理是否真的帮上忙。",
+    "coverage": "北京时间：优先覆盖11月17日08:04至本次更新，补读本轮未收录的11月17日研究与社区经验。已读企业技术说明、产品演示、论文全文、X 发布帖及回复、Reddit 原帖及可见回复；小红书搜索与一篇笔记正文可读，但未选入。后台浏览器连接超时，未读取脉脉。",
+    "question": "让 AI 多做一步思考或检查时，我们能否说清楚：这一步增加了什么成本，又减少了哪一种实际错误？",
+    "id": "2026-11-18",
+    "count": 5
+  },
+  {
     "date": "2026-11-17",
     "edition": 20,
     "title": "AI 交出结果之后，还要看哪里出了偏差",
@@ -4670,19 +4875,91 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-17T08:07:38+08:00",
+  "updatedAt": "2026-11-18T10:02:55+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-17",
-  "latestId": "2026-11-17"
+  "latestDate": "2026-11-18",
+  "latestId": "2026-11-18"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
-    "jnsp-joint-null-projection",
-    "agentssl-program-selection"
+    "gainreason-predictive-gains",
+    "jnsp-joint-null-projection"
   ],
   "entries": [
+    {
+      "id": "gainreason-predictive-gains",
+      "cat": "ai",
+      "topic": "推荐系统与推理训练",
+      "symbol": "↗",
+      "method": "GainReason",
+      "year": "2026 · 北京时间11月17日首发",
+      "publishedOn": "2026-11-17",
+      "addedOn": "2026-11-18",
+      "classic": false,
+      "time": 6,
+      "title": "推荐电影前先想一遍，怎样判断这些话有没有帮上忙？",
+      "desc": "GainReason 在训练时逐句检查：加入这句话后，模型是否更可能推荐用户接下来真的选择的商品。",
+      "scenario": "根据一个人最近交互过的电影或商品，预测他下一次会选什么。模型先写一段分析，再输出推荐结果。",
+      "bottleneck": "只按最终有没有推荐对来奖励，难以区分分析中的哪些话有用；几条不同的分析也可能得到相同分数。",
+      "lead": "一个用户最近买过《海洋奇缘》《寻龙传说》等动画电影。模型先分析他的喜好，再推荐下一部，这听起来合理。但论文给出的例子里，一种对照方法竟把接下来要预测的《狮子王》，说成用户已经买过的电影。分析写得顺，并不意味着它真的帮助了推荐。\n\nGainReason 的做法是，在训练时把分析拆成句子。训练记录里保留了用户后来实际选择的商品，于是可以检查：加上这一句后，模型给那个正确商品的预测概率，是上升了还是下降了？把这个变化作为奖励，让不同句子得到不同反馈。\n\n在电影数据集上，作者把“先分析再推荐”和“直接推荐”分别测了一遍。同一个 GainReason 模型先分析后，正确商品进入前五个推荐的比例从5.25%升到5.41%；对照 Evo-Rec 则从5.28%略降到5.26%。这里改善的是离线预测，说明这套训练下的分析带来了增量，还没有测到真实用户的点击或购买变化。",
+      "insight": "奖励要对准分析对预测的增量，而不是分析看起来是否合理。训练时知道正确商品，可以据此观察每句话前后的概率变化。",
+      "steps": [
+        [
+          "先让语言模型认得商品",
+          "作者从 Qwen3-1.7B 出发，把每件商品映射成三个离散编号，称为 Semantic ID。模型先学习商品描述与编号的对应关系，再学习根据历史生成分析和推荐。"
+        ],
+        [
+          "逐句计算预测增量",
+          "设 p_j 是读完前 j 句分析后，模型给正确商品编号的概率。第 j 句的奖励用 log(p_j) − log(p_{j−1}) 表示：概率提高得正反馈，降低得负反馈。这里测量的是模型的预测变化，不等于已经证明这句话揭示了用户的真实动机。"
+        ],
+        [
+          "同时训练分析与后续推荐",
+          "一句话得到的反馈用于调整分析的生成方式。对整段分析几乎没有带来概率变化的样本，方法另加一项训练，让模型结合这段分析预测正确商品；它没有把所有“没提升”的情况都认定为分析内容错误。"
+        ],
+        [
+          "把前后比较放在同一条件下",
+          "显式分析的各方法从同一个准备好的检查点开始，使用相同的训练轮数、采样条数和长度上限。评测在全部商品里排序，输入最多10次历史交互；电影、工业用品和 Yelp 三个数据集分别测试。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "把还没买的《狮子王》误写成购买历史",
+        "text": "Figure 8 中，OneRec-Think 的分析把《狮子王》放进已有购买记录，最后没有把目标电影排进前十。GainReason 的分析围绕动画、家庭观看和 DVD 等信息展开，把目标排到了第三。这是论文选出的单个案例，用来说明两种分析的具体差别；整体增益见完整测试集。"
+      },
+      "evidence": "电影数据集的前五命中率：GainReason 直接推荐5.25%，先分析后5.41%；Evo-Rec 分别为5.28%与5.26%。命中率的分母是该数据集的测试样本。数据按全局时间顺序以8:1:1划分训练、验证、测试，评测不使用抽样候选商品。训练采用8张 A100 80GB；这些结果包含重新训练的收益，不能视作给任意现成模型多加一段思考就能得到同样效果。",
+      "limits": "预测正确商品的概率增加，不保证它一定超过所有其他商品；推理时也没有用户未来选择这个答案可供打分。方法的逐句奖励在训练阶段计算。",
+      "transfer": "对推理研究，可以借鉴它的对照方式：同一模型分别直接回答和先分析再回答，看分析是否提供额外收益；再单独比较训练方法。两种比较回答的是不同问题。",
+      "take": "先把“分析写得像样”与“分析让预测更准”分开测。",
+      "counter": {
+        "q": "这是否意味着，只保留概率上升的句子就够了？",
+        "a": "不是。训练时已知正确商品，实际推荐时却不知道；而且概率变化还取决于模型会不会使用这段分析。论文也观察到内容正确的句子未必带来正增量，因此另设了训练推荐阶段的目标。"
+      },
+      "sources": [
+        [
+          "原论文 · 11月16日17:28 UTC（北京时间17日01:28）",
+          "https://arxiv.org/abs/2611.21441"
+        ],
+        [
+          "全文 · 方法、§4.3、Figure 8与附录B",
+          "https://arxiv.org/html/2611.21441v1"
+        ]
+      ],
+      "images": [
+        {
+          "src": "assets/2026-11-18/gainreason-case.png",
+          "alt": "两种推荐方法的原文分析对照，目标电影是狮子王",
+          "caption": "原论文 Figure 8：红字表示加入后使正确商品预测概率提高的句子，灰字表示降低；下划线标出错误陈述。红色在这张图中不表示错误。",
+          "credit": "Zhuoyang Li 等 · GainReason",
+          "sourceUrl": "https://arxiv.org/html/2611.21441v1",
+          "originalUrl": "https://arxiv.org/html/2611.21441v1/case_study.png",
+          "placement": "inline",
+          "width": 1507,
+          "height": 2037
+        }
+      ]
+    },
     {
       "id": "jnsp-joint-null-projection",
       "cat": "merge",
