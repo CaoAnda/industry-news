@@ -1,5 +1,205 @@
 window.FEED_DATA = [
   {
+    "id": "openai-review-one-before-batch-20261120",
+    "source": "OpenAI",
+    "avatar": "O",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方报告 · 匿名研究员访谈",
+    "kind": "official",
+    "topic": "团队与工作方式",
+    "tags": [
+      "团队与工作方式"
+    ],
+    "date": "2026-11-18",
+    "time": "11 月 18 日 · 原文日期",
+    "title": "OpenAI 研究员做批量任务：先让助手交一个样本，改好后再继续",
+    "summary": "一位负责后训练评测的 OpenAI 研究员，曾让 AI 照着已有任务批量制作新任务。结果看起来相似，细节却不符合要求，他还得逐一修改。后来，他把工作顺序改了：先让助手做一个，自己检查并改好，再让它完成剩下的。\n\n这是 OpenAI 11月18日发布的内部研究报告中的访谈实例。团队访谈了十位研究员，发现助手已经能承担代码实现、调试和实验检查，但选题、数据质量和分析判断仍经常需要人介入。若一开始的要求没对齐，批量执行也会把同一个问题复制出去。\n\n这个改动很适合制作评测题或整理训练数据时借鉴：先审一个完整产物，把修改落实到具体样本上，再扩大数量。它来自研究员的工作经验；报告没有单独测量这一步能节省多少返工时间。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "内部报告 · 工作流程访谈",
+        "url": "https://openai.com/index/research-acceleration-jagged-frontier/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "先让助手做一个，自己检查并改好",
+        "再扩大数量"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-20"
+  },
+  {
+    "id": "vllm-draft-cache-padding-20261120",
+    "source": "vLLM",
+    "avatar": "v",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "开源项目 · 已合并修复",
+    "kind": "official",
+    "topic": "推理与部署实践",
+    "tags": [
+      "推理与部署实践"
+    ],
+    "date": "2026-11-19",
+    "time": "11 月 19 日 10:41 · 北京时间合并",
+    "title": "小草稿模型牵动了大模型的缓存分组，vLLM 把多余占用挪走了",
+    "summary": "为了加快生成，推理服务可以让一个小模型先提出几个候选词，再由主模型检查。这种做法叫推测解码。两者都要保存之前计算过的信息，但小模型有时只需要保留很短的一段，主模型的部分层却要保存完整上下文。\n\nvLLM 此前按最小的一组层来划分缓存。在作者报告的配置里，草稿模型只有5层，主模型的16层全局注意力因此被分成四组，每组5层；实际只有16层，却要按20层预留空间。\n\n11月19日合并的修复，让这种只保留短窗口的草稿模型不再决定分组大小。主模型的16层可以单独成组，多出的预留空间改放在成本较低的草稿侧。按这份配置计算，主模型全局注意力部分的每词缓存占用减少20%，不是整台服务的显存减少20%。\n\n修改已有针对分组规则的测试；作者尚未补上修复后的完整服务实测。对部署而言，值得检查的不只是剩余显存，还包括缓存是否因为分组而给不存在的层预留了位置。",
+    "body": "此例使用 Muse Spark Open：46层滑动窗口注意力、16层全局注意力，另配5层 DSpark 草稿模型。修复只排除草稿专用且采用滑动窗口管理的分组；若草稿模型也保存完整上下文，给它补空层同样昂贵，仍参与原有分组计算。作者运行的是CPU上的针对性回归测试，没有提供修复后的吞吐量数字。",
+    "detailLabel": "为什么不能把所有草稿模型都排除",
+    "links": [
+      {
+        "label": "已合并修复 · 配置与测试",
+        "url": "https://github.com/vllm-project/vllm/pull/68533"
+      }
+    ],
+    "images": [],
+    "comments": [
+      {
+        "author": "Dao007forever",
+        "role": "普通评论者 · 项目贡献者",
+        "date": "2026-11-19 07:47 北京时间",
+        "text": "需要确认草稿层确实属于滑动窗口类型；有些草稿模型使用全局注意力，不应一并排除。",
+        "url": "https://github.com/vllm-project/vllm/pull/68533#issuecomment-6995042786",
+        "linkLabel": "评论直达",
+        "evidence": "代码评审意见",
+        "mode": "翻译摘编",
+        "context": "针对最初把所有草稿分组都排除的改法；最终修复缩小了范围，并增加了相应测试。"
+      }
+    ],
+    "commentStatus": "已读修改说明和讨论，精选一条影响适用范围的评审意见。",
+    "highlights": {
+      "summary": [
+        "实际只有16层，却要按20层预留空间",
+        "不再决定分组大小"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-20"
+  },
+  {
+    "id": "frontierharness-model-tool-pair-20261120",
+    "source": "Runta · Shilin Zhu",
+    "avatar": "R",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "公司实测 · 近期评测补读",
+    "kind": "official",
+    "topic": "商业与成本账",
+    "tags": [
+      "商业与成本账"
+    ],
+    "date": "2026-11-17",
+    "time": "11 月 17 日 · 原文日期",
+    "title": "换了模型，原来省钱的编程工具可能就不省了",
+    "summary": "同一个编程模型，放进不同工具里，收到的任务说明、能调用的命令和停止工作的时机都可能不同。Runta 与 Baseten 因此把22种工具配置和5个开放模型交叉测试：同样的62项终端任务，每种组合各尝试4次。\n\n一个明显变化是 Codex CLI 的成本位置。按每次任务的平均推理费用排序，它搭配 GLM-5.3 时最便宜，换成 Kimi-K3 后排到第16。测试保留各工具的默认配置，并使用最高推理强度；费用按同一家服务商 Baseten 的公开价格估算。\n\n这份11月17日公布的评测提醒，选择模型与选择工具最好一起做。给自己的任务试几个组合时，应把失败尝试的费用也算进去，再看完成一个合格任务总共花了多少，而不只比较模型的每百万 token 单价。",
+    "body": "报告把平均每次任务费用与“每次成功的成本”分开：后者用平均任务费用除以通过率。成本排名使用前者，不应把它改写成成功成本排名。单个工具与模型组合的通过率置信区间约为上下10个百分点，几个百分点的小差距不宜排成稳定名次。",
+    "detailLabel": "成本排名与成功成本怎样区分",
+    "links": [
+      {
+        "label": "原始评测 · 方法与各模型结果",
+        "url": "https://runta.com/blog/introducing-frontierharness-eval-v1-1/"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-20/harness-cost.png",
+        "alt": "22种工具配置在全部五个模型上汇总的平均任务成本与通过率",
+        "caption": "原文图1的全模型汇总：越靠左，每次任务平均费用越低；越靠上，通过率越高。这是汇总图，正文中的第1与第16名来自单独模型的成本排名。",
+        "credit": "Runta · FrontierHarness Eval v1.1",
+        "sourceUrl": "https://runta.com/blog/introducing-frontierharness-eval-v1-1/",
+        "originalUrl": "https://runta.com/blog/introducing-frontierharness-eval-v1-1/harness-scatter-all-models.png",
+        "placement": "inline",
+        "width": 1024,
+        "height": 832
+      }
+    ],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "换成 Kimi-K3 后排到第16",
+        "把失败尝试的费用也算进去"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-20"
+  },
+  {
+    "id": "prime-factory-production-traces-20261120",
+    "source": "Prime Intellect",
+    "avatar": "P",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方披露",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-18",
+    "time": "11 月 18 日 · 原文日期",
+    "title": "Prime Intellect 把训练、上线和失败记录接到同一套工具里",
+    "summary": "Prime Intellect 发布 Model Factory，团队可以训练开放模型，把训练出的版本部署为服务，再查看实际任务在哪里失败，决定下一轮该补哪些数据、改哪些评分规则。\n\n例如，一个写代码的助手得分变高后，开发者可以回看它的修改和测试结果，检查它是否真的修好了问题，再用另一批任务评测。这是官方介绍的使用流程，不是已经公布的客户收益实验。\n\n平台统一管理训练、生成尝试、运行工具的隔离环境和调度；开发者仍负责定义任务与好坏标准。按需服务按 GPU 小时计费，专用部署另提供更深的集群控制。对正在把后训练接进产品的团队，这次产品更新主要减少了不同环节之间的接线工作。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "官方发布 · Model Factory",
+        "url": "https://www.primeintellect.ai/blog/introducing-model-factory"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "",
+    "highlights": {
+      "summary": [
+        "开发者仍负责定义任务与好坏标准"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-20"
+  },
+  {
+    "id": "xhs-spare-gpu-deployment-20261120",
+    "source": "le petit prince",
+    "avatar": "l",
+    "avatarClass": "xhs",
+    "channel": "xiaohongshu",
+    "evidence": "个人自述 · 短讯",
+    "kind": "opinion",
+    "topic": "开发者实践",
+    "tags": [
+      "开发者实践"
+    ],
+    "date": "2026-11-18",
+    "time": "11 月 18 日 · 原文日期",
+    "title": "一位部署者宁可空着一张卡，也要给模型升级留位置",
+    "summary": "小红书作者 le petit prince 分享，自己原先没有推理部署经验，借助 AI 跑通了一台四卡服务器。做规划时，他留了一张90GB以上显存的卡，不运行常驻服务，目的是给后续模型升级留出空间。\n\n这是一笔明确的取舍：平时少用一张卡，换取升级时的余地。作者把它作为个人部署经验；本次读到的正文没有交代切换步骤和中断测试，所以这里不沿用其“全年零中断”的说法。",
+    "body": "",
+    "detailLabel": "",
+    "links": [
+      {
+        "label": "小红书 · 原帖入口",
+        "url": "https://www.xiaohongshu.com/explore/6afd853c000000001b01f16d"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "已读正文及1条评论；评论仅为支持，无补充信息。正文提到的长图未取得，未据其扩写配置和切换过程。",
+    "highlights": {
+      "summary": [],
+      "body": []
+    },
+    "issueDate": "2026-11-20"
+  },
+  {
     "id": "foundry-control-training-loop-20261119",
     "source": "Microsoft Foundry",
     "avatar": "M",
@@ -4869,6 +5069,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-20",
+    "edition": 23,
+    "title": "先检查一个样本，再扩大规模",
+    "intro": "今天从一位研究员改变批量工作的顺序说起，再看推理缓存如何浪费空间、换模型怎样改变工具成本，以及训练与上线如何接起来。小知补读一份专家压缩实测：模型仍能生成文字，产品却可能因为格式或语言不对而拒收。",
+    "coverage": "北京时间：优先覆盖11月19日07:55至本次更新；另补读此前未收录的11月17日至18日企业实践与11月9日研究。已读官方原文、开源讨论、小红书正文及评论；X 搜索无结果，Reddit 搜索解析失败，脉脉后台连接不可用。未取得可入选的新招聘或访谈。",
+    "question": "我们给合并后的模型评分时，有没有把“答案大致正确”与“产品能直接使用”分开检查？",
+    "id": "2026-11-20",
+    "count": 5
+  },
+  {
     "date": "2026-11-19",
     "edition": 22,
     "title": "把时间和预算花在真正推进任务的地方",
@@ -5088,19 +5298,83 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-19T07:55:40+08:00",
+  "updatedAt": "2026-11-20T08:28:16+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-19",
-  "latestId": "2026-11-19"
+  "latestDate": "2026-11-20",
+  "latestId": "2026-11-20"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
   "importedOn": "2026-10-31",
   "featured": [
     "rsi-prime-decision-supervision",
-    "jnsp-joint-null-projection"
+    "prune-merge-production-contracts"
   ],
   "entries": [
+    {
+      "id": "prune-merge-production-contracts",
+      "cat": "merge",
+      "topic": "专家压缩与产品评测",
+      "symbol": "◈",
+      "method": "REAP / REAM 生产任务对照",
+      "year": "2026 · 11月9日首次公开",
+      "publishedOn": "2026-11-09",
+      "addedOn": "2026-11-20",
+      "classic": false,
+      "time": 6,
+      "title": "压缩专家模型后，邮件还能写，却可能不再合格",
+      "desc": "Hostinger 用多语言产品任务比较删除专家和合并专家，发现差距主要出现在格式、排版和输出失控上。",
+      "scenario": "把混合专家模型缩小后，用它生成产品真正能接收的域名介绍和邮件模板。",
+      "bottleneck": "回答内容大致正确，也可能因为格式、语言或排版不合要求而无法上线。",
+      "lead": "Hostinger 的产品需要模型生成邮件模板。文字通顺还不够：输出要装进规定的数据格式，HTML 页面要完整，手机上也不能排坏。团队压缩模型后发现，很多失分就出在这些要求上。\n\n他们比较两种减小模型的办法。混合专家模型包含许多负责不同计算的“专家”；REAP 直接删除影响较小的专家，REAM 则把它们的参数合入保留下来的专家。两者使用同一批产品对话来判断专家的重要性。\n\n在 Qwen3-30B 上，同样移除四分之一专家，删除法保留了原模型93.6%的生成任务得分，合并法保留62.5%。这是域名介绍和邮件模板两项任务的平均得分保留率，不是请求成功率；其中邮件评分放宽了两项格式门槛，两种方法使用相同规则。\n\n这项比较展示的是本次产品任务上的差距。合并实现由作者移植，校准数据偏英语，测试数据没有公开。它最直接的提醒是：压缩后除了看答案内容，还要重新检查产品实际接受输出的条件。",
+      "insight": "通用题目得分接近，不保证生成结果仍符合产品的格式和语言要求。",
+      "steps": [
+        [
+          "先用同一批对话选专家",
+          "两种方法共用与评测分开的产品对话。REAP 按专家实际输出及路由权重衡量重要性；REAM 选重要专家作中心，把相似专家的神经元对齐，再按重要性加权平均。它保留中心的路由参数，不把各成员的路由权重相加。"
+        ],
+        [
+          "把输出送进产品的检查流程",
+          "作者比较两种模型、两档压缩比例，每个任务评测2000条。邮件需要通过格式和手机排版等检查。原模型常给完整正文却没有最外层 HTML 标签，因此主表放宽了完整页面和退订链接两项规则，并另外报告原有严格规则的成绩。"
+        ]
+      ],
+      "example": {
+        "label": "原文实测",
+        "title": "英文开头被带进了其他语言",
+        "text": "域名介绍的提示要求以英文短语“This domain is”开头，同时指定目标语言。压缩后的模型更常原样带入英文，再接目标语言。原文举出“This domain adalah…”这样的混合输出。它说明语言要求也需要逐条检查。"
+      },
+      "evidence": "图1比较各任务相对原模型的得分保留率，任务等权；正文选择 Qwen3 的25%压缩结果。每种配置只压缩一次，误差区间来自测试样本重采样。",
+      "limits": "REAM 移植有已说明的实现差异；私人任务、模型和逐条结果未公开，研究也未测量服务显存、延迟或吞吐量。",
+      "transfer": "在自己的合并实验中，可把格式通过率、语言一致性和输出是否失控单列出来。这是评测建议，不是论文已验证的修复办法。",
+      "take": "模型缩小后，要重新检查它能否交出产品真正能用的结果。",
+      "counter": {
+        "q": "这是否说明模型合并应该放弃？",
+        "a": "不是。这里比较的是一个模型内部的专家删除与专家合并，使用两个30B模型和一批产品任务；不能直接推到不同微调模型之间的合并。"
+      },
+      "sources": [
+        [
+          "原论文 · 首次公开日期",
+          "https://arxiv.org/abs/2611.12240"
+        ],
+        [
+          "全文 · 方法、图1与限制",
+          "https://arxiv.org/html/2611.12240v1"
+        ]
+      ],
+      "images": [
+        {
+          "src": "assets/2026-11-20/prune-quality.png",
+          "alt": "原论文图1，蓝色删除法与橙色合并法在两类任务上的得分保留率",
+          "caption": "图1：左侧为分类等任务，右侧为生成任务；横轴是移除的专家比例，纵轴是相对原模型的得分。生成任务上的两条曲线分得更开。",
+          "credit": "Tomas Rasymas、Povilas Kvedaras · Hostinger Research",
+          "sourceUrl": "https://arxiv.org/html/2611.12240v1",
+          "originalUrl": "https://arxiv.org/pdf/2611.12240#page=3",
+          "placement": "details",
+          "width": 1075,
+          "height": 725
+        }
+      ]
+    },
     {
       "id": "rsi-prime-decision-supervision",
       "cat": "ai",
