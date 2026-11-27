@@ -1,5 +1,220 @@
 window.FEED_DATA = [
   {
+    "id": "anthropic-rust-production-parity-20261127",
+    "source": "Anthropic",
+    "avatar": "A",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方技术分享",
+    "kind": "official",
+    "topic": "团队内部工作",
+    "tags": [
+      "团队内部工作"
+    ],
+    "date": "2026-11-25",
+    "time": "11月25日 · 官方文章，本期收录",
+    "title": "Anthropic重写接口：测试几乎全过，真实请求却只有四分之一对得上",
+    "summary": "Anthropic把连接Claude的Messages API从Python迁到Rust，11月25日公开了过程。Claude约一周就写出了核心流程初版，但4月时，新版本虽通过约98%的测试，与旧系统对比的线上输入却只有约四分之一完全一致。团队还在迁移后的测试里发现了100多处被放宽的检查。\n\n他们改用真实流量逐步对照新旧程序。模型只调用一次，同一份生成结果交给两边处理，避免把模型回答的随机变化误判为程序错误。系统记录最早在哪一步出现差异、长度差多少，再让AI在沙盒中构造复现样本、修代码。\n\n人工审核仍拦下过一次“测得过、用不了”的修复：AI把本应从内部服务读取的工具说明复制进文件，虽然输出对齐了，正式上线仍得重做。9月流量迁移后，公司报告每请求CPU用量约降70%；经验的关键是，旧系统能帮助检查行为，人还要判断改法是否适合长期维护。",
+    "body": "最初只把输出解析改成Rust，每个词元仍需跨两种语言三次，CPU节省约8%—10%。团队随后迁移整个请求路径。\n\n为保护客户内容，排查记录保留差异的位置、长度等特征，不把客户原文交给修复助手。图中的具体字节和文本是原文教学示例。\n\nCPU变化取自一个区域；原文另报首字等待中位数约减少20%，统计的是较短时间段内客户的Claude Code请求。两个指标的统计群体不同。",
+    "detailLabel": "怎样定位差异，以及性能统计范围",
+    "links": [
+      {
+        "label": "原文与完整条件",
+        "url": "https://www.anthropic.com/research/migrating-api-to-rust"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-27/rust.png",
+        "alt": "新旧接口逐阶段对照，模型只调用一次，输出重放给Rust处理",
+        "caption": "Anthropic原文流程图。下方字节位置与文本为教学示例；记录差异位置而非客户原文。",
+        "credit": "Anthropic / 官方博客",
+        "sourceUrl": "https://www.anthropic.com/research/migrating-api-to-rust",
+        "originalUrl": "https://assets.claude.com/32dee017ccc9f7496eb80f0b926bf655215edb83.png?w=3840&q=75&fm=webp&fit=max",
+        "placement": "inline",
+        "width": 2400,
+        "height": 1552
+      }
+    ],
+    "comments": [],
+    "commentStatus": "已读Reddit转帖与4条可见回复；转帖主体有截断，回复未提供足够增量，本期不摘录。",
+    "highlights": {
+      "summary": [
+        "模型只调用一次",
+        "旧系统能帮助检查行为，人还要判断改法是否适合长期维护"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-27"
+  },
+  {
+    "id": "vllm-nvme-cache-segment-20261127",
+    "source": "AMD与Embedded LLM",
+    "avatar": "A",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方技术分享",
+    "kind": "official",
+    "topic": "公司部署与成本",
+    "tags": [
+      "公司部署与成本"
+    ],
+    "date": "2026-11-23",
+    "time": "11月23日 · 官方文章，本期收录",
+    "title": "推理缓存放进固态硬盘后，vLLM先改小了“成批删除”的文件",
+    "summary": "多轮编程助手会反复发送长上下文。服务器若保留以前计算出的KV缓存，就能少算重复内容；显存装不下时，通常还要借用主机内存。AMD与Embedded LLM在vLLM中试了另一条路：把大部分缓存放到NVMe固态硬盘。\n\n最初硬盘方案明显落后。一个原因是缓存按文件回收：默认每个文件4 GiB，删除旧内容时，夹在同一文件里的有用缓存也一起丢了。他们把文件缩到256 MiB，让回收更细。\n\n调整后，在16张MI355X、Kimi-K3、AgentX多轮请求回放中，同为1.8 TB的硬盘缓存池与内存缓存池，在48、70、96路并发下的吞吐差距都在1%以内。忙碌服务可以在请求排队时提前读缓存，因此硬盘读得慢，没有等比例变成GPU等待。\n\n这套方案仍留约80 GB内存做读写缓冲。部署还要算硬盘写入寿命：每次新计算的缓存都会写盘，容量够放，不等于硬盘能长期承受这种写入量。",
+    "body": "图中吞吐统计输入与输出词元，并包含命中的输入缓存，按全部16张GPU平均；不是单路生成速度。\n\n另一组4.6 TB硬盘池对1 TB内存池的高并发测试有5.1倍差距，但容量也变了，不据此说硬盘比内存快五倍。原文成本估算按标价和长期负载计算，未包含电力、机架和宿主服务器。",
+    "detailLabel": "吞吐怎么算，为什么不能照搬“五倍”",
+    "links": [
+      {
+        "label": "原文与完整条件",
+        "url": "https://vllm.ai/blog/2026-11-23-skip-the-dram-tier"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-27/nvme.png",
+        "alt": "1.8 TB硬盘缓存池与内存池在三档并发下吞吐接近",
+        "caption": "官方同容量对照：Kimi-K3、16张MI355X、AgentX回放；蓝色方案保留64 GB写缓冲。",
+        "credit": "AMD与Embedded LLM / 官方博客",
+        "sourceUrl": "https://vllm.ai/blog/2026-11-23-skip-the-dram-tier",
+        "originalUrl": "https://vllm.ai/blog-assets/figures/2026-11-23-skip-the-dram-tier/fig1-same-size.png",
+        "placement": "inline",
+        "width": 1344,
+        "height": 1003
+      }
+    ],
+    "comments": [],
+    "commentStatus": "原文无可读取评论区。",
+    "highlights": {
+      "summary": [
+        "把文件缩到256 MiB，让回收更细",
+        "容量够放，不等于硬盘能长期承受这种写入量"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-27"
+  },
+  {
+    "id": "miles-exact-arithmetic-cost-20261127",
+    "source": "RadixArk Miles团队",
+    "avatar": "R",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方技术分享",
+    "kind": "official",
+    "topic": "公司训练实践",
+    "tags": [
+      "公司训练实践"
+    ],
+    "date": "2026-11-23",
+    "time": "11月23日 · 官方文章，本期收录",
+    "title": "让训练和生成算出完全相同的概率，Miles公开了适配方法与代价",
+    "summary": "此前我们介绍过：模型用一套程序生成答案、另一套程序训练，即使参数相同，也可能算出不同概率。这会干扰训练对样本权重的调整。Miles团队这次把消除这种差异的办法扩展到多种DeepSeek、GLM和Qwen模型，并公开了速度代价。\n\n他们统一底层计算规则，包括矩阵分块、加法顺序，以及多个专家结果的合并顺序。生成端无论怎样拼批次、分段读输入或命中缓存，训练端都按相同规则重新计算；相同参数下，每个词元的概率可以逐位一致。\n\n在64张H200的完整训练步骤计时中，按处理词元数量归一后，DeepSeek-V4-Flash和GLM-5.2的吞吐分别为普通实现的90%和93%。这相当于为计算一致性付出一定速度，换来更清楚的排查依据：异步训练若还有概率差异，就能把注意力转向模型参数更新的滞后。\n\n当前方案两端的张量并行度为1，也就是不把同一矩阵运算拆到多卡。发布文称代码、测试和启动配方将作为分支开放；实际接入前还需核对这些发布物。",
+    "body": "上述计时将学习率设为0，从同一检查点与提示词开始，跳过预热后统计第1—5步，包含生成、训练、权重同步和等待。每种配置一次运行，两个模型处理的词元数量不完全相同，因此不用单步秒数替代词元吞吐。\n\n异步训练仍需处理旧权重生成的样本。Qwen3.6实验中，取消样本权重上限后，完全对齐计算还不够：同时重放生成时选中的专家，曲线才保持平稳。这里消除的是底层计算差异，不是所有训练滞后问题。",
+    "detailLabel": "完整步骤的计时条件与异步训练",
+    "links": [
+      {
+        "label": "原文与完整条件",
+        "url": "https://miles.radixark.com/blogs/true-on-policy-rl-bit-exact-rollout-and-training-with-sglang-and-miles"
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/2026-11-27/miles.png",
+        "alt": "SGLang与Miles共用计算规则，DeepSeek-V4-Flash100步训练的概率差异为零",
+        "caption": "官方概览图。右图测的是训练与生成的对数概率差异，不是任务正确率。",
+        "credit": "RadixArk Miles团队 / 官方博客",
+        "sourceUrl": "https://miles.radixark.com/blogs/true-on-policy-rl-bit-exact-rollout-and-training-with-sglang-and-miles",
+        "originalUrl": "https://miles.radixark.com/blogs/true-on-policy/top-overview.png?dpl=dpl_9gBbzZNxTGqYMd4y43bT5EvmZn5V",
+        "placement": "inline",
+        "width": 2040,
+        "height": 850
+      }
+    ],
+    "comments": [],
+    "commentStatus": "原文无可读取评论区。",
+    "highlights": {
+      "summary": [
+        "统一底层计算规则",
+        "为计算一致性付出一定速度"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-27"
+  },
+  {
+    "id": "magi-posttraining-capability-tradeoff-20261127",
+    "source": "Sand.ai",
+    "avatar": "S",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方技术分享",
+    "kind": "official",
+    "topic": "训练与评测取舍",
+    "tags": [
+      "训练与评测取舍"
+    ],
+    "date": "2026-11-24",
+    "time": "11月24日 · 官方文章，本期收录",
+    "title": "MAGI-2画面更精致后，团队发现一些原有能力反而更难叫出来",
+    "summary": "Sand.ai发布480B参数的视频模型MAGI-2，同时分享了一项训练观察：把预训练模型继续用数千段精选视频微调后，画面质感明显改善，但此前能观察到的视觉推理、自动补全叙事和跨语言表现，变得更难触发。\n\n团队曾关闭外部语言模型的提示词改写，直接测试预训练检查点。例如，只给人物与场景参考、几个情节节点，模型会自行补出过渡动作和镜头。微调后，这类表现减弱；团队推测，偏重美观的小数据集让输出更集中于电影式画面。这是作者对观察的解释，文中没有给出这些能力退步的系统成功率表。\n\n因此，他们准备把规则遵循、事件因果和多种输入信息的结合能力，放到画面质量之外单独评估。对训练团队，这提醒了一件具体的事：当优化目标越来越集中时，要保留一组检查，看看原来能做的事是否还在。",
+    "body": "MAGI-2支持最长30秒、1080p、25帧每秒的音视频生成。官方还介绍了多头专家架构：先按固定分工交换输入切片，再在本地选择专家，减少跨设备通信随专家选择变化而带来的波动。\n\n本条主线是后训练取舍，未将演示中的数独或叙事个例写成普遍可靠的推理能力。发布时详细技术报告及开源仍为后续计划。相关动态图演示请看原文。",
+    "detailLabel": "模型能力与原文演示的范围",
+    "links": [
+      {
+        "label": "原文与完整条件",
+        "url": "https://sand.ai/blog/magi-2/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "原文无可读取评论区。",
+    "highlights": {
+      "summary": [
+        "画面质感明显改善",
+        "看看原来能做的事是否还在"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-27"
+  },
+  {
+    "id": "cloudflare-search-for-agents-20261127",
+    "source": "Cloudflare",
+    "avatar": "C",
+    "avatarClass": "openai",
+    "channel": "official",
+    "evidence": "官方技术分享",
+    "kind": "official",
+    "topic": "工具与工作方式",
+    "tags": [
+      "工具与工作方式"
+    ],
+    "date": "2026-11-25",
+    "time": "11月25日 · 官方文章，本期收录",
+    "title": "Cloudflare给网站加了一个可被AI自动发现的搜索入口",
+    "summary": "AI查网站文档时，往往要先找搜索框，或者一页页点进去读。Cloudflare推出测试版Search for Agents：站主在控制台开启后，系统开始索引网站内容，并在页面加入入口说明，让支持发现机制的助手直接搜索本站。\n\n例如，助手可以提交“怎样验证webhook签名”，取回相关内容的Markdown文本，再由自己的模型整理答案。服务返回的是检索内容，不另生成一份AI答案，便于助手沿着原始材料继续工作。\n\n各套餐均可开启，使用量仍受AI Search的计费与套餐限额约束。它需要站主启用并完成索引，也需要助手识别这个入口。",
+    "body": "公开路径为/.well-known/search，支持GET与HTTP QUERY请求。站主可在自动创建的AI Search实例内调整可配置项。",
+    "detailLabel": "入口如何调用",
+    "links": [
+      {
+        "label": "原文与完整条件",
+        "url": "https://developers.cloudflare.com/changelog/post/2026-11-25-search-for-agents/"
+      }
+    ],
+    "images": [],
+    "comments": [],
+    "commentStatus": "原文无可读取评论区。",
+    "highlights": {
+      "summary": [
+        "服务返回的是检索内容"
+      ],
+      "body": []
+    },
+    "issueDate": "2026-11-27"
+  },
+  {
     "id": "glm54-repeat-middle-layers-20261124",
     "source": "智谱",
     "avatar": "智",
@@ -5868,6 +6083,16 @@ window.FEED_DATA = [
 ];
 window.FEED_ISSUES = [
   {
+    "date": "2026-11-27",
+    "edition": 28,
+    "title": "先确认改对了，再算到底省了多少",
+    "intro": "这次看两类工程细节：AI能很快重写代码，但团队仍要设计可靠的验证；推理与训练要更省，也得把缓存、数值误差和整步耗时一起算清楚。另有视频模型的后训练取舍，以及网站向AI开放搜索的新入口。",
+    "coverage": "北京时间：覆盖上次成功更新11月24日23:16至本次实际更新时间；25日、26日没有成功发布记录，本期统一补查，不追填已发布日期。收录5条消息，其中两篇11月23日工程文章为补读。小红书已读一则招聘帖，未选用；X搜索为空；Reddit已读转帖与可见回复，未摘录评论。脉脉本次未读取，播客与招聘未形成入选内容。近期研究候选未完成足够的全文与实验核验，保留已有案例及推荐。",
+    "question": "把代码或模型改快之前，你手头有没有一套能发现“行为悄悄变了”的检查？",
+    "id": "2026-11-27",
+    "count": 5
+  },
+  {
     "date": "2026-11-24",
     "edition": 27,
     "title": "让模型多算一遍，也把多花的时间算清楚",
@@ -6137,10 +6362,10 @@ window.FEED_ISSUES = [
   }
 ];
 window.FEED_META = {
-  "updatedAt": "2026-11-24T23:16:55+08:00",
+  "updatedAt": "2026-11-27T08:57:07+08:00",
   "schedule": "每天北京时间 07:00 开始整理",
-  "latestDate": "2026-11-24",
-  "latestId": "2026-11-24"
+  "latestDate": "2026-11-27",
+  "latestId": "2026-11-27"
 };
 window.LEARNING_DATA = {
   "sourceProject": "每日 AI 新闻 / 拾知",
